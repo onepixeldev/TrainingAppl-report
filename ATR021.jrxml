@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.11.0.final using JasperReports Library version 6.11.0-0c4056ccaa4d25a5a8c45672d2f764ea3498bebb  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR021" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="379884e4-c413-43d0-96c7-dd31f5c7b90e">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
+	<queryString language="SQL">
+		<![CDATA[select EF_FACILITATOR_ID,EF_FACILITATOR_NAME,EF_IC_NO,EF_DEPARTMENT,EF_ORGANIZATION,
+EF_POSITION,EF_TELNO_WORK,EF_HANDPHONE_NO,EF_EMAIL_ADDR
+EF_AREA_1,EF_AREA_2,EF_AREA_3,
+EF_ADDRESS,EF_PCODE,EF_CITY,EF_STATE,sm_state_desc,EF_COUNTRY,cm_country_desc
+from external_facilitator,state_main,country_main
+--where sm_state_code(+) = EF_STATE
+--and cm_country_code(+) = EF_COUNTRY
+order by EF_FACILITATOR_NAME]]>
+	</queryString>
+	<field name="EF_FACILITATOR_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EF_FACILITATOR_ID"/>
+	</field>
+	<field name="EF_FACILITATOR_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EF_FACILITATOR_NAME"/>
+	</field>
+	<field name="EF_IC_NO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EF_IC_NO"/>
+	</field>
+	<field name="EF_DEPARTMENT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EF_DEPARTMENT"/>
+	</field>
+	<field name="EF_ORGANIZATION" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EF_ORGANIZATION"/>
+	</field>
+	<field name="EF_POSITION" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EF_POSITION"/>
+	</field>
+	<field name="EF_TELNO_WORK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EF_TELNO_WORK"/>
+	</field>
+	<field name="EF_HANDPHONE_NO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EF_HANDPHONE_NO"/>
+	</field>
+	<field name="EF_AREA_1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EF_AREA_1"/>
+	</field>
+	<field name="EF_AREA_2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EF_AREA_2"/>
+	</field>
+	<field name="EF_AREA_3" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EF_AREA_3"/>
+	</field>
+	<field name="EF_ADDRESS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EF_ADDRESS"/>
+	</field>
+	<field name="EF_PCODE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EF_PCODE"/>
+	</field>
+	<field name="EF_CITY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EF_CITY"/>
+	</field>
+	<field name="EF_STATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EF_STATE"/>
+	</field>
+	<field name="SM_STATE_DESC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SM_STATE_DESC"/>
+	</field>
+	<field name="EF_COUNTRY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EF_COUNTRY"/>
+	</field>
+	<field name="CM_COUNTRY_DESC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CM_COUNTRY_DESC"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
