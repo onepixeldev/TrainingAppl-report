@@ -9,8 +9,8 @@ EF_POSITION,EF_TELNO_WORK,EF_HANDPHONE_NO,EF_EMAIL_ADDR
 EF_AREA_1,EF_AREA_2,EF_AREA_3,
 EF_ADDRESS,EF_PCODE,EF_CITY,EF_STATE,sm_state_desc,EF_COUNTRY,cm_country_desc
 from external_facilitator,state_main,country_main
---where sm_state_code(+) = EF_STATE
---and cm_country_code(+) = EF_COUNTRY
+where sm_state_code(+) = EF_STATE
+and cm_country_code(+) = EF_COUNTRY
 order by EF_FACILITATOR_NAME]]>
 	</queryString>
 	<field name="EF_FACILITATOR_ID" class="java.lang.String">
@@ -70,25 +70,252 @@ order by EF_FACILITATOR_NAME]]>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<title>
-		<band height="79" splitType="Stretch"/>
-	</title>
-	<pageHeader>
-		<band height="35" splitType="Stretch"/>
-	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch"/>
+		<band height="50">
+			<staticText>
+				<reportElement x="20" y="27" width="200" height="20" uuid="a7c99cec-76fb-476c-9218-690ff7569257"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[List of External Facilitators]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="13" width="200" height="20" uuid="99f82c62-f12c-4481-8ba0-57f2cf315459"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Report ID : ATR021]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="0" width="200" height="20" uuid="f058bb9c-c31a-4751-a09d-c8dedb5f4bb7"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
+			</staticText>
+		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch"/>
+		<band height="269" splitType="Stretch">
+			<frame>
+				<reportElement x="20" y="20" width="363" height="240" uuid="6b4a2b63-e93b-49c3-b435-c260b0f8cc1d"/>
+				<textField>
+					<reportElement x="101" y="0" width="262" height="30" uuid="5f2e1960-2cb1-479b-ba40-99764f0dd1a0"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EF_FACILITATOR_NAME}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="0" width="96" height="30" uuid="b0e952f6-1f59-450a-a33a-eaa155a159e0"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Name :]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="101" y="15" width="262" height="30" uuid="b7e3fb54-285b-460c-b8d7-baac30d4962d"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EF_IC_NO}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="15" width="96" height="30" uuid="a1f9d4bc-9a27-49e4-aaa5-5328c5eda808"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[IC No :]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="101" y="45" width="262" height="30" uuid="09500cc5-6235-4acd-8c5b-55638cb78d80"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EF_ORGANIZATION}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="45" width="96" height="30" uuid="a05fb23c-ae2f-42c1-ad71-8662532386e4"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Organization :]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="101" y="30" width="262" height="30" uuid="14f678ec-dd3d-4768-b029-c7bd54715ba7"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EF_DEPARTMENT}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="30" width="96" height="30" uuid="41679f03-fc15-43cd-ada9-0965e596c918"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Department :]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="101" y="60" width="262" height="30" uuid="acb572e1-d764-4875-ad8c-eafc0f96dba3"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EF_POSITION}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="60" width="96" height="30" uuid="47335474-fcb2-424b-925b-58a693ab0901"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Position :]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="101" y="75" width="262" height="30" uuid="57ee5186-2090-4657-8ae0-65821ae40526"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EF_TELNO_WORK}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="75" width="96" height="30" uuid="66664192-2fe5-45ee-8026-7c38b5dca78c"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Off Tel No :]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="101" y="105" width="262" height="30" uuid="988de5ba-bb4f-43da-87c7-ea0caa67d9bc"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EF_AREA_1}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="105" width="96" height="30" uuid="6474d9d4-e0e8-4c5e-b4ee-8fc9dc6644aa"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Area 1 :]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="101" y="90" width="262" height="30" uuid="b14be7af-5ea5-4101-9ac7-8b83263eca9a"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EF_HANDPHONE_NO}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="90" width="96" height="30" uuid="103681b1-37df-45d4-870f-4984c67acf22"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[H/P No :]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="101" y="120" width="262" height="30" uuid="b46dc054-229a-4aee-8dd8-a9a5c086e25f"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EF_AREA_2}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="120" width="96" height="30" uuid="f6920806-5fe7-4ff1-af40-c44270f1603e"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Area 2 :]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="101" y="135" width="262" height="30" uuid="57a751a9-fccf-411e-9494-d19aac4f750e"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EF_AREA_3}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="135" width="96" height="30" uuid="fffe283b-be24-426d-b30e-dbab2bd22a4e"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Area 3 :]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="101" y="165" width="262" height="30" uuid="160091aa-8242-4c1d-905a-8b8b9ca94245"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EF_PCODE}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="165" width="96" height="30" uuid="dda70b6e-5b34-462e-adb2-4ad3878d4866"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Postcode :]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="101" y="150" width="262" height="30" uuid="c771a996-e66f-4138-88fc-66dad15bf7b0"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EF_ADDRESS}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="150" width="96" height="30" uuid="676075fb-2158-46b1-b5ca-ffbf207fdc38"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Address :]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="101" y="180" width="262" height="30" uuid="d3eb96a3-4b68-4513-b09b-294d53406f72"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EF_CITY}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="180" width="96" height="30" uuid="75a51ef9-c940-40cc-8add-49d2794c6053"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[City :]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="101" y="195" width="262" height="30" uuid="1bb7bea1-17d5-4fa2-9632-970f46aed0f1"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SM_STATE_DESC}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="195" width="96" height="30" uuid="d8b75127-3f1d-468f-91c1-ee45d9d0291d"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[State :]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="101" y="210" width="262" height="30" uuid="5ad01bc7-0f7d-48cf-bcf3-0eb244f86e20"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CM_COUNTRY_DESC}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="210" width="96" height="30" uuid="d487a57d-bc14-4fea-a484-7c3a1d1ad2cf"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Country :]]></text>
+				</staticText>
+			</frame>
+			<break>
+				<reportElement x="0" y="268" width="100" height="1" uuid="043de832-fd48-43f8-97c7-140ed1870901"/>
+			</break>
+		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
 		<band height="54" splitType="Stretch"/>
 	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>
