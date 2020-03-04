@@ -3,6 +3,10 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR021" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="379884e4-c413-43d0-96c7-dd31f5c7b90e">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
+	<property name="ireport.jasperserver.url" value="http://10.99.1.192:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/HRA_AT/ATR021_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/HRA_AT/ATR021"/>
 	<queryString language="SQL">
 		<![CDATA[select EF_FACILITATOR_ID,EF_FACILITATOR_NAME,EF_IC_NO,EF_DEPARTMENT,EF_ORGANIZATION,
 EF_POSITION,EF_TELNO_WORK,EF_HANDPHONE_NO,EF_EMAIL_ADDR
