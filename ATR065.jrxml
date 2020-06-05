@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR059" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a3ea4f21-b0f7-4de1-a0b3-10d40575ea1c">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR065" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a3ea4f21-b0f7-4de1-a0b3-10d40575ea1c">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
 	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
-	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR059_files/main_jrxml"/>
-	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR059"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR058C_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR058C"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#EBEBEB">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -37,150 +37,138 @@
 	<subDataset name="TRAINING_STAT" uuid="5d5600f3-9302-4619-a8c0-bbfec4f8ca01">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-		<parameter name="YEAR_YEAR" class="java.lang.String"/>
+		<parameter name="MONTH_FROM" class="java.lang.String"/>
+		<parameter name="MONTH_TO" class="java.lang.String"/>
 		<queryString>
-			<![CDATA[SELECT DDD1, STAFF_PTJ_TOT, TOT_STAFF_APPL, TOT_STAFF
+			<![CDATA[SELECT REFID1, TH_TRAINING_TITLE, DATE_FROM, TOT_STAFF, TOT_STAFF_ATTEND
 FROM
 (
-    SELECT DM_DEPT_DESC DDD1, COUNT(STH_STAFF_ID) TOT_STAFF
-    FROM 
+    SELECT TH_REF_ID REFID1,TH_TRAINING_TITLE,TH_DATE_FROM,COUNT(STH_STAFF_ID) TOT_STAFF
+    FROM
     (
-        SELECT DM_DEPT_DESC, STH_STAFF_ID, COUNT(STH_TRAINING_REFID) TOT_STAFF
-        FROM 
-        (
-            SELECT DM_DEPT_DESC,STH_STAFF_ID,STH_TRAINING_REFID
-            FROM STAFF_MAIN,STAFF_TRAINING_HEAD,TRAINING_HEAD,DEPARTMENT_MAIN
-            WHERE SM_STAFF_ID = STH_STAFF_ID
-            AND TH_REF_ID = STH_TRAINING_REFID
-            AND SM_DEPT_CODE = DM_DEPT_CODE
-            AND TH_STATUS = 'APPROVE'
-            AND STH_STATUS = 'APPROVE'
-            AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
-            AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016' 
-            AND TO_CHAR(TH_DATE_FROM,'yyyy') = NVL($P{YEAR_YEAR},TO_CHAR(SYSDATE,'yyyy'))
-            AND TRUNC(TH_DATE_FROM) <= TRUNC(SYSDATE)
-            UNION
-            SELECT DM_DEPT_DESC,STH_STAFF_ID,STH_TRAINING_REFID
-            FROM STAFF_MAIN,STAFF_TRAINING_HEAD,TRAINING_HEAD,DEPARTMENT_MAIN
-            WHERE SM_STAFF_ID = STH_STAFF_ID
-            AND TH_REF_ID = STH_TRAINING_REFID
-            AND SM_DEPT_CODE = DM_DEPT_CODE
-            AND TH_STATUS = 'APPROVE'
-            AND STH_STATUS = 'APPROVE'
-            AND TH_INTERNAL_EXTERNAL = 'EXTERNAL_AGENCY'
-            AND TO_CHAR(TH_DATE_FROM,'yyyy') = NVL($P{YEAR_YEAR},TO_CHAR(SYSDATE,'yyyy'))
-            AND TRUNC(TH_DATE_FROM) <= TRUNC(SYSDATE)
-            UNION
-            SELECT DM_DEPT_DESC,STH_STAFF_ID,STH_TRAINING_REFID
-            FROM STAFF_MAIN,STAFF_TRAINING_HEAD,TRAINING_HEAD,DEPARTMENT_MAIN,STAFF_TRAINING_DETL
-            WHERE SM_STAFF_ID = STH_STAFF_ID
-            AND TH_REF_ID = STH_TRAINING_REFID
-            AND STH_TRAINING_REFID = STD_TRAINING_REFID
-            AND STH_STAFF_ID = STD_STAFF_ID
-            AND SM_DEPT_CODE = DM_DEPT_CODE
-            AND TH_STATUS = 'APPROVE'
-            AND STH_STATUS = 'APPROVE'
-            AND NVL(STD_ATTEND,'N') IN ('Y','A')
-            AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
-            AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016' 
-            AND TO_CHAR(TH_DATE_FROM,'yyyy') = NVL($P{YEAR_YEAR},TO_CHAR(SYSDATE,'yyyy'))
-            AND TRUNC(TH_DATE_FROM) <= TRUNC(SYSDATE)
-        )
-        GROUP BY DM_DEPT_DESC,STH_STAFF_ID
+        SELECT TH_REF_ID,TH_TRAINING_TITLE,TH_DATE_FROM,STH_STAFF_ID
+        FROM STAFF_TRAINING_HEAD,TRAINING_HEAD
+        WHERE TH_REF_ID = STH_TRAINING_REFID
+        AND TH_STATUS = 'APPROVE'
+        AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+        AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016' 
+        AND (TH_DATE_FROM BETWEEN TO_DATE($P{MONTH_FROM},'mm/yyyy')  
+        AND LAST_DAY(TO_DATE($P{MONTH_TO},'mm/yyyy')))  
+        UNION
+        SELECT TH_REF_ID,TH_TRAINING_TITLE,TH_DATE_FROM,STH_STAFF_ID
+        FROM STAFF_TRAINING_HEAD,TRAINING_HEAD
+        WHERE TH_REF_ID = STH_TRAINING_REFID
+        AND TH_STATUS = 'APPROVE'
+        AND TH_INTERNAL_EXTERNAL = 'EXTERNAL_AGENCY'
+        AND (TH_DATE_FROM BETWEEN TO_DATE($P{MONTH_FROM},'mm/yyyy')
+        AND LAST_DAY(TO_DATE($P{MONTH_TO},'mm/yyyy')))
+        UNION
+        SELECT TH_REF_ID,TH_TRAINING_TITLE,TH_DATE_FROM,STH_STAFF_ID
+        FROM STAFF_TRAINING_HEAD,TRAINING_HEAD
+        WHERE TH_REF_ID = STH_TRAINING_REFID
+        AND TH_STATUS = 'APPROVE'
+        AND STH_STATUS = 'APPROVE'
+        AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+        AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016' 
+        AND (TH_DATE_FROM BETWEEN TO_DATE($P{MONTH_FROM},'mm/yyyy')
+        AND LAST_DAY(TO_DATE($P{MONTH_TO},'mm/yyyy')))
     )
-    WHERE TOT_STAFF >= 2
-    GROUP BY DM_DEPT_DESC
-
-)
-LEFT JOIN 
-(
-    SELECT COUNT(STH_STAFF_ID) TOT_STAFF_APPL, DDD2
-    FROM 
-    (
-        SELECT DM_DEPT_DESC DDD2,STH_STAFF_ID,COUNT(STH_TRAINING_REFID) TOT_STAFF
-        FROM
-        (			
-            SELECT DM_DEPT_DESC,STH_STAFF_ID,STH_TRAINING_REFID
-            FROM STAFF_MAIN,STAFF_TRAINING_HEAD,TRAINING_HEAD,DEPARTMENT_MAIN
-            WHERE SM_STAFF_ID = STH_STAFF_ID
-            AND TH_REF_ID = STH_TRAINING_REFID
-            AND SM_DEPT_CODE = DM_DEPT_CODE
-            AND TH_STATUS = 'APPROVE'
-            AND STH_STATUS = 'APPROVE'
-            AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
-            AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
-            AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR}
-            AND TRUNC(TH_DATE_FROM) <= TRUNC(SYSDATE)
-            UNION 
-            SELECT DM_DEPT_DESC,STH_STAFF_ID,STH_TRAINING_REFID
-            FROM STAFF_MAIN,STAFF_TRAINING_HEAD,TRAINING_HEAD,DEPARTMENT_MAIN
-            WHERE SM_STAFF_ID = STH_STAFF_ID
-            AND TH_REF_ID = STH_TRAINING_REFID
-            AND SM_DEPT_CODE = DM_DEPT_CODE
-            AND TH_STATUS = 'APPROVE'
-            AND STH_STATUS = 'APPROVE'
-            AND TH_INTERNAL_EXTERNAL = 'EXTERNAL_AGENCY'
-            AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR}
-            AND TRUNC(TH_DATE_FROM) <= TRUNC(SYSDATE)
-            UNION
-            SELECT DM_DEPT_DESC,STH_STAFF_ID,STH_TRAINING_REFID
-            FROM STAFF_MAIN,STAFF_TRAINING_HEAD,TRAINING_HEAD,DEPARTMENT_MAIN,STAFF_TRAINING_DETL
-            WHERE SM_STAFF_ID = STH_STAFF_ID
-            AND TH_REF_ID = STH_TRAINING_REFID
-            AND SM_DEPT_CODE = DM_DEPT_CODE
-            AND STH_TRAINING_REFID = STD_TRAINING_REFID
-            AND STH_STAFF_ID = STD_STAFF_ID
-            AND TH_STATUS = 'APPROVE'
-            AND STH_STATUS = 'APPROVE'
-            AND NVL(STD_ATTEND,'N') IN ('Y','A')
-            AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
-            AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016' 
-            AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR} 
-            AND TRUNC(TH_DATE_FROM) <= TRUNC(SYSDATE)
-        )
-        GROUP BY DM_DEPT_DESC,STH_STAFF_ID
-    )
-    GROUP BY DDD2
-) ON DDD2 = DDD1
+    GROUP BY TH_REF_ID,TH_TRAINING_TITLE,TH_DATE_FROM
+) 
 LEFT JOIN
 (
-    SELECT COUNT(SM_STAFF_ID) STAFF_PTJ_TOT, DM_DEPT_DESC DDD3
-    FROM STAFF_MAIN,STAFF_STATUS,DEPARTMENT_MAIN
-    WHERE SS_STATUS_CODE = SM_STAFF_STATUS
-    AND SM_DEPT_CODE = DM_DEPT_CODE
-    AND SS_STATUS_STS = 'ACTIVE'
-    AND SUBSTR(SM_STAFF_ID,1,1) <> 'S'
-    AND SM_STAFF_ID NOT LIKE '%Admin%'
-    AND SM_STAFF_TYPE = 'STAFF'
-    GROUP BY DM_DEPT_DESC
-) ON DDD3 = DDD1
-ORDER BY TOT_STAFF,DDD1]]>
+    SELECT REFID2, DATE_FROM
+    FROM
+    (
+        SELECT TH_REF_ID REFID2, TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy') DATE_FROM
+        FROM TRAINING_HEAD
+        UNION
+        SELECT CM_REFID REFID2, TO_CHAR(CM_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(CM_DATE_TO,'dd/mm/yyyy') DATE_FROM
+        FROM CONFERENCE_MAIN
+    )
+) ON REFID2 = REFID1
+LEFT JOIN
+(
+    SELECT COUNT(STH_STAFF_ID) TOT_STAFF_ATTEND, REFID3
+    FROM
+    (
+        SELECT STH_STAFF_ID, TH_REF_ID REFID3
+        FROM STAFF_TRAINING_HEAD,TRAINING_HEAD
+        WHERE TH_REF_ID = STH_TRAINING_REFID
+        AND TH_STATUS = 'APPROVE'
+        AND STH_STATUS = 'APPROVE'
+        AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+        AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016' 
+        AND TRUNC(TH_DATE_FROM) <= TRUNC(SYSDATE)
+        AND TO_CHAR(TH_DATE_FROM,'yyyy') = TO_CHAR(SYSDATE,'yyyy')
+        UNION
+        SELECT STH_STAFF_ID, TH_REF_ID REFID3
+        FROM STAFF_TRAINING_HEAD,TRAINING_HEAD
+        WHERE TH_REF_ID = STH_TRAINING_REFID
+        AND TH_STATUS = 'APPROVE'
+        AND STH_STATUS = 'APPROVE'
+        AND TH_INTERNAL_EXTERNAL = 'EXTERNAL_AGENCY' 
+        AND TRUNC(TH_DATE_FROM) <= TRUNC(SYSDATE)
+        AND TO_CHAR(TH_DATE_FROM,'yyyy') = TO_CHAR(SYSDATE,'yyyy')
+        UNION
+        SELECT STH_STAFF_ID, TH_REF_ID REFID3
+        FROM STAFF_TRAINING_HEAD,TRAINING_HEAD,STAFF_TRAINING_DETL
+        WHERE TH_REF_ID = STH_TRAINING_REFID
+        AND STH_TRAINING_REFID = STD_TRAINING_REFID
+        AND STH_STAFF_ID = STD_STAFF_ID
+        AND TH_STATUS = 'APPROVE'
+        AND STH_STATUS = 'APPROVE'
+        AND NVL(STD_ATTEND,'N') IN ('Y','A')
+        AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+        AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016' 
+        AND TRUNC(TH_DATE_FROM) <= TRUNC(SYSDATE)
+        AND TO_CHAR(TH_DATE_FROM,'yyyy') = TO_CHAR(SYSDATE,'yyyy')
+    )
+    GROUP BY REFID3
+) ON REFID3 = REFID1
+ORDER BY TH_DATE_FROM]]>
 		</queryString>
-		<field name="DDD1" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.label" value="DDD1"/>
+		<field name="REFID1" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="REFID1"/>
 		</field>
-		<field name="STAFF_PTJ_TOT" class="java.math.BigDecimal">
-			<property name="com.jaspersoft.studio.field.label" value="STAFF_PTJ_TOT"/>
+		<field name="TH_TRAINING_TITLE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="TH_TRAINING_TITLE"/>
 		</field>
-		<field name="TOT_STAFF_APPL" class="java.math.BigDecimal">
-			<property name="com.jaspersoft.studio.field.label" value="TOT_STAFF_APPL"/>
+		<field name="DATE_FROM" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="DATE_FROM"/>
 		</field>
 		<field name="TOT_STAFF" class="java.math.BigDecimal">
 			<property name="com.jaspersoft.studio.field.label" value="TOT_STAFF"/>
 		</field>
-		<variable name="PERCENT" class="java.math.BigDecimal">
-			<variableExpression><![CDATA[($F{TOT_STAFF}/$F{TOT_STAFF_APPL})*100]]></variableExpression>
-		</variable>
+		<field name="TOT_STAFF_ATTEND" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="TOT_STAFF_ATTEND"/>
+		</field>
 	</subDataset>
-	<parameter name="YEAR_YEAR" class="java.lang.String"/>
+	<parameter name="MONTH_FROM" class="java.lang.String"/>
+	<parameter name="MONTH_TO" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT TO_CHAR(SYSDATE, 'DD/MM/YY') CURR_DATE, TO_CHAR(SYSDATE, 'YYYY') CURR_YEAR FROM DUAL]]>
+		<![CDATA[SELECT 
+TO_CHAR(TO_DATE($P{MONTH_FROM}, 'MM/YYYY'), 'MONTH', 'NLS_DATE_LANGUAGE = MALAY') MM_DESC_FROM, 
+TO_CHAR(TO_DATE($P{MONTH_FROM}, 'MM/YYYY'), 'YYYY') YY_DESC_FROM,
+TO_CHAR(TO_DATE($P{MONTH_TO}, 'MM/YYYY'), 'MONTH', 'NLS_DATE_LANGUAGE = MALAY') MM_DESC_TO, 
+TO_CHAR(TO_DATE($P{MONTH_TO}, 'MM/YYYY'), 'YYYY') YY_DESC_TO,
+TO_CHAR(SYSDATE, 'DD/MM/YYYY') CURR_DATE
+FROM DUAL ]]>
 	</queryString>
+	<field name="MM_DESC_FROM" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MM_DESC_FROM"/>
+	</field>
+	<field name="YY_DESC_FROM" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="YY_DESC_FROM"/>
+	</field>
+	<field name="MM_DESC_TO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MM_DESC_TO"/>
+	</field>
+	<field name="YY_DESC_TO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="YY_DESC_TO"/>
+	</field>
 	<field name="CURR_DATE" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="CURR_DATE"/>
-	</field>
-	<field name="CURR_YEAR" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="CURR_YEAR"/>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -253,7 +241,7 @@ ORDER BY TOT_STAFF,DDD1]]>
 				</staticText>
 			</frame>
 			<frame>
-				<reportElement x="0" y="0" width="340" height="45" uuid="22d04701-45b2-4b27-bbd2-78f71843f49b"/>
+				<reportElement x="0" y="10" width="370" height="31" uuid="22d04701-45b2-4b27-bbd2-78f71843f49b"/>
 				<staticText>
 					<reportElement x="0" y="0" width="280" height="14" uuid="501c8080-ba66-4f22-ad51-e23150f681be">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -264,32 +252,35 @@ ORDER BY TOT_STAFF,DDD1]]>
 					<text><![CDATA[UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement x="0" y="14" width="340" height="31" uuid="fd792400-9cb8-4c05-9c4f-4a03ae716f45"/>
+					<reportElement x="0" y="14" width="370" height="17" uuid="fd792400-9cb8-4c05-9c4f-4a03ae716f45"/>
 					<textElement markup="html">
 						<font fontName="Arial" size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["STATISTIK KAKITANGAN YANG MENGHADIRI LATIHAN BAGI TAHUN "+"<br>"+($P{YEAR_YEAR}==null?$F{CURR_YEAR}:$P{YEAR_YEAR})+" ( 2 KALI ATAU LEBIH SETAHUN )"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["SENARAI LATIHAN BAGI BULAN "+$F{MM_DESC_FROM}+" "+$F{YY_DESC_FROM}+" HINGGA "+$F{MM_DESC_TO}+" "+$F{YY_DESC_TO}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="70" splitType="Stretch">
+		<band height="90" splitType="Stretch">
 			<componentElement>
-				<reportElement x="0" y="0" width="555" height="70" uuid="7346fec2-7704-4ceb-8925-403623df2cd0">
+				<reportElement x="0" y="0" width="555" height="90" uuid="7346fec2-7704-4ceb-8925-403623df2cd0">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
 					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="TRAINING_STAT" uuid="aae0ef53-d217-4d04-a2cd-f91a3f9a3fe8">
-						<datasetParameter name="YEAR_YEAR">
-							<datasetParameterExpression><![CDATA[$P{YEAR_YEAR}]]></datasetParameterExpression>
+					<datasetRun subDataset="TRAINING_STAT" uuid="e9e6a8ea-ea62-4d78-a568-41e03be10bfe">
+						<datasetParameter name="MONTH_FROM">
+							<datasetParameterExpression><![CDATA[$P{MONTH_FROM}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="MONTH_TO">
+							<datasetParameterExpression><![CDATA[$P{MONTH_TO}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:columnGroup width="320" uuid="bf480ff6-54dd-4037-9115-13e15c54ec4c">
+					<jr:columnGroup width="180" uuid="bf480ff6-54dd-4037-9115-13e15c54ec4c">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Columns [2]"/>
 						<jr:column width="20" uuid="f57cc9fb-0812-453c-bf13-79a596207ad8">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
@@ -306,25 +297,30 @@ ORDER BY TOT_STAFF,DDD1]]>
 										<font fontName="Arial" isBold="true"/>
 										<paragraph firstLineIndent="0" spacingBefore="2"/>
 									</textElement>
-									<text><![CDATA[Bil]]></text>
+									<text><![CDATA[Bil.]]></text>
 								</staticText>
 							</jr:columnHeader>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell style="Table_TD" height="50">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 								<textField>
-									<reportElement x="0" y="0" width="20" height="30" uuid="56876fb3-28ed-4ab3-89db-fca04f8aee11"/>
-									<textElement textAlignment="Center" verticalAlignment="Middle">
+									<reportElement x="0" y="0" width="20" height="50" uuid="56876fb3-28ed-4ab3-89db-fca04f8aee11">
+										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+										<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+									</reportElement>
+									<textElement textAlignment="Left" verticalAlignment="Top">
 										<font fontName="Arial" size="9"/>
+										<paragraph leftIndent="3" spacingBefore="3"/>
 									</textElement>
 									<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>
-						<jr:column width="300" uuid="87ef1fbb-56ef-4529-af6e-af2509821788">
+						<jr:column width="160" uuid="87ef1fbb-56ef-4529-af6e-af2509821788">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
 							<jr:columnHeader style="Table_CH" height="40" rowSpan="1">
 								<property name="com.jaspersoft.studio.unit.width" value="px"/>
 								<staticText>
-									<reportElement x="0" y="0" width="300" height="40" uuid="7aa11057-2de2-4720-b5a3-5a21f72f342e">
+									<reportElement x="0" y="0" width="160" height="40" uuid="7aa11057-2de2-4720-b5a3-5a21f72f342e">
 										<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 									</reportElement>
@@ -332,20 +328,21 @@ ORDER BY TOT_STAFF,DDD1]]>
 										<font fontName="Arial" isBold="true"/>
 										<paragraph leftIndent="3" spacingBefore="2"/>
 									</textElement>
-									<text><![CDATA[PTJ]]></text>
+									<text><![CDATA[Tajuk Latihan ]]></text>
 								</staticText>
 							</jr:columnHeader>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell style="Table_TD" height="50">
 								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="300" height="30" uuid="ad4214f2-0bda-4d89-9d92-87f184295275">
+									<reportElement x="0" y="0" width="160" height="50" uuid="ad4214f2-0bda-4d89-9d92-87f184295275">
 										<property name="com.jaspersoft.studio.unit.leftIndent" value="pixel"/>
 										<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+										<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 									</reportElement>
-									<textElement textAlignment="Left" verticalAlignment="Middle">
+									<textElement textAlignment="Left" verticalAlignment="Top">
 										<font fontName="Arial" size="9"/>
-										<paragraph leftIndent="3" rightIndent="3"/>
+										<paragraph leftIndent="3" rightIndent="3" spacingBefore="3"/>
 									</textElement>
-									<textFieldExpression><![CDATA[$F{DDD1}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$F{TH_TRAINING_TITLE}]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>
@@ -363,30 +360,31 @@ ORDER BY TOT_STAFF,DDD1]]>
 									<font fontName="Arial" isBold="true"/>
 									<paragraph firstLineIndent="0" spacingBefore="2"/>
 								</textElement>
-								<text><![CDATA[Bil.
-Kakitangan
-PTJ
-]]></text>
+								<text><![CDATA[Tarikh]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
+						<jr:detailCell style="Table_TD" height="50">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="64" height="30" uuid="8a38456b-11a3-45fa-a876-3aed2917ec88">
+								<reportElement x="0" y="0" width="64" height="50" uuid="8a38456b-11a3-45fa-a876-3aed2917ec88">
 									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
+								<textElement textAlignment="Left" verticalAlignment="Top">
 									<font fontName="Arial" size="9"/>
-									<paragraph rightIndent="3"/>
+									<paragraph leftIndent="4" rightIndent="3" spacingBefore="3" spacingAfter="0"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{STAFF_PTJ_TOT}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{DATE_FROM}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="65" uuid="e4e7ff0b-07b1-4f47-bce8-eead3097034f">
+					<jr:column width="64" uuid="e4e7ff0b-07b1-4f47-bce8-eead3097034f">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
 						<jr:columnHeader style="Table_CH" height="40" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="65" height="40" uuid="7d363b16-40da-444b-b37c-369a540c74b0">
+								<reportElement x="0" y="0" width="64" height="40" uuid="7d363b16-40da-444b-b37c-369a540c74b0">
 									<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
 									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -395,60 +393,62 @@ PTJ
 									<font fontName="Arial" isBold="true"/>
 									<paragraph firstLineIndent="0" spacingBefore="2"/>
 								</textElement>
-								<text><![CDATA[Bil.
-Kakitangan
+								<text><![CDATA[Bil. Peserta
+Yang
 Memohon]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
+						<jr:detailCell style="Table_TD" height="50">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="65" height="30" uuid="63205f27-780b-44ae-a4ee-0ebcc9772286">
+								<reportElement x="0" y="0" width="64" height="50" uuid="63205f27-780b-44ae-a4ee-0ebcc9772286">
 									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-								</reportElement>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Arial" size="9"/>
-									<paragraph rightIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$F{TOT_STAFF_APPL}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="65" uuid="7bb4b244-7533-4cc4-a1f4-94c842171517">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
-						<jr:columnHeader style="Table_CH" height="40" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="65" height="40" uuid="6da5d3af-7352-4665-9cf1-b84da992e880">
-									<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
-									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 								</reportElement>
-								<textElement textAlignment="Center">
-									<font fontName="Arial" isBold="true"/>
-									<paragraph firstLineIndent="0" spacingBefore="2"/>
-								</textElement>
-								<text><![CDATA[Bil.
-Kakitangan
-( Hadir >= 2 )]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="65" height="30" uuid="012460f2-7d0e-4543-8ab3-b3e38e107b50">
-									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-								</reportElement>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Arial" size="9" isBold="false"/>
-									<paragraph rightIndent="3"/>
+								<textElement textAlignment="Right" verticalAlignment="Top">
+									<font fontName="Arial" size="9"/>
+									<paragraph rightIndent="3" spacingBefore="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{TOT_STAFF}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="41" uuid="32845ae6-a663-4374-8e96-fc5afafe8b2c">
+					<jr:column width="64" uuid="7bb4b244-7533-4cc4-a1f4-94c842171517">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+						<jr:columnHeader style="Table_CH" height="40" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<staticText>
+								<reportElement x="0" y="0" width="64" height="40" uuid="6da5d3af-7352-4665-9cf1-b84da992e880">
+									<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center">
+									<font fontName="Arial" isBold="true"/>
+									<paragraph firstLineIndent="0" spacingBefore="2"/>
+								</textElement>
+								<text><![CDATA[Bil. Peserta
+Yang Hadir]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="50">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="64" height="50" uuid="012460f2-7d0e-4543-8ab3-b3e38e107b50">
+									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Right" verticalAlignment="Top">
+									<font fontName="Arial" size="9" isBold="false"/>
+									<paragraph rightIndent="3" spacingBefore="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{TOT_STAFF_ATTEND}==null||$F{TOT_STAFF_ATTEND}==0?"0":$F{TOT_STAFF_ATTEND}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="183" uuid="32845ae6-a663-4374-8e96-fc5afafe8b2c">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
 						<jr:columnHeader style="Table_CH" height="40" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="41" height="40" uuid="6bb0dd96-1d27-4f57-a44e-3d7d51787374">
+								<reportElement x="0" y="0" width="183" height="40" uuid="6bb0dd96-1d27-4f57-a44e-3d7d51787374">
 									<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
 									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -457,21 +457,10 @@ Kakitangan
 									<font fontName="Arial" isBold="true"/>
 									<paragraph firstLineIndent="0" spacingBefore="2"/>
 								</textElement>
-								<text><![CDATA[% ]]></text>
+								<text><![CDATA[Catatan]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="41" height="30" uuid="7da222d5-136e-4983-8a7e-8f875f5c6b73">
-									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-								</reportElement>
-								<textElement textAlignment="Right" verticalAlignment="Middle">
-									<font fontName="Arial" size="9" isBold="false"/>
-									<paragraph rightIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$V{PERCENT}==null||$V{PERCENT}==0?0:Math.round($V{PERCENT})]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
+						<jr:detailCell style="Table_TD" height="50"/>
 					</jr:column>
 				</jr:table>
 			</componentElement>
@@ -488,7 +477,7 @@ Kakitangan
 					<font fontName="Arial" size="8"/>
 					<paragraph leftIndent="4"/>
 				</textElement>
-				<text><![CDATA[Report ID : ATR059
+				<text><![CDATA[Report ID : ATR065
 ]]></text>
 			</staticText>
 		</band>

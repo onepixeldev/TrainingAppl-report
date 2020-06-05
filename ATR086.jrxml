@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR059" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a3ea4f21-b0f7-4de1-a0b3-10d40575ea1c">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR086" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a3ea4f21-b0f7-4de1-a0b3-10d40575ea1c">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
 	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
-	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR059_files/main_jrxml"/>
-	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR059"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR086_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR086"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#EBEBEB">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -45,52 +45,53 @@ FROM
     SELECT DM_DEPT_DESC DDD1, COUNT(STH_STAFF_ID) TOT_STAFF
     FROM 
     (
-        SELECT DM_DEPT_DESC, STH_STAFF_ID, COUNT(STH_TRAINING_REFID) TOT_STAFF
+        SELECT DM_DEPT_DESC, STH_STAFF_ID, SUM(DURATION) TOT_DAYS
         FROM 
         (
-            SELECT DM_DEPT_DESC,STH_STAFF_ID,STH_TRAINING_REFID
-            FROM STAFF_MAIN,STAFF_TRAINING_HEAD,TRAINING_HEAD,DEPARTMENT_MAIN
-            WHERE SM_STAFF_ID = STH_STAFF_ID
-            AND TH_REF_ID = STH_TRAINING_REFID
-            AND SM_DEPT_CODE = DM_DEPT_CODE
-            AND TH_STATUS = 'APPROVE'
-            AND STH_STATUS = 'APPROVE'
-            AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
-            AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016' 
-            AND TO_CHAR(TH_DATE_FROM,'yyyy') = NVL($P{YEAR_YEAR},TO_CHAR(SYSDATE,'yyyy'))
-            AND TRUNC(TH_DATE_FROM) <= TRUNC(SYSDATE)
-            UNION
-            SELECT DM_DEPT_DESC,STH_STAFF_ID,STH_TRAINING_REFID
-            FROM STAFF_MAIN,STAFF_TRAINING_HEAD,TRAINING_HEAD,DEPARTMENT_MAIN
-            WHERE SM_STAFF_ID = STH_STAFF_ID
-            AND TH_REF_ID = STH_TRAINING_REFID
-            AND SM_DEPT_CODE = DM_DEPT_CODE
-            AND TH_STATUS = 'APPROVE'
-            AND STH_STATUS = 'APPROVE'
-            AND TH_INTERNAL_EXTERNAL = 'EXTERNAL_AGENCY'
-            AND TO_CHAR(TH_DATE_FROM,'yyyy') = NVL($P{YEAR_YEAR},TO_CHAR(SYSDATE,'yyyy'))
-            AND TRUNC(TH_DATE_FROM) <= TRUNC(SYSDATE)
-            UNION
-            SELECT DM_DEPT_DESC,STH_STAFF_ID,STH_TRAINING_REFID
-            FROM STAFF_MAIN,STAFF_TRAINING_HEAD,TRAINING_HEAD,DEPARTMENT_MAIN,STAFF_TRAINING_DETL
-            WHERE SM_STAFF_ID = STH_STAFF_ID
-            AND TH_REF_ID = STH_TRAINING_REFID
-            AND STH_TRAINING_REFID = STD_TRAINING_REFID
-            AND STH_STAFF_ID = STD_STAFF_ID
-            AND SM_DEPT_CODE = DM_DEPT_CODE
-            AND TH_STATUS = 'APPROVE'
-            AND STH_STATUS = 'APPROVE'
-            AND NVL(STD_ATTEND,'N') IN ('Y','A')
-            AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
-            AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016' 
-            AND TO_CHAR(TH_DATE_FROM,'yyyy') = NVL($P{YEAR_YEAR},TO_CHAR(SYSDATE,'yyyy'))
-            AND TRUNC(TH_DATE_FROM) <= TRUNC(SYSDATE)
+            SELECT DM_DEPT_DESC,STH_STAFF_ID,TH_DATE_TO-TH_DATE_FROM DURATION
+	        FROM STAFF_MAIN,STAFF_TRAINING_HEAD,TRAINING_HEAD,DEPARTMENT_MAIN
+	        WHERE SM_STAFF_ID = STH_STAFF_ID
+	        AND TH_REF_ID = STH_TRAINING_REFID
+	        AND SM_DEPT_CODE = DM_DEPT_CODE
+	        AND TH_STATUS = 'APPROVE'
+	        AND STH_STATUS = 'APPROVE'
+	        AND TO_CHAR(TH_DATE_FROM,'yyyy') = NVL($P{YEAR_YEAR},TO_CHAR(SYSDATE,'yyyy'))
+	        AND TRUNC(TH_DATE_FROM) <= TRUNC(SYSDATE)
+	        AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+	        AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016' 
+	        AND TO_CHAR(TH_DATE_FROM,'yyyy') = NVL($P{YEAR_YEAR},TO_CHAR(SYSDATE,'yyyy'))
+	        AND TRUNC(TH_DATE_FROM) <= TRUNC(SYSDATE)
+	        UNION
+	        SELECT DM_DEPT_DESC,STH_STAFF_ID,TH_DATE_TO-TH_DATE_FROM DURATION
+	        FROM STAFF_MAIN,STAFF_TRAINING_HEAD,TRAINING_HEAD,DEPARTMENT_MAIN
+	        WHERE SM_STAFF_ID = STH_STAFF_ID
+	        AND TH_REF_ID = STH_TRAINING_REFID
+	        AND SM_DEPT_CODE = DM_DEPT_CODE
+	        AND TH_STATUS = 'APPROVE'
+	        AND STH_STATUS = 'APPROVE'
+	        AND TH_INTERNAL_EXTERNAL = 'EXTERNAL_AGENCY'
+	        AND TO_CHAR(TH_DATE_FROM,'yyyy') = NVL($P{YEAR_YEAR},TO_CHAR(SYSDATE,'yyyy'))
+	        AND TRUNC(TH_DATE_FROM) <= TRUNC(SYSDATE)
+	        UNION
+	        SELECT DM_DEPT_DESC,STH_STAFF_ID,TH_DATE_TO-TH_DATE_FROM DURATION
+	        FROM STAFF_MAIN,STAFF_TRAINING_HEAD,TRAINING_HEAD,DEPARTMENT_MAIN,STAFF_TRAINING_DETL
+	        WHERE SM_STAFF_ID = STH_STAFF_ID
+	        AND TH_REF_ID = STH_TRAINING_REFID
+	        AND STH_TRAINING_REFID = STD_TRAINING_REFID
+	        AND STH_STAFF_ID = STD_STAFF_ID
+	        AND SM_DEPT_CODE = DM_DEPT_CODE
+	        AND TH_STATUS = 'APPROVE'
+	        AND STH_STATUS = 'APPROVE'
+	        AND NVL(STD_ATTEND,'N') IN ('Y','A')
+	        AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+	        AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016' 
+	        AND TO_CHAR(TH_DATE_FROM,'yyyy') = NVL($P{YEAR_YEAR},TO_CHAR(SYSDATE,'yyyy'))
+	        AND TRUNC(TH_DATE_FROM) <= TRUNC(SYSDATE)
         )
         GROUP BY DM_DEPT_DESC,STH_STAFF_ID
     )
-    WHERE TOT_STAFF >= 2
+    WHERE TOT_DAYS < 7
     GROUP BY DM_DEPT_DESC
-
 )
 LEFT JOIN 
 (
@@ -268,7 +269,7 @@ ORDER BY TOT_STAFF,DDD1]]>
 					<textElement markup="html">
 						<font fontName="Arial" size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["STATISTIK KAKITANGAN YANG MENGHADIRI LATIHAN BAGI TAHUN "+"<br>"+($P{YEAR_YEAR}==null?$F{CURR_YEAR}:$P{YEAR_YEAR})+" ( 2 KALI ATAU LEBIH SETAHUN )"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["STATISTIK KAKITANGAN YANG MENGHADIRI LATIHAN BAGI TAHUN "+"<br>"+($P{YEAR_YEAR}==null?$F{CURR_YEAR}:$P{YEAR_YEAR})+" ( KURANG DARIPADA 7 HARI SETAHUN )"]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
@@ -289,7 +290,7 @@ ORDER BY TOT_STAFF,DDD1]]>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:columnGroup width="320" uuid="bf480ff6-54dd-4037-9115-13e15c54ec4c">
+					<jr:columnGroup width="304" uuid="bf480ff6-54dd-4037-9115-13e15c54ec4c">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Columns [2]"/>
 						<jr:column width="20" uuid="f57cc9fb-0812-453c-bf13-79a596207ad8">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
@@ -319,12 +320,12 @@ ORDER BY TOT_STAFF,DDD1]]>
 								</textField>
 							</jr:detailCell>
 						</jr:column>
-						<jr:column width="300" uuid="87ef1fbb-56ef-4529-af6e-af2509821788">
+						<jr:column width="284" uuid="87ef1fbb-56ef-4529-af6e-af2509821788">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
 							<jr:columnHeader style="Table_CH" height="40" rowSpan="1">
 								<property name="com.jaspersoft.studio.unit.width" value="px"/>
 								<staticText>
-									<reportElement x="0" y="0" width="300" height="40" uuid="7aa11057-2de2-4720-b5a3-5a21f72f342e">
+									<reportElement x="0" y="0" width="284" height="40" uuid="7aa11057-2de2-4720-b5a3-5a21f72f342e">
 										<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 									</reportElement>
@@ -337,7 +338,7 @@ ORDER BY TOT_STAFF,DDD1]]>
 							</jr:columnHeader>
 							<jr:detailCell style="Table_TD" height="30">
 								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="300" height="30" uuid="ad4214f2-0bda-4d89-9d92-87f184295275">
+									<reportElement x="0" y="0" width="284" height="30" uuid="ad4214f2-0bda-4d89-9d92-87f184295275">
 										<property name="com.jaspersoft.studio.unit.leftIndent" value="pixel"/>
 										<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 									</reportElement>
@@ -413,11 +414,11 @@ Memohon]]></text>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="65" uuid="7bb4b244-7533-4cc4-a1f4-94c842171517">
+					<jr:column width="81" uuid="7bb4b244-7533-4cc4-a1f4-94c842171517">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
 						<jr:columnHeader style="Table_CH" height="40" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="65" height="40" uuid="6da5d3af-7352-4665-9cf1-b84da992e880">
+								<reportElement x="0" y="0" width="81" height="40" uuid="6da5d3af-7352-4665-9cf1-b84da992e880">
 									<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
 									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -428,12 +429,12 @@ Memohon]]></text>
 								</textElement>
 								<text><![CDATA[Bil.
 Kakitangan
-( Hadir >= 2 )]]></text>
+( Hadir < 7 Hari )]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="65" height="30" uuid="012460f2-7d0e-4543-8ab3-b3e38e107b50">
+								<reportElement x="0" y="0" width="81" height="30" uuid="012460f2-7d0e-4543-8ab3-b3e38e107b50">
 									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -488,7 +489,7 @@ Kakitangan
 					<font fontName="Arial" size="8"/>
 					<paragraph leftIndent="4"/>
 				</textElement>
-				<text><![CDATA[Report ID : ATR059
+				<text><![CDATA[Report ID : ATR086
 ]]></text>
 			</staticText>
 		</band>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR059" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a3ea4f21-b0f7-4de1-a0b3-10d40575ea1c">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR060" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a3ea4f21-b0f7-4de1-a0b3-10d40575ea1c">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
 	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
-	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR059_files/main_jrxml"/>
-	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR059"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR060_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR060"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#EBEBEB">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -88,7 +88,7 @@ FROM
         )
         GROUP BY DM_DEPT_DESC,STH_STAFF_ID
     )
-    WHERE TOT_STAFF >= 2
+    WHERE TOT_STAFF < 2
     GROUP BY DM_DEPT_DESC
 
 )
@@ -268,7 +268,7 @@ ORDER BY TOT_STAFF,DDD1]]>
 					<textElement markup="html">
 						<font fontName="Arial" size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["STATISTIK KAKITANGAN YANG MENGHADIRI LATIHAN BAGI TAHUN "+"<br>"+($P{YEAR_YEAR}==null?$F{CURR_YEAR}:$P{YEAR_YEAR})+" ( 2 KALI ATAU LEBIH SETAHUN )"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["STATISTIK KAKITANGAN YANG MENGHADIRI LATIHAN BAGI TAHUN "+"<br>"+($P{YEAR_YEAR}==null?$F{CURR_YEAR}:$P{YEAR_YEAR})+" ( KURANG DARIPADA 2 KALI SETAHUN )"]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
@@ -488,7 +488,7 @@ Kakitangan
 					<font fontName="Arial" size="8"/>
 					<paragraph leftIndent="4"/>
 				</textElement>
-				<text><![CDATA[Report ID : ATR059
+				<text><![CDATA[Report ID : ATR060
 ]]></text>
 			</staticText>
 		</band>
