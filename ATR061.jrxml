@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR061" language="groovy" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="40" rightMargin="40" topMargin="40" bottomMargin="40" uuid="3b1bb21e-980a-4e25-b328-6872df917c0a">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
+	<parameter name="REFID" class="java.lang.String"/>
+	<parameter name="YEAR_YEAR" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT DISTINCT TH_REF_ID,TH_TRAINING_TITLE,
+INITCAP(TO_CHAR(TH_DATE_FROM,'DAY','NLS_DATE_LANGUAGE = MALAY')) DAY1,
+INITCAP(TO_CHAR(TH_DATE_TO,'DAY','NLS_DATE_LANGUAGE = MALAY')) DAY2,
+TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy') DATE_FROM_TO,
+TH_TRAINING_VENUE,
+TAS_ORDERING,
+TAS_DESC,
+STA_ASSESSMENT_CODE,
+STA_SUBJECTIVE_ANSWER,
+TO_CHAR(SYSDATE,'DD/MM/YY') CURR_DATE
+FROM TRAINING_HEAD,STAFF_TRAINING_ASSESSMENT,
+TRAINING_ASSESSMENT_SETUP
+WHERE STA_TRAINING_REFID = TH_REF_ID
+AND STA_ASSESSMENT_CODE = TAS_CODE
+AND STA_ASSESSMENT_TYPE = 'TRAINING'
+AND TAS_ASSESSMENT_TYPE = 'SUBJECTIVE'
+AND (STA_SUBJECTIVE_ANSWER IS NOT NULL OR STA_SUBJECTIVE_ANSWER <> '')
+AND ($P{REFID} IS NULL OR ($P{REFID} IS NOT NULL AND TH_REF_ID = $P{REFID})) 
+AND ($P{YEAR_YEAR} IS NULL OR ($P{YEAR_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR}))  
+ORDER BY 1,7,9]]>
+	</queryString>
+	<field name="TH_REF_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TH_REF_ID"/>
+	</field>
+	<field name="TH_TRAINING_TITLE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TH_TRAINING_TITLE"/>
+	</field>
+	<field name="DAY1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DAY1"/>
+	</field>
+	<field name="DAY2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DAY2"/>
+	</field>
+	<field name="DATE_FROM_TO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DATE_FROM_TO"/>
+	</field>
+	<field name="TH_TRAINING_VENUE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TH_TRAINING_VENUE"/>
+	</field>
+	<field name="TAS_ORDERING" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="TAS_ORDERING"/>
+	</field>
+	<field name="TAS_DESC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TAS_DESC"/>
+	</field>
+	<field name="STA_ASSESSMENT_CODE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STA_ASSESSMENT_CODE"/>
+	</field>
+	<field name="STA_SUBJECTIVE_ANSWER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STA_SUBJECTIVE_ANSWER"/>
+	</field>
+	<field name="CURR_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CURR_DATE"/>
+	</field>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{STA_ASSESSMENT_CODE}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<frame>
+					<reportElement mode="Opaque" x="6" y="0" width="360" height="20" backcolor="#EBEBEB" uuid="870d6f5d-bc6c-4db5-986b-0dd2c857a88e"/>
+					<box>
+						<pen lineWidth="0.5"/>
+					</box>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="40" y="0" width="320" height="20" uuid="39a274a0-a07b-447c-827f-dec35e2191ea"/>
+						<box>
+							<pen lineWidth="0.5"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font fontName="Arial" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{TAS_DESC}]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement x="0" y="0" width="40" height="20" uuid="8e908868-1169-42ed-9483-8dd8158944f8">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box>
+							<pen lineWidth="0.5"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font fontName="Arial" isBold="true"/>
+						</textElement>
+						<text><![CDATA[BIL.]]></text>
+					</staticText>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="7"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="43">
+			<frame>
+				<reportElement x="0" y="0" width="360" height="40" uuid="2aca92b2-eeb9-4647-beca-6ee2037a9e1a"/>
+				<staticText>
+					<reportElement x="0" y="0" width="360" height="20" uuid="4a08e165-4aa5-4577-bc9a-ed2075ff95be"/>
+					<textElement verticalAlignment="Bottom">
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="20" width="360" height="20" uuid="2dd220d0-1722-444f-b136-cc08c752d4a6"/>
+					<textElement>
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[LAPORAN PENILAIAN PROGRAM ]]></text>
+				</staticText>
+			</frame>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="370" y="33" width="145" height="10" uuid="66a334f9-559a-4ebc-a46c-318674066d05"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>Tarikh Cetakan"+":</b>"+"&nbsp;&nbsp;&nbsp;"+$F{CURR_DATE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="73" splitType="Stretch">
+			<frame>
+				<reportElement x="6" y="0" width="505" height="60" uuid="265e72e2-4511-4c40-ac9c-4a4d670d2dd4"/>
+				<frame>
+					<reportElement positionType="Float" x="0" y="0" width="505" height="20" uuid="bc7028b1-b8cf-480b-a17f-4649748ff513"/>
+					<staticText>
+						<reportElement x="0" y="0" width="100" height="20" uuid="06d0380e-028c-4fd0-b341-caa86e9d27a6"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" isBold="true"/>
+						</textElement>
+						<text><![CDATA[Tajuk Program ]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="100" y="0" width="20" height="20" uuid="333f2ee1-b971-44d6-973a-fbd94252f252"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" isBold="true"/>
+						</textElement>
+						<text><![CDATA[:]]></text>
+					</staticText>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="120" y="0" width="385" height="20" uuid="1c6982e8-6d1d-4f0c-be28-ae2d485e20e5">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{TH_TRAINING_TITLE}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="20" width="505" height="20" uuid="68907614-cd4e-4ff5-baf1-44891c0da405"/>
+					<staticText>
+						<reportElement x="0" y="0" width="100" height="20" uuid="b245ce0c-cfe7-4d3b-b308-51c8f1a3f76a"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" isBold="true"/>
+						</textElement>
+						<text><![CDATA[Tarikh]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="100" y="0" width="20" height="20" uuid="bc59a428-9054-4261-af8c-ed5c6622dd02"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" isBold="true"/>
+						</textElement>
+						<text><![CDATA[:]]></text>
+					</staticText>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="120" y="0" width="385" height="20" uuid="50e29dd2-01ac-4a6b-8f45-23db12cab742">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{DATE_FROM_TO}+" "+" ("+$F{DAY1}+" - "+$F{DAY2}+")"]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="40" width="505" height="20" uuid="2a293b9a-84b9-48e6-802f-b003582e9a6e"/>
+					<staticText>
+						<reportElement x="0" y="0" width="100" height="20" uuid="b1233fab-f1bf-4616-a81c-912031cda0b9"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" isBold="true"/>
+						</textElement>
+						<text><![CDATA[Tempat]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="100" y="0" width="20" height="20" uuid="e147a76d-0575-4697-bca8-2c60ec749729"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" isBold="true"/>
+						</textElement>
+						<text><![CDATA[:]]></text>
+					</staticText>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="120" y="0" width="385" height="20" uuid="59780c16-988c-4e83-b8d8-8dc5b2169bed">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{TH_TRAINING_VENUE}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</frame>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<frame>
+				<reportElement positionType="Float" x="6" y="0" width="360" height="20" uuid="c14ef313-c35f-4fdd-b1f5-b0b087aeba92"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="40" y="0" width="320" height="20" uuid="0d6531a7-7f1d-432a-9b43-e8261b0205cc">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="false"/>
+						<paragraph leftIndent="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{STA_SUBJECTIVE_ANSWER}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="0" y="0" width="40" height="20" uuid="f8ddf9fd-0597-4db4-8438-0101a8d874f8">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="false"/>
+						<paragraph leftIndent="0"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Group1_COUNT}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="350" y="44" width="165" height="10" uuid="225d57a3-8198-4d93-94f0-f6a6164eb2d0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>Muka Surat"+":</b>"+"&nbsp;&nbsp;"+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
