@@ -3,6 +3,17 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR061" language="groovy" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="40" rightMargin="40" topMargin="40" bottomMargin="40" uuid="3b1bb21e-980a-4e25-b328-6872df917c0a">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
+	<subDataset name="FACILITATOR" uuid="83db9772-1b42-4dda-b3db-0d9df9e71182">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="REFID" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[SELECT TF_TRAINING_REFID, TF_FACILITATOR_ID,TF_TYPE
+FROM TRAINING_FACILITATOR
+WHERE TF_TRAINING_REFID =$P{REFID} 
+ORDER BY 2]]>
+		</queryString>
+	</subDataset>
 	<parameter name="REFID" class="java.lang.String"/>
 	<parameter name="YEAR_YEAR" class="java.lang.String"/>
 	<queryString language="SQL">
@@ -130,9 +141,9 @@ ORDER BY 1,7,9]]>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="73" splitType="Stretch">
+		<band height="135" splitType="Stretch">
 			<frame>
-				<reportElement x="6" y="0" width="505" height="60" uuid="265e72e2-4511-4c40-ac9c-4a4d670d2dd4"/>
+				<reportElement x="6" y="0" width="505" height="100" uuid="265e72e2-4511-4c40-ac9c-4a4d670d2dd4"/>
 				<frame>
 					<reportElement positionType="Float" x="0" y="0" width="505" height="20" uuid="bc7028b1-b8cf-480b-a17f-4649748ff513"/>
 					<staticText>
@@ -210,6 +221,32 @@ ORDER BY 1,7,9]]>
 						</textElement>
 						<textFieldExpression><![CDATA[$F{TH_TRAINING_VENUE}]]></textFieldExpression>
 					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="60" width="505" height="20" uuid="9269a0bd-8459-4271-b52a-645b13048cd1"/>
+					<staticText>
+						<reportElement x="0" y="0" width="100" height="20" uuid="4bdb1388-d0a1-4183-af9a-e7c666cf5b6f"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" isBold="true"/>
+						</textElement>
+						<text><![CDATA[Nama Penceramah ]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="100" y="0" width="20" height="20" uuid="1f523fca-9596-4e82-88ca-068ce768468b"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" isBold="true"/>
+						</textElement>
+						<text><![CDATA[:]]></text>
+					</staticText>
+					<componentElement>
+						<reportElement x="120" y="0" width="385" height="20" uuid="7187bf73-7e50-4ff3-8a26-8ec6efa6eb3d"/>
+						<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+							<datasetRun subDataset="FACILITATOR" uuid="17da88d9-4bfd-4602-b3ac-f8959ed895cb">
+								<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+							</datasetRun>
+							<jr:listContents height="20" width="385"/>
+						</jr:list>
+					</componentElement>
 				</frame>
 			</frame>
 		</band>

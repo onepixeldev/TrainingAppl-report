@@ -192,7 +192,7 @@ ORDER BY 1,7,10]]>
 						</staticText>
 						<componentElement>
 							<reportElement x="120" y="0" width="385" height="20" uuid="94f4424a-5e19-4211-a071-9ee8fd69146a"/>
-							<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+							<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 								<datasetRun subDataset="FACILITATOR" uuid="a11376db-a24a-4895-9a37-ff8a97781a76">
 									<datasetParameter name="TFI">
 										<datasetParameterExpression><![CDATA[$F{TF_FACILITATOR_ID}]]></datasetParameterExpression>
