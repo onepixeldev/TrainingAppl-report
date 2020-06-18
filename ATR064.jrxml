@@ -57,7 +57,7 @@ FROM
   AND TAS_ASSESSMENT_TYPE = 'OBJECTIVE'
   AND TAS_DESC IS NOT NULL
   AND ($P{REFID} IS NULL OR ($P{REFID} IS NOT NULL AND TH_REF_ID = $P{REFID})) 
-  AND ($P{YEAR_YEAR} IS NULL OR ($P{YEAR_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR}))  
+  AND ($P{YEAR_YEAR} IS NULL OR ($P{YEAR_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR}))
 )
 LEFT JOIN
 (
@@ -283,13 +283,50 @@ ORDER BY TF_FACILITATOR_ID, TAS_CODE]]>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="50">
+			<band height="89">
 				<staticText>
-					<reportElement x="0" y="0" width="410" height="50" uuid="2a79f3dd-4fad-4b47-92e6-3068dc0ca47b"/>
-					<textElement verticalAlignment="Bottom" markup="html"/>
-					<text><![CDATA[<b>Catatan :</b><br>
-<b>Markah Penuh</b> &nbsp; &nbsp; &nbsp; &nbsp;= Jumlah Peserta  <b>x</b>  Markah Maksimum (5)<br>
-<b>% Markah Kepuasan</b> = Jumlah Markah   <b>x</b>   100]]></text>
+					<reportElement x="0" y="0" width="100" height="20" uuid="1a1bfc7a-ccee-465b-8420-8379634d1b63"/>
+					<textElement verticalAlignment="Bottom">
+						<font fontName="Arial" isBold="true" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[Catatan:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="20" width="100" height="30" uuid="75b42649-0b80-460d-8c16-bec4490af8ba"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Markah Penuh
+% Markah Kepuasan]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="100" y="20" width="9" height="30" uuid="2ad4e7f0-1f68-44b6-85b1-214052d36b84"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[=
+=]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="109" y="19" width="241" height="20" uuid="f13a3541-c8d8-40ec-a144-a2a282e1d54f"/>
+					<textElement verticalAlignment="Middle" markup="html">
+						<font fontName="Arial" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Jumlah Peserta <b>x</b> Markah Maksimum (5)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="109" y="30" width="241" height="20" uuid="abb98773-a673-4845-9cc0-e9356f1cba71"/>
+					<textElement verticalAlignment="Middle" markup="html">
+						<font fontName="Arial" isBold="false" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[Jumlah Markah <b>x</b> 100]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="109" y="46" width="100" height="20" uuid="a10a3aca-eefb-4221-b157-b79cb4915d09"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Arial" isBold="false" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Markah Penuh]]></text>
 				</staticText>
 			</band>
 		</groupFooter>
