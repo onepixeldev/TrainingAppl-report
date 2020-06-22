@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR087" pageWidth="842" pageHeight="595" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="23877205-5ff4-4830-9af3-e4c3034b0421">
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR087" pageWidth="842" pageHeight="595" columnWidth="742" leftMargin="50" rightMargin="50" topMargin="20" bottomMargin="40" uuid="23877205-5ff4-4830-9af3-e4c3034b0421">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -12,33 +12,6 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
-	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<leftPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-			<rightPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="Table_CH" mode="Opaque" backcolor="#CCCCCC">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<leftPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-			<rightPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<leftPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-			<rightPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
 	<style name="Table 1_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -57,20 +30,11 @@
 			<rightPen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<style name="Table 1_TD" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<leftPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-			<rightPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
 	<subDataset name="PROG_LIST" uuid="7c8e8470-c077-4354-a46c-8baa8d7e06c7">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<parameter name="TRAINING_YEAR" class="java.lang.String"/>
-		<queryString language="plsql">
+		<queryString>
 			<![CDATA[SELECT 'Program Bitara UPSI' BHTITLE,BH_REF_ID,BH_TITLE,
 TO_CHAR(BH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(BH_END_DATE,'dd/mm/yyyy') BH_DATE,
 BH_VENUE,BH_DATE_FROM,COUNT(SB_STAFF_ID) SB_TOTAL
@@ -78,7 +42,7 @@ FROM BITARA_HEAD,STAFF_BITARA
 WHERE BH_REF_ID=SB_REF_ID
 AND SB_STATUS='APPROVED'
 AND SB_ATTENDANCE='Y'
-AND TO_CHAR(BH_DATE_FROM,'yyyy')=$P{TRAINING_YEAR} 
+AND TO_CHAR(BH_DATE_FROM,'yyyy')=$P{TRAINING_YEAR}  
 GROUP BY 'Program Bitara UPSI',BH_REF_ID,BH_TITLE,
 TO_CHAR(BH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(BH_END_DATE,'dd/mm/yyyy'),
 BH_VENUE,BH_DATE_FROM
@@ -106,7 +70,7 @@ ORDER BY BH_DATE_FROM]]>
 			<property name="com.jaspersoft.studio.field.label" value="SB_TOTAL"/>
 		</field>
 	</subDataset>
-	<subDataset name="PROG_LIST2" uuid="1b5ddcd8-1097-473d-a21a-fb12d6914635">
+	<subDataset name="EMPTY_DT" uuid="1b5ddcd8-1097-473d-a21a-fb12d6914635">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<parameter name="TRAINING_YEAR" class="java.lang.String"/>
@@ -124,248 +88,229 @@ ORDER BY BH_DATE_FROM]]>
 	<field name="DUMMY" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="DUMMY"/>
 	</field>
+	<group name="DummyG" keepTogether="true"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="40" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="0" width="380" height="20" uuid="81d7c063-fb72-4024-8104-6e2c1a518ef4"/>
-				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="0" y="20" width="380" height="20" uuid="0b478adf-e056-4a5e-b0ed-14b254558ec3"/>
-				<textElement>
-					<font fontName="Arial" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA["LAPORAN TAHUNAN AKTIVITI UNIT LATIHAN (BITARA) BAGI TAHUN "+($P{TRAINING_YEAR}==null?"":$P{TRAINING_YEAR})]]></textFieldExpression>
-			</textField>
+		<band height="80" splitType="Stretch">
 			<textField isStretchWithOverflow="true" evaluationTime="Master" isBlankWhenNull="true">
-				<reportElement x="380" y="20" width="174" height="20" uuid="8e96a910-d076-493e-b20c-c395664fdaed"/>
+				<reportElement x="568" y="20" width="174" height="20" uuid="8e96a910-d076-493e-b20c-c395664fdaed"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Muka Surat: "+$V{MASTER_CURRENT_PAGE}+" / "+$V{MASTER_TOTAL_PAGES}]]></textFieldExpression>
 			</textField>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="50" width="742" height="30" backcolor="#CCCCCC" uuid="b0caa5d0-396a-4f74-9ee9-d6259c37b800"/>
+				<staticText>
+					<reportElement x="0" y="0" width="40" height="30" uuid="9a8419a7-d29e-4224-878b-21c6851d6635"/>
+					<box>
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[BIL]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="40" y="0" width="200" height="30" uuid="b673c1ab-32d6-4c3a-b08c-bf436b67124c">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[PERKARA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="240" y="0" width="140" height="30" uuid="b1fbb25e-ad3e-4e28-8a32-83ce9c1be2ea">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[TARIKH PROGRAM ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="380" y="0" width="290" height="30" uuid="d600230e-63e0-4f98-9935-5f16057e05b0">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[TEMPAT]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="670" y="0" width="72" height="30" uuid="12067733-3022-4172-9dc3-09e266577523">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[JUM.
+PESERTA]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement x="0" y="0" width="559" height="40" uuid="db20c716-32de-447b-b401-9ecc578ab602"/>
+				<staticText>
+					<reportElement x="0" y="0" width="380" height="20" uuid="81d7c063-fb72-4024-8104-6e2c1a518ef4"/>
+					<textElement>
+						<font fontName="Arial" size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="0" y="20" width="559" height="20" uuid="0b478adf-e056-4a5e-b0ed-14b254558ec3"/>
+					<textElement>
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["LAPORAN TAHUNAN AKTIVITI UNIT LATIHAN (BITARA) BAGI TAHUN "+($P{TRAINING_YEAR}==null?"":$P{TRAINING_YEAR})]]></textFieldExpression>
+				</textField>
+			</frame>
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="160" splitType="Prevent">
-			<componentElement>
-				<reportElement x="0" y="0" width="555" height="160" uuid="5113f2b4-8e84-4b8a-a3ea-ab26c5aa312b">
-					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
-					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
-					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
-				</reportElement>
-				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="PROG_LIST2" uuid="d5b86417-e009-4642-84ca-2817087ae44b">
-						<datasetParameter name="TRAINING_YEAR">
-							<datasetParameterExpression><![CDATA[$P{TRAINING_YEAR}]]></datasetParameterExpression>
-						</datasetParameter>
-						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					</datasetRun>
-					<jr:column width="30" uuid="a4e2560e-b377-496d-8192-1bcc3b66be7d">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
-						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
-							<property name="com.jaspersoft.studio.unit.width" value="px"/>
-							<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-							<staticText>
-								<reportElement x="0" y="0" width="30" height="30" uuid="827e995d-c17c-485e-9f34-7728a94f1b28"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Arial" isBold="true"/>
-								</textElement>
-								<text><![CDATA[BIL]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<textField>
-								<reportElement x="0" y="0" width="30" height="30" uuid="7cd60b92-8381-4b5a-a15b-911f210d033d"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Arial" size="9"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="140" uuid="83a5f0df-d7b1-4697-9a40-3858af642436">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
-						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
-							<property name="com.jaspersoft.studio.unit.width" value="px"/>
-							<staticText>
-								<reportElement x="0" y="0" width="140" height="30" uuid="7a72f8c3-283f-49d6-a69e-964be23dd116"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Arial" isBold="true"/>
-								</textElement>
-								<text><![CDATA[PERKARA]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<componentElement>
-								<reportElement x="0" y="0" width="140" height="30" uuid="1e245082-9672-4c7e-9d0c-1f39e6989083"/>
-								<jr:list>
-									<datasetRun subDataset="PROG_LIST" uuid="e951fd1c-5d91-41f1-bbf8-4b1dba560d73">
-										<datasetParameter name="TRAINING_YEAR">
-											<datasetParameterExpression><![CDATA[$P{TRAINING_YEAR}]]></datasetParameterExpression>
-										</datasetParameter>
-										<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-									</datasetRun>
-									<jr:listContents height="30" width="140">
-										<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-											<reportElement isPrintRepeatedValues="false" x="0" y="0" width="140" height="30" uuid="3bb6d81b-aa33-4110-8e56-905cbf608c45">
-												<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-												<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-												<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-											</reportElement>
-											<textElement verticalAlignment="Top" markup="html">
-												<font fontName="Arial" size="9"/>
-												<paragraph leftIndent="3" spacingBefore="6" spacingAfter="0"/>
-											</textElement>
-											<textFieldExpression><![CDATA[$F{BHTITLE}]]></textFieldExpression>
-										</textField>
-									</jr:listContents>
-								</jr:list>
-							</componentElement>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="130" uuid="deabcfa8-09bd-4306-945e-39e5f5168e82">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
-						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
-							<property name="com.jaspersoft.studio.unit.width" value="px"/>
-							<staticText>
-								<reportElement x="0" y="0" width="130" height="30" uuid="a5300213-f58f-4abf-85e6-22333024b5bc"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Arial" isBold="true"/>
-								</textElement>
-								<text><![CDATA[TARIKH PROGRAM]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<property name="com.jaspersoft.studio.unit.width" value="px"/>
-							<componentElement>
-								<reportElement x="0" y="0" width="130" height="30" uuid="586f3072-f319-49d9-a4d0-bf3bf6c961d5"/>
-								<jr:list>
-									<datasetRun subDataset="PROG_LIST" uuid="21894b61-3c19-462f-a4e7-ef5dba2a5505">
-										<datasetParameter name="TRAINING_YEAR">
-											<datasetParameterExpression><![CDATA[$P{TRAINING_YEAR}]]></datasetParameterExpression>
-										</datasetParameter>
-										<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-									</datasetRun>
-									<jr:listContents height="30" width="130">
-										<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-											<reportElement x="0" y="0" width="130" height="30" uuid="85b926b7-f221-41eb-bdee-214638052a3c">
-												<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-												<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-												<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-											</reportElement>
-											<textElement verticalAlignment="Top" markup="html">
-												<font fontName="Arial" size="9"/>
-												<paragraph leftIndent="3" spacingBefore="6" spacingAfter="0"/>
-											</textElement>
-											<textFieldExpression><![CDATA[$F{BH_TITLE}+"<br>"+"("+$F{BH_DATE}+")"]]></textFieldExpression>
-										</textField>
-									</jr:listContents>
-								</jr:list>
-							</componentElement>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="199" uuid="05449762-1464-4d09-bf90-3be28577002c">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
-						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="199" height="30" uuid="6668c5db-aba3-4bf1-a0bf-30029be8c889"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Arial" isBold="true"/>
-								</textElement>
-								<text><![CDATA[TEMPAT]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<componentElement>
-								<reportElement x="0" y="0" width="199" height="30" uuid="563d208b-a069-4932-8b6a-d45ac27b978b">
-									<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-									<property name="com.jaspersoft.studio.table.style.table_header" value="Table 1_TH"/>
-									<property name="com.jaspersoft.studio.table.style.column_header" value="Table 1_CH"/>
-									<property name="com.jaspersoft.studio.table.style.detail" value="Table 1_TD"/>
-								</reportElement>
-								<jr:table>
-									<datasetRun subDataset="PROG_LIST" uuid="9cdf5843-649c-479f-80db-d5a4cdbd32e5">
-										<datasetParameter name="TRAINING_YEAR">
-											<datasetParameterExpression><![CDATA[$P{TRAINING_YEAR}]]></datasetParameterExpression>
-										</datasetParameter>
-										<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-									</datasetRun>
-									<jr:column width="199" uuid="441d2fe9-86f4-4899-8e17-d6aa40cb6a13">
-										<jr:detailCell style="Table 1_TD" height="30">
-											<box>
-												<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-												<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-												<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-												<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-											</box>
-											<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-												<reportElement x="0" y="0" width="199" height="30" uuid="50157f17-daf0-46d8-a9f7-64f57f3f7d68">
-													<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-													<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-												</reportElement>
-												<textElement>
-													<font fontName="Arial"/>
-													<paragraph leftIndent="3" spacingBefore="6"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$F{BH_VENUE}]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-								</jr:table>
-							</componentElement>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="56" uuid="394a105b-81b9-4efa-bf92-1d9827983bbe">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
-						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="56" height="30" uuid="0fd09365-3bb9-4455-b068-4b6b367e6243"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Arial" isBold="true"/>
-								</textElement>
-								<text><![CDATA[JUM.
-PESERTA]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<property name="com.jaspersoft.studio.unit.width" value="px"/>
-							<componentElement>
-								<reportElement x="0" y="0" width="56" height="30" uuid="089e7fa5-d8c0-40c6-9d6e-4cd1a8b09e6e"/>
-								<jr:list>
-									<datasetRun subDataset="PROG_LIST" uuid="bb7b1dda-9e65-44e4-bc52-777237778330">
-										<datasetParameter name="TRAINING_YEAR">
-											<datasetParameterExpression><![CDATA[$P{TRAINING_YEAR}]]></datasetParameterExpression>
-										</datasetParameter>
-										<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-									</datasetRun>
-									<jr:listContents height="30" width="56">
-										<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-											<reportElement x="0" y="0" width="56" height="30" uuid="40955e20-6e88-4727-968a-d1c39d524362">
-												<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-												<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-												<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-											</reportElement>
-											<textElement verticalAlignment="Top" markup="html">
-												<font fontName="Arial" size="9"/>
-												<paragraph leftIndent="3" spacingBefore="6" spacingAfter="0"/>
-											</textElement>
-											<textFieldExpression><![CDATA[$F{SB_TOTAL}+" orang"]]></textFieldExpression>
-										</textField>
-									</jr:listContents>
-								</jr:list>
-							</componentElement>
-						</jr:detailCell>
-					</jr:column>
-				</jr:table>
-			</componentElement>
+		<band height="30" splitType="Stretch">
+			<frame borderSplitType="DrawBorders">
+				<reportElement mode="Transparent" x="0" y="0" width="742" height="30" backcolor="#CCCCCC" uuid="8ce1c7cc-d812-4d05-b638-52e7361b8a87"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textField>
+					<reportElement x="0" y="0" width="40" height="30" uuid="8b001e90-b8b7-4dac-96f3-0ae4ea563c8f"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+				</textField>
+				<frame>
+					<reportElement stretchType="RelativeToBandHeight" x="240" y="0" width="140" height="30" uuid="7f85c35a-fd63-4855-a034-3b08e4e89454"/>
+					<box>
+						<pen lineWidth="0.5"/>
+					</box>
+					<componentElement>
+						<reportElement x="0" y="0" width="140" height="30" uuid="55de8634-9c3b-4728-81ae-fdd873b407b8"/>
+						<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+							<datasetRun subDataset="PROG_LIST" uuid="5d18ff27-b1ba-4c26-9d9b-a3ba0d53f089">
+								<datasetParameter name="TRAINING_YEAR">
+									<datasetParameterExpression><![CDATA[$P{TRAINING_YEAR}]]></datasetParameterExpression>
+								</datasetParameter>
+								<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+							</datasetRun>
+							<jr:listContents height="30" width="140">
+								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+									<reportElement x="0" y="0" width="140" height="30" uuid="5930aea0-6b62-49ad-817c-042aece3f99d">
+										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+										<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+										<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+									</reportElement>
+									<textElement verticalAlignment="Top" markup="html">
+										<font fontName="Arial" size="10"/>
+										<paragraph leftIndent="3" spacingBefore="6" spacingAfter="0"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$F{BH_TITLE}+"<br>"+"("+$F{BH_DATE}+")"]]></textFieldExpression>
+								</textField>
+							</jr:listContents>
+						</jr:list>
+					</componentElement>
+				</frame>
+				<frame>
+					<reportElement stretchType="RelativeToBandHeight" x="380" y="0" width="290" height="30" uuid="b24e802b-de14-4f39-a80f-d00b0adcb668"/>
+					<box>
+						<pen lineWidth="0.5"/>
+					</box>
+					<componentElement>
+						<reportElement x="0" y="0" width="290" height="30" uuid="155806f8-0b78-4236-a7d5-e29648d98d9a"/>
+						<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+							<datasetRun subDataset="PROG_LIST" uuid="efc94be2-0814-4d4a-a14c-f777a7fcbb84">
+								<datasetParameter name="TRAINING_YEAR">
+									<datasetParameterExpression><![CDATA[$P{TRAINING_YEAR}]]></datasetParameterExpression>
+								</datasetParameter>
+								<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+							</datasetRun>
+							<jr:listContents height="30" width="290">
+								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+									<reportElement x="0" y="0" width="290" height="30" uuid="1656aaf8-adfa-4f7a-be98-0c05b603df33">
+										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+										<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+										<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+									</reportElement>
+									<textElement verticalAlignment="Top" markup="html">
+										<font fontName="Arial" size="10"/>
+										<paragraph leftIndent="3" spacingBefore="6" spacingAfter="0"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$F{BH_VENUE}]]></textFieldExpression>
+								</textField>
+							</jr:listContents>
+						</jr:list>
+					</componentElement>
+				</frame>
+				<frame>
+					<reportElement stretchType="RelativeToBandHeight" x="670" y="0" width="72" height="30" uuid="80aef1dd-6eee-4f9b-bbbf-66aa8839f1ef"/>
+					<box>
+						<pen lineWidth="0.5"/>
+					</box>
+					<componentElement>
+						<reportElement x="0" y="0" width="72" height="30" uuid="9c8d8aa6-f642-4b9b-9c6a-e94671f5e653"/>
+						<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+							<datasetRun subDataset="PROG_LIST" uuid="79c6f976-f675-41f0-8762-5a72a715b686">
+								<datasetParameter name="TRAINING_YEAR">
+									<datasetParameterExpression><![CDATA[$P{TRAINING_YEAR}]]></datasetParameterExpression>
+								</datasetParameter>
+								<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+							</datasetRun>
+							<jr:listContents height="30" width="72">
+								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+									<reportElement x="0" y="0" width="72" height="30" uuid="f1131851-7a94-4741-bf4d-60d834c683b7">
+										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+										<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+										<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+									</reportElement>
+									<textElement verticalAlignment="Top" markup="html">
+										<font fontName="Arial" size="10"/>
+										<paragraph leftIndent="3" spacingBefore="6" spacingAfter="0"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$F{SB_TOTAL}+" orang"]]></textFieldExpression>
+								</textField>
+							</jr:listContents>
+						</jr:list>
+					</componentElement>
+				</frame>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToBandHeight" x="40" y="0" width="200" height="30" uuid="983b95d4-e16e-409f-a01d-d13d3447f9bb">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Arial"/>
+						<paragraph leftIndent="3" spacingBefore="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Program Bitara UPSI"]]></textFieldExpression>
+				</textField>
+			</frame>
 		</band>
 	</detail>
 </jasperReport>
