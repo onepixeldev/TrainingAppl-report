@@ -73,6 +73,9 @@ ORDER BY BH_DATE_FROM]]>
 		<field name="SB_TOTAL" class="java.math.BigDecimal">
 			<property name="com.jaspersoft.studio.field.label" value="SB_TOTAL"/>
 		</field>
+		<variable name="BHTITLE" class="java.lang.String">
+			<variableExpression><![CDATA[$F{BHTITLE}]]></variableExpression>
+		</variable>
 	</subDataset>
 	<parameter name="TRAINING_YEAR" class="java.lang.String"/>
 	<queryString language="SQL">
@@ -81,7 +84,8 @@ ORDER BY BH_DATE_FROM]]>
 	<field name="DUMMY" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="DUMMY"/>
 	</field>
-	<group name="DummyG" keepTogether="true"/>
+	<variable name="BHTITLE" class="java.lang.String"/>
+	<group name="DummyG"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -178,7 +182,9 @@ PESERTA]]></text>
 	<detail>
 		<band height="30" splitType="Stretch">
 			<frame borderSplitType="DrawBorders">
-				<reportElement mode="Transparent" x="0" y="0" width="742" height="30" backcolor="#CCCCCC" uuid="8ce1c7cc-d812-4d05-b638-52e7361b8a87"/>
+				<reportElement mode="Transparent" x="0" y="0" width="742" height="30" backcolor="#CCCCCC" uuid="8ce1c7cc-d812-4d05-b638-52e7361b8a87">
+					<printWhenExpression><![CDATA[$V{BHTITLE}!=null]]></printWhenExpression>
+				</reportElement>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -298,13 +304,14 @@ PESERTA]]></text>
 						<pen lineWidth="0.5"/>
 					</box>
 					<componentElement>
-						<reportElement x="0" y="0" width="200" height="30" uuid="1d9fe6b4-eb26-4dbb-95a9-8c0c4e28112e"/>
+						<reportElement style="Table 1_TH" x="0" y="0" width="200" height="30" printWhenGroupChanges="DummyG" uuid="1d9fe6b4-eb26-4dbb-95a9-8c0c4e28112e"/>
 						<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 							<datasetRun subDataset="PROG_LIST" uuid="e30dd15d-37a9-4f5f-969d-b5be2717cb90">
 								<datasetParameter name="TRAINING_YEAR">
 									<datasetParameterExpression><![CDATA[$P{TRAINING_YEAR}]]></datasetParameterExpression>
 								</datasetParameter>
 								<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+								<returnValue fromVariable="BHTITLE" toVariable="BHTITLE"/>
 							</datasetRun>
 							<jr:listContents height="30" width="200">
 								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
