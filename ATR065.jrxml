@@ -5,8 +5,8 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
 	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
-	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR058C_files/main_jrxml"/>
-	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR058C"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR065_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR065"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#EBEBEB">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -153,7 +153,7 @@ TO_CHAR(TO_DATE($P{MONTH_FROM}, 'MM/YYYY'), 'YYYY') YY_DESC_FROM,
 TO_CHAR(TO_DATE($P{MONTH_TO}, 'MM/YYYY'), 'MONTH', 'NLS_DATE_LANGUAGE = MALAY') MM_DESC_TO, 
 TO_CHAR(TO_DATE($P{MONTH_TO}, 'MM/YYYY'), 'YYYY') YY_DESC_TO,
 TO_CHAR(SYSDATE, 'DD/MM/YYYY') CURR_DATE
-FROM DUAL ]]>
+FROM DUAL]]>
 	</queryString>
 	<field name="MM_DESC_FROM" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="MM_DESC_FROM"/>
