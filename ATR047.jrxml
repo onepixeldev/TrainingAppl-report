@@ -280,6 +280,7 @@ PESERTA]]></text>
 									<datasetParameterExpression><![CDATA[$P{TRAINING_YEAR}]]></datasetParameterExpression>
 								</datasetParameter>
 								<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+								<returnValue fromVariable="BHTITLE" toVariable="BHTITLE"/>
 							</datasetRun>
 							<jr:listContents height="30" width="72">
 								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
@@ -311,7 +312,6 @@ PESERTA]]></text>
 									<datasetParameterExpression><![CDATA[$P{TRAINING_YEAR}]]></datasetParameterExpression>
 								</datasetParameter>
 								<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-								<returnValue fromVariable="BHTITLE" toVariable="BHTITLE"/>
 							</datasetRun>
 							<jr:listContents height="30" width="200">
 								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
