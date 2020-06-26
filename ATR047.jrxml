@@ -386,7 +386,7 @@ PESERTA]]></text>
 						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<componentElement>
-						<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="200" height="30" isRemoveLineWhenBlank="true" uuid="4b8ddc1c-7265-4778-9075-e7465b1bcb8a"/>
+						<reportElement stretchType="RelativeToBandHeight" x="-40" y="0" width="40" height="30" isRemoveLineWhenBlank="true" uuid="4b8ddc1c-7265-4778-9075-e7465b1bcb8a"/>
 						<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 							<datasetRun subDataset="PROG_LIST" uuid="123b557f-6489-415f-9378-e1e8a5a4101c">
 								<datasetParameter name="TRAINING_YEAR">
@@ -394,9 +394,9 @@ PESERTA]]></text>
 								</datasetParameter>
 								<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 							</datasetRun>
-							<jr:listContents height="30" width="200">
+							<jr:listContents height="30" width="40">
 								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-									<reportElement isPrintRepeatedValues="false" x="0" y="0" width="200" height="30" isRemoveLineWhenBlank="true" uuid="5bd254f7-66b7-48b3-8828-5632eeb09295">
+									<reportElement isPrintRepeatedValues="false" x="0" y="0" width="40" height="30" isRemoveLineWhenBlank="true" uuid="5bd254f7-66b7-48b3-8828-5632eeb09295">
 										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 										<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 										<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -412,7 +412,7 @@ PESERTA]]></text>
 										<font fontName="Arial" size="10"/>
 										<paragraph leftIndent="3" spacingBefore="6" spacingAfter="0"/>
 									</textElement>
-									<textFieldExpression><![CDATA[$F{BHTITLE}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$F{BHTITLE}!=null?1:""]]></textFieldExpression>
 								</textField>
 							</jr:listContents>
 						</jr:list>
@@ -571,7 +571,8 @@ PESERTA]]></text>
 				<textElement>
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<text><![CDATA[Report ID : ATR047]]></text>
+				<text><![CDATA[Report ID : ATR047
+]]></text>
 			</staticText>
 		</band>
 	</pageFooter>
