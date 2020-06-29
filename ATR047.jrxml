@@ -490,7 +490,7 @@ PESERTA]]></text>
 						<jr:detailCell style="Table_TD" height="30">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="200" height="30" isRemoveLineWhenBlank="true" uuid="5e1245bd-2929-4fb7-a8cd-fdfbcdd23284">
+								<reportElement x="0" y="0" width="200" height="30" isRemoveLineWhenBlank="true" uuid="5e1245bd-2929-4fb7-a8cd-fdfbcdd23284">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
