@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR072" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="762" leftMargin="40" rightMargin="40" topMargin="20" bottomMargin="20" uuid="00052aae-6d17-42d5-a85e-b89424588ac2">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR113 " language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="762" leftMargin="40" rightMargin="40" topMargin="20" bottomMargin="20" uuid="00052aae-6d17-42d5-a85e-b89424588ac2">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -48,308 +48,293 @@
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<parameter name="YEAR_YEAR" class="java.lang.String"/>
 		<queryString>
-			<![CDATA[SELECT SS_SERVICE_KUMPP1,
+			<![CDATA[SELECT SS_SERVICE_KUMPP,
 COUNTKUMPP,
-CF_COUNTM7,
-CF_COUNTL7
-CF_COUNTNOTRAIN
-FROM
+CASE 
+WHEN CF_COUNTM7 IS NULL THEN 0
+ELSE CF_COUNTM7
+END AS CF_COUNTM7,
+CASE
+WHEN CF_COUNTL7 IS NULL THEN 0
+ELSE CF_COUNTL7
+END AS CF_COUNTL7,
+--(COUNTKUMPP - (CF_COUNTM7 + CF_COUNTL7)) CF_COUNTNOTRAIN
+(COUNTKUMPP - (DECODE(CF_COUNTM7,NULL,0,CF_COUNTM7) + DECODE(CF_COUNTL7,NULL,0,CF_COUNTL7))) CF_COUNTNOTRAIN
+FROM (
+SELECT (CASE SS_SERVICE_KUMPP
+     WHEN 'C' THEN 'Sokongan 2'
+     WHEN 'D' THEN 'Sokongan 2'
+     WHEN 'B' THEN 'Sokongan 1'
+     WHEN 'JUSA' THEN 'JUSA'
+     ELSE 'Pengurusan dan Profesional'
+END) SS_SERVICE_KUMPP,
+COUNT(SS_SERVICE_KUMPP) COUNTKUMPP
+FROM STAFF_MAIN,SERVICE_SCHEME,STAFF_STATUS,STAFF_SERVICE,
+STAFF_JOB_STATUS
+WHERE SS_SERVICE_CODE = SM_JOB_CODE
+AND SS_STAFF_ID = SM_STAFF_ID
+AND SM_STAFF_STATUS = SS_STATUS_CODE
+AND SS_JOB_STATUS = SJS_STATUS_CODE
+AND SS_STATUS_STS = 'ACTIVE'
+AND SM_STAFF_TYPE = 'STAFF'
+AND SS_JOB_STATUS IN ('01','03','08','09')
+AND (SS_JOIN_DATE IS NOT NULL
+AND (($P{YEAR_YEAR} IS NULL AND SS_JOIN_DATE <= SYSDATE)
+OR ($P{YEAR_YEAR} IS NOT NULL AND SS_JOIN_DATE <= TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy')))
+)
+AND SM_STAFF_ID NOT IN (
+SELECT DISTINCT SSLH_STAFF_ID
+FROM STAFF_STUDY_LEAVE_HEAD, STUDY_LEAVE_TYPE, 
+STAFF_MAIN, STAFF_STATUS,STAFF_SERVICE, 
+STAFF_JOB_STATUS
+WHERE SSLH_PROGRAM_TYPE = SLT_CODE
+AND SSLH_STAFF_ID = SM_STAFF_ID
+AND SS_STAFF_ID = SM_STAFF_ID
+AND SM_STAFF_STATUS = SS_STATUS_CODE
+AND SS_JOB_STATUS = SJS_STATUS_CODE
+AND SS_STATUS_STS = 'ACTIVE'
+AND SM_STAFF_TYPE = 'STAFF'
+AND SS_JOB_STATUS IN ('01','03','08','09')
+AND SLT_TYPE = 'FULL_TIME'
+AND NVL(SSLH_STATUS,'APPROVE') = 'APPROVE'
+AND TRIM(UPPER(NVL(SSLH_REP_DUTY_STATUS,'N'))) <> TRIM(UPPER('Lapor Diri'))
+AND SM_STAFF_TYPE = 'STAFF'
+)
+GROUP BY (CASE SS_SERVICE_KUMPP
+     WHEN 'C' THEN 'Sokongan 2'
+     WHEN 'D' THEN 'Sokongan 2'
+     WHEN 'B' THEN 'Sokongan 1'
+     WHEN 'JUSA' THEN 'JUSA'
+     ELSE 'Pengurusan dan Profesional'
+END)
+--ORDER BY SS_SERVICE_KUMPP
+)
+LEFT JOIN
 (
-    SELECT (
-    CASE SS_SERVICE_KUMPP
+    SELECT COUNT(STH_STAFF_ID) CF_COUNTM7, SS_SERVICE_KUMPP SS_SERVICE_KUMPP2
+    FROM (
+        SELECT (CASE SS_SERVICE_KUMPP
+            WHEN 'C' THEN 'Sokongan 2'
+            WHEN 'D' THEN 'Sokongan 2'
+            WHEN 'B' THEN 'Sokongan 1'
+            WHEN 'JUSA' THEN 'JUSA'
+            ELSE 'Pengurusan dan Profesional'
+            END) SS_SERVICE_KUMPP,STH_STAFF_ID,SUM(DURATION) SUMSTAFFPERKUMPP
+        FROM (
+            SELECT STH_STAFF_ID, STH_STATUS, NVL(TH_TOTAL_HOURS,0) DURATION, SS_SERVICE_KUMPP
+            FROM STAFF_TRAINING_HEAD, TRAINING_HEAD, STAFF_MAIN,STAFF_STATUS, STAFF_SERVICE,SERVICE_SCHEME,STAFF_JOB_STATUS
+            WHERE STH_TRAINING_REFID = TH_REF_ID
+            AND SM_STAFF_ID = STH_STAFF_ID
+            AND SM_STAFF_STATUS = SS_STATUS_CODE
+            AND SS_SERVICE_CODE = SM_JOB_CODE
+            AND SS_STAFF_ID = SM_STAFF_ID
+            AND SS_JOB_STATUS = SJS_STATUS_CODE
+            AND SS_STATUS_STS = 'ACTIVE'
+            AND SM_STAFF_TYPE = 'STAFF'
+            AND SS_JOB_STATUS IN ('01','03','08','09')
+            AND (SS_JOIN_DATE IS NOT NULL
+            AND (($P{YEAR_YEAR} IS NULL AND SS_JOIN_DATE <= SYSDATE)
+            OR ($P{YEAR_YEAR} IS NOT NULL AND SS_JOIN_DATE <= TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy'))))
+            AND STH_STATUS = 'APPROVE'
+            AND TH_STATUS = 'APPROVE'
+            AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+        AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016' 
+            AND (($P{YEAR_YEAR} IS NULL AND TH_DATE_TO < SYSDATE)
+            OR ($P{YEAR_YEAR} IS NOT NULL AND TH_DATE_TO < TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy')))
+            AND (($P{YEAR_YEAR} IS NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = TO_CHAR(SYSDATE,'yyyy'))
+            OR ($P{YEAR_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR}))
+            UNION
+            SELECT STH_STAFF_ID, STH_STATUS, NVL(TH_TOTAL_HOURS,0) DURATION, SS_SERVICE_KUMPP
+            FROM STAFF_TRAINING_HEAD, TRAINING_HEAD, STAFF_MAIN,STAFF_STATUS, STAFF_SERVICE,SERVICE_SCHEME,STAFF_JOB_STATUS
+            WHERE STH_TRAINING_REFID = TH_REF_ID
+            AND SM_STAFF_ID = STH_STAFF_ID
+            AND SM_STAFF_STATUS = SS_STATUS_CODE
+            AND SS_SERVICE_CODE = SM_JOB_CODE
+            AND SS_STAFF_ID = SM_STAFF_ID
+            AND SS_JOB_STATUS = SJS_STATUS_CODE
+            AND SS_STATUS_STS = 'ACTIVE'
+            AND SM_STAFF_TYPE = 'STAFF'
+            AND SS_JOB_STATUS IN ('01','03','08','09')
+            AND (SS_JOIN_DATE IS NOT NULL
+            AND (($P{YEAR_YEAR} IS NULL AND SS_JOIN_DATE <= SYSDATE)
+            OR ($P{YEAR_YEAR} IS NOT NULL AND SS_JOIN_DATE <= TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy'))))
+            AND STH_STATUS = 'APPROVE'
+            AND TH_STATUS = 'APPROVE'
+            AND TH_INTERNAL_EXTERNAL = 'EXTERNAL_AGENCY'
+            AND (($P{YEAR_YEAR} IS NULL AND TH_DATE_TO < SYSDATE)
+            OR ($P{YEAR_YEAR} IS NOT NULL AND TH_DATE_TO < TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy')))
+            AND (($P{YEAR_YEAR} IS NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = TO_CHAR(SYSDATE,'yyyy'))
+            OR ($P{YEAR_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR}))
+            UNION
+            SELECT STH_STAFF_ID, STH_STATUS, NVL(TH_TOTAL_HOURS,0) DURATION, SS_SERVICE_KUMPP
+            FROM STAFF_TRAINING_HEAD, TRAINING_HEAD, STAFF_MAIN,STAFF_STATUS, STAFF_SERVICE,SERVICE_SCHEME,STAFF_JOB_STATUS,STAFF_TRAINING_DETL
+            WHERE STH_TRAINING_REFID = TH_REF_ID
+            AND SM_STAFF_ID = STH_STAFF_ID
+            AND STH_STAFF_ID = STD_STAFF_ID
+            AND STH_TRAINING_REFID = STD_TRAINING_REFID
+            AND SM_STAFF_STATUS = SS_STATUS_CODE
+            AND SS_SERVICE_CODE = SM_JOB_CODE
+            AND SS_STAFF_ID = SM_STAFF_ID
+            AND SS_JOB_STATUS = SJS_STATUS_CODE
+            AND SS_STATUS_STS = 'ACTIVE'
+            AND SM_STAFF_TYPE = 'STAFF'
+            AND SS_JOB_STATUS IN ('01','03','08','09')
+            AND (SS_JOIN_DATE IS NOT NULL
+            AND (($P{YEAR_YEAR} IS NULL AND SS_JOIN_DATE <= SYSDATE)
+            OR ($P{YEAR_YEAR} IS NOT NULL AND SS_JOIN_DATE <= TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy'))))
+            AND STH_STATUS = 'APPROVE'
+            AND TH_STATUS = 'APPROVE'
+            AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+        AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016' 
+        AND NVL(STD_ATTEND,'N') IN ('Y','A')
+            AND (($P{YEAR_YEAR} IS NULL AND TH_DATE_TO < SYSDATE)
+            OR ($P{YEAR_YEAR} IS NOT NULL AND TH_DATE_TO < TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy')))
+            AND (($P{YEAR_YEAR} IS NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = TO_CHAR(SYSDATE,'yyyy'))
+            OR ($P{YEAR_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR}))
+        )
+        WHERE STH_STAFF_ID NOT IN (
+            SELECT DISTINCT SSLH_STAFF_ID
+            FROM STAFF_STUDY_LEAVE_HEAD, STUDY_LEAVE_TYPE, 
+            STAFF_MAIN, STAFF_STATUS,STAFF_SERVICE, 
+            STAFF_JOB_STATUS
+            WHERE SSLH_PROGRAM_TYPE = SLT_CODE
+            AND SSLH_STAFF_ID = SM_STAFF_ID
+            AND SS_STAFF_ID = SM_STAFF_ID
+            AND SM_STAFF_STATUS = SS_STATUS_CODE
+            AND SS_JOB_STATUS = SJS_STATUS_CODE
+            AND SS_STATUS_STS = 'ACTIVE'
+            AND SM_STAFF_TYPE = 'STAFF'
+            AND SS_JOB_STATUS IN ('01','03','08','09')
+            AND SLT_TYPE = 'FULL_TIME'
+            AND NVL(SSLH_STATUS,'APPROVE') = 'APPROVE'
+            AND TRIM(UPPER(NVL(SSLH_REP_DUTY_STATUS,'N'))) <> TRIM(UPPER('Lapor Diri'))
+            AND SM_STAFF_TYPE = 'STAFF'
+        )
+        GROUP BY (CASE SS_SERVICE_KUMPP
+            WHEN 'C' THEN 'Sokongan 2'
+            WHEN 'D' THEN 'Sokongan 2'
+            WHEN 'B' THEN 'Sokongan 1'
+            WHEN 'JUSA' THEN 'JUSA'
+            ELSE 'Pengurusan dan Profesional'
+            END),STH_STAFF_ID
+            HAVING SUM(DURATION) >= 42
+    ) GROUP BY SS_SERVICE_KUMPP
+) ON SS_SERVICE_KUMPP2 = SS_SERVICE_KUMPP
+LEFT JOIN
+(
+    SELECT COUNT(STH_STAFF_ID) CF_COUNTL7, SS_SERVICE_KUMPP SS_SERVICE_KUMPP3
+    FROM (
+    SELECT (CASE SS_SERVICE_KUMPP
         WHEN 'C' THEN 'Sokongan 2'
         WHEN 'D' THEN 'Sokongan 2'
         WHEN 'B' THEN 'Sokongan 1'
         WHEN 'JUSA' THEN 'JUSA'
         ELSE 'Pengurusan dan Profesional'
-    END
-    ) SS_SERVICE_KUMPP1,
-    COUNT(SS_SERVICE_KUMPP) COUNTKUMPP
-    FROM STAFF_MAIN,SERVICE_SCHEME,STAFF_STATUS,STAFF_SERVICE,
-    STAFF_JOB_STATUS
-    WHERE SS_SERVICE_CODE = SM_JOB_CODE
-    AND SS_STAFF_ID = SM_STAFF_ID
-    AND SM_STAFF_STATUS = SS_STATUS_CODE
-    AND SS_JOB_STATUS = SJS_STATUS_CODE
-    AND SS_STATUS_STS = 'ACTIVE'
-    AND SM_STAFF_TYPE = 'STAFF'
-    AND SS_JOB_STATUS IN ('01','03','08','09')
-    AND (SS_JOIN_DATE IS NOT NULL
-    AND (($P{YEAR_YEAR} IS NULL AND SS_JOIN_DATE <= SYSDATE)
-    OR ($P{YEAR_YEAR} IS NOT NULL AND SS_JOIN_DATE <= TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy')))
+        END) SS_SERVICE_KUMPP,STH_STAFF_ID,SUM(DURATION) SUMSTAFFPERKUMPP
+    FROM (
+        SELECT STH_STAFF_ID, STH_STATUS, NVL(TH_TOTAL_HOURS,0) DURATION, SS_SERVICE_KUMPP
+        FROM STAFF_TRAINING_HEAD, TRAINING_HEAD, STAFF_MAIN,STAFF_STATUS, STAFF_SERVICE,SERVICE_SCHEME,STAFF_JOB_STATUS
+        WHERE STH_TRAINING_REFID = TH_REF_ID
+        AND SM_STAFF_ID = STH_STAFF_ID
+        AND SM_STAFF_STATUS = SS_STATUS_CODE
+        AND SS_SERVICE_CODE = SM_JOB_CODE
+        AND SS_STAFF_ID = SM_STAFF_ID
+        AND SS_JOB_STATUS = SJS_STATUS_CODE
+        AND SS_STATUS_STS = 'ACTIVE'
+        AND SM_STAFF_TYPE = 'STAFF'
+        AND SS_JOB_STATUS IN ('01','03','08','09')
+        AND (SS_JOIN_DATE IS NOT NULL
+        AND (($P{YEAR_YEAR} IS NULL AND SS_JOIN_DATE <= SYSDATE)
+        OR ($P{YEAR_YEAR} IS NOT NULL AND SS_JOIN_DATE <= TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy'))))
+        AND STH_STATUS = 'APPROVE'
+        AND TH_STATUS = 'APPROVE'
+        AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+    AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016' 
+        AND (($P{YEAR_YEAR} IS NULL AND TH_DATE_TO < SYSDATE)
+        OR ($P{YEAR_YEAR} IS NOT NULL AND TH_DATE_TO < TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy')))
+        AND (($P{YEAR_YEAR} IS NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = TO_CHAR(SYSDATE,'yyyy'))
+        OR ($P{YEAR_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR}))
+      UNION
+      SELECT STH_STAFF_ID, STH_STATUS, NVL(TH_TOTAL_HOURS,0) DURATION, SS_SERVICE_KUMPP
+        FROM STAFF_TRAINING_HEAD, TRAINING_HEAD, STAFF_MAIN,STAFF_STATUS, STAFF_SERVICE,SERVICE_SCHEME,STAFF_JOB_STATUS
+        WHERE STH_TRAINING_REFID = TH_REF_ID
+        AND SM_STAFF_ID = STH_STAFF_ID
+        AND SM_STAFF_STATUS = SS_STATUS_CODE
+        AND SS_SERVICE_CODE = SM_JOB_CODE
+        AND SS_STAFF_ID = SM_STAFF_ID
+        AND SS_JOB_STATUS = SJS_STATUS_CODE
+        AND SS_STATUS_STS = 'ACTIVE'
+        AND SM_STAFF_TYPE = 'STAFF'
+        AND SS_JOB_STATUS IN ('01','03','08','09')
+        AND (SS_JOIN_DATE IS NOT NULL
+        AND (($P{YEAR_YEAR} IS NULL AND SS_JOIN_DATE <= SYSDATE)
+        OR ($P{YEAR_YEAR} IS NOT NULL AND SS_JOIN_DATE <= TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy'))))
+        AND STH_STATUS = 'APPROVE'
+        AND TH_STATUS = 'APPROVE'
+        AND TH_INTERNAL_EXTERNAL = 'EXTERNAL_AGENCY'
+        AND (($P{YEAR_YEAR} IS NULL AND TH_DATE_TO < SYSDATE)
+        OR ($P{YEAR_YEAR} IS NOT NULL AND TH_DATE_TO < TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy')))
+        AND (($P{YEAR_YEAR} IS NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = TO_CHAR(SYSDATE,'yyyy'))
+        OR ($P{YEAR_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR}))
+        UNION
+        SELECT STH_STAFF_ID, STH_STATUS, NVL(TH_TOTAL_HOURS,0) DURATION, SS_SERVICE_KUMPP
+        FROM STAFF_TRAINING_HEAD,TRAINING_HEAD,STAFF_MAIN,STAFF_STATUS, STAFF_SERVICE,SERVICE_SCHEME,STAFF_JOB_STATUS,STAFF_TRAINING_DETL
+        WHERE STH_TRAINING_REFID = TH_REF_ID
+        AND SM_STAFF_ID = STH_STAFF_ID
+        AND STH_STAFF_ID = STD_STAFF_ID
+        AND STH_TRAINING_REFID = STD_TRAINING_REFID
+        AND SM_STAFF_STATUS = SS_STATUS_CODE
+        AND SS_SERVICE_CODE = SM_JOB_CODE
+        AND SS_STAFF_ID = SM_STAFF_ID
+        AND SS_JOB_STATUS = SJS_STATUS_CODE
+        AND SS_STATUS_STS = 'ACTIVE'
+        AND SM_STAFF_TYPE = 'STAFF'
+        AND SS_JOB_STATUS IN ('01','03','08','09')
+        AND (SS_JOIN_DATE IS NOT NULL
+        AND (($P{YEAR_YEAR} IS NULL AND SS_JOIN_DATE <= SYSDATE)
+        OR ($P{YEAR_YEAR} IS NOT NULL AND SS_JOIN_DATE <= TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy'))))
+        AND STH_STATUS = 'APPROVE'
+        AND TH_STATUS = 'APPROVE'
+        AND NVL(STD_ATTEND,'N') IN ('Y','A')
+        AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+    AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016' 
+        AND (($P{YEAR_YEAR} IS NULL AND TH_DATE_TO < SYSDATE)
+        OR ($P{YEAR_YEAR} IS NOT NULL AND TH_DATE_TO < TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy')))
+        AND (($P{YEAR_YEAR} IS NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = TO_CHAR(SYSDATE,'yyyy'))
+        OR ($P{YEAR_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR}))
     )
-    AND SM_STAFF_ID NOT IN (
-    SELECT DISTINCT SSLH_STAFF_ID
-    FROM STAFF_STUDY_LEAVE_HEAD, STUDY_LEAVE_TYPE, 
-    STAFF_MAIN, STAFF_STATUS,STAFF_SERVICE, 
-    STAFF_JOB_STATUS
-    WHERE SSLH_PROGRAM_TYPE = SLT_CODE
-    AND SSLH_STAFF_ID = SM_STAFF_ID
-    AND SS_STAFF_ID = SM_STAFF_ID
-    AND SM_STAFF_STATUS = SS_STATUS_CODE
-    AND SS_JOB_STATUS = SJS_STATUS_CODE
-    AND SS_STATUS_STS = 'ACTIVE'
-    AND SM_STAFF_TYPE = 'STAFF'
-    AND SS_JOB_STATUS IN ('01','03','08','09')
-    AND SLT_TYPE = 'FULL_TIME'
-    AND NVL(SSLH_STATUS,'APPROVE') = 'APPROVE'
-    AND TRIM(UPPER(NVL(SSLH_REP_DUTY_STATUS,'N'))) <> TRIM(UPPER('Lapor Diri'))
-    AND SM_STAFF_TYPE = 'STAFF'
+    WHERE STH_STAFF_ID NOT IN (
+        SELECT DISTINCT SSLH_STAFF_ID
+        FROM STAFF_STUDY_LEAVE_HEAD, STUDY_LEAVE_TYPE, 
+        STAFF_MAIN, STAFF_STATUS,STAFF_SERVICE, 
+        STAFF_JOB_STATUS
+        WHERE SSLH_PROGRAM_TYPE = SLT_CODE
+        AND SSLH_STAFF_ID = SM_STAFF_ID
+        AND SS_STAFF_ID = SM_STAFF_ID
+        AND SM_STAFF_STATUS = SS_STATUS_CODE
+        AND SS_JOB_STATUS = SJS_STATUS_CODE
+        AND SS_STATUS_STS = 'ACTIVE'
+        AND SM_STAFF_TYPE = 'STAFF'
+        AND SS_JOB_STATUS IN ('01','03','08','09')
+        AND SLT_TYPE = 'FULL_TIME'
+        AND NVL(SSLH_STATUS,'APPROVE') = 'APPROVE'
+        AND TRIM(UPPER(NVL(SSLH_REP_DUTY_STATUS,'N'))) <> TRIM(UPPER('Lapor Diri'))
+        AND SM_STAFF_TYPE = 'STAFF'
     )
-    GROUP BY (
-    CASE SS_SERVICE_KUMPP
-         WHEN 'C' THEN 'Sokongan 2'
-         WHEN 'D' THEN 'Sokongan 2'
-         WHEN 'B' THEN 'Sokongan 1'
-         WHEN 'JUSA' THEN 'JUSA'
-         ELSE 'Pengurusan dan Profesional'
-    END
-    )
-) 
-LEFT JOIN 
-(
-	SELECT COUNT(STH_STAFF_ID) CF_COUNTM7, SS_SERVICE_KUMPP2
-	FROM (
-	SELECT (CASE SS_SERVICE_KUMPP
-	WHEN 'C' THEN 'Sokongan 2'
-	WHEN 'D' THEN 'Sokongan 2'
-	WHEN 'B' THEN 'Sokongan 1'
-	WHEN 'JUSA' THEN 'JUSA'
-	ELSE 'Pengurusan dan Profesional'
-	END) SS_SERVICE_KUMPP2,STH_STAFF_ID,
-	SUM(TH_DATE_TO-TH_DATE_FROM+1) SUMSTAFFPERKUMPP
-	FROM (
-	SELECT STH_STAFF_ID, STH_STATUS, TH_DATE_FROM, TH_DATE_TO, SS_SERVICE_KUMPP
-	FROM STAFF_TRAINING_HEAD, TRAINING_HEAD, STAFF_MAIN, 
-	STAFF_STATUS, STAFF_SERVICE,SERVICE_SCHEME,
-	STAFF_JOB_STATUS
-	WHERE STH_TRAINING_REFID = TH_REF_ID
-	AND SM_STAFF_ID = STH_STAFF_ID
-	AND SM_STAFF_STATUS = SS_STATUS_CODE
-	AND SS_SERVICE_CODE = SM_JOB_CODE
-	AND SS_STAFF_ID = SM_STAFF_ID
-	AND SS_JOB_STATUS = SJS_STATUS_CODE
-	AND SS_STATUS_STS = 'ACTIVE'
-	AND SM_STAFF_TYPE = 'STAFF'
-	AND SS_JOB_STATUS IN ('01','03','08','09')
-	AND (SS_JOIN_DATE IS NOT NULL
-	AND (($P{YEAR_YEAR} IS NULL AND SS_JOIN_DATE <= SYSDATE)
-	OR ($P{YEAR_YEAR} IS NOT NULL AND SS_JOIN_DATE <= TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy'))))
-	AND STH_STATUS = 'APPROVE'
-	AND TH_STATUS = 'APPROVE'
-	AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
-	AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016' 
-	AND (($P{YEAR_YEAR} IS NULL AND TH_DATE_TO < SYSDATE)
-	OR ($P{YEAR_YEAR} IS NOT NULL AND TH_DATE_TO < TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy')))
-	AND (($P{YEAR_YEAR} IS NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = TO_CHAR(SYSDATE,'yyyy'))
-	OR ($P{YEAR_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR}))
-	UNION
-	SELECT STH_STAFF_ID, STH_STATUS, TH_DATE_FROM, TH_DATE_TO, SS_SERVICE_KUMPP
-	FROM STAFF_TRAINING_HEAD, TRAINING_HEAD, STAFF_MAIN, 
-	STAFF_STATUS, STAFF_SERVICE,SERVICE_SCHEME,
-	STAFF_JOB_STATUS
-	WHERE STH_TRAINING_REFID = TH_REF_ID
-	AND SM_STAFF_ID = STH_STAFF_ID
-	AND SM_STAFF_STATUS = SS_STATUS_CODE
-	AND SS_SERVICE_CODE = SM_JOB_CODE
-	AND SS_STAFF_ID = SM_STAFF_ID
-	AND SS_JOB_STATUS = SJS_STATUS_CODE
-	AND SS_STATUS_STS = 'ACTIVE'
-	AND SM_STAFF_TYPE = 'STAFF'
-	AND SS_JOB_STATUS IN ('01','03','08','09')
-	AND (SS_JOIN_DATE IS NOT NULL
-	AND (($P{YEAR_YEAR} IS NULL AND SS_JOIN_DATE <= SYSDATE)
-	OR ($P{YEAR_YEAR} IS NOT NULL AND SS_JOIN_DATE <= TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy'))))
-	AND STH_STATUS = 'APPROVE'
-	AND TH_STATUS = 'APPROVE'
-	AND TH_INTERNAL_EXTERNAL = 'EXTERNAL_AGENCY'
-	AND (($P{YEAR_YEAR} IS NULL AND TH_DATE_TO < SYSDATE)
-	OR ($P{YEAR_YEAR} IS NOT NULL AND TH_DATE_TO < TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy')))
-	AND (($P{YEAR_YEAR} IS NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = TO_CHAR(SYSDATE,'yyyy'))
-	OR ($P{YEAR_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR}))
-	UNION
-	SELECT STH_STAFF_ID, STH_STATUS, TH_DATE_FROM, TH_DATE_TO, SS_SERVICE_KUMPP
-	FROM STAFF_TRAINING_HEAD, TRAINING_HEAD, STAFF_MAIN, 
-	STAFF_STATUS, STAFF_SERVICE,SERVICE_SCHEME,
-	STAFF_JOB_STATUS,STAFF_TRAINING_DETL
-	WHERE STH_TRAINING_REFID = TH_REF_ID
-	AND SM_STAFF_ID = STH_STAFF_ID
-	AND SM_STAFF_STATUS = SS_STATUS_CODE
-	AND SS_SERVICE_CODE = SM_JOB_CODE
-	AND SS_STAFF_ID = SM_STAFF_ID
-	AND SS_JOB_STATUS = SJS_STATUS_CODE
-	AND SS_STATUS_STS = 'ACTIVE'
-	AND SM_STAFF_TYPE = 'STAFF'
-	AND SS_JOB_STATUS IN ('01','03','08','09')
-	AND (SS_JOIN_DATE IS NOT NULL
-	AND (($P{YEAR_YEAR} IS NULL AND SS_JOIN_DATE <= SYSDATE)
-	OR ($P{YEAR_YEAR} IS NOT NULL AND SS_JOIN_DATE <= TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy'))))
-	AND STH_TRAINING_REFID = STD_TRAINING_REFID
-	AND STH_STAFF_ID = STD_STAFF_ID
-	AND STH_STATUS = 'APPROVE'
-	AND TH_STATUS = 'APPROVE'
-	AND NVL(STD_ATTEND,'N') IN ('Y','A')
-	AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
-	AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016' 
-	AND (($P{YEAR_YEAR} IS NULL AND TH_DATE_TO < SYSDATE)
-	OR ($P{YEAR_YEAR} IS NOT NULL AND TH_DATE_TO < TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy')))
-	AND (($P{YEAR_YEAR} IS NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = TO_CHAR(SYSDATE,'yyyy'))
-	OR ($P{YEAR_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR}))
-	)
-	WHERE STH_STAFF_ID NOT IN (
-	    SELECT DISTINCT SSLH_STAFF_ID
-	    FROM STAFF_STUDY_LEAVE_HEAD, STUDY_LEAVE_TYPE, 
-	    STAFF_MAIN, STAFF_STATUS,STAFF_SERVICE, 
-	    STAFF_JOB_STATUS
-	    WHERE SSLH_PROGRAM_TYPE = SLT_CODE
-	    AND SSLH_STAFF_ID = SM_STAFF_ID
-	    AND SS_STAFF_ID = SM_STAFF_ID
-	    AND SM_STAFF_STATUS = SS_STATUS_CODE
-	    AND SS_JOB_STATUS = SJS_STATUS_CODE
-	    AND SS_STATUS_STS = 'ACTIVE'
-	    AND SM_STAFF_TYPE = 'STAFF'
-	    AND SS_JOB_STATUS IN ('01','03','08','09')
-	    AND SLT_TYPE = 'FULL_TIME'
-	    AND NVL(SSLH_STATUS,'APPROVE') = 'APPROVE'
-	    AND TRIM(UPPER(NVL(SSLH_REP_DUTY_STATUS,'N'))) <> TRIM(UPPER('Lapor Diri'))
-	    AND SM_STAFF_TYPE = 'STAFF'
-	)
-	GROUP BY (
-		CASE SS_SERVICE_KUMPP
-		WHEN 'C' THEN 'Sokongan 2'
-		WHEN 'D' THEN 'Sokongan 2'
-		WHEN 'B' THEN 'Sokongan 1'
-		WHEN 'JUSA' THEN 'JUSA'
-		ELSE 'Pengurusan dan Profesional'
-		END), 
-		STH_STAFF_ID
-		HAVING SUM(TH_DATE_TO-TH_DATE_FROM+1) >= 7
-)
-GROUP BY SS_SERVICE_KUMPP2
-) ON SS_SERVICE_KUMPP1 = SS_SERVICE_KUMPP2
-LEFT JOIN (
-SELECT COUNT(STH_STAFF_ID) CF_COUNTL7, SS_SERVICE_KUMPP3
-FROM (
-SELECT (CASE SS_SERVICE_KUMPP
-WHEN 'C' THEN 'Sokongan 2'
-WHEN 'D' THEN 'Sokongan 2'
-WHEN 'B' THEN 'Sokongan 1'
-WHEN 'JUSA' THEN 'JUSA'
-ELSE 'Pengurusan dan Profesional'
-END) SS_SERVICE_KUMPP3,STH_STAFF_ID,
-SUM(TH_DATE_TO-TH_DATE_FROM+1) SUMSTAFFPERKUMPP
-FROM (
-SELECT STH_STAFF_ID, STH_STATUS, TH_DATE_FROM, TH_DATE_TO, SS_SERVICE_KUMPP
-FROM STAFF_TRAINING_HEAD, TRAINING_HEAD, STAFF_MAIN, 
-STAFF_STATUS, STAFF_SERVICE,SERVICE_SCHEME,
-STAFF_JOB_STATUS
-WHERE STH_TRAINING_REFID = TH_REF_ID
-AND SM_STAFF_ID = STH_STAFF_ID
-AND SM_STAFF_STATUS = SS_STATUS_CODE
-AND SS_SERVICE_CODE = SM_JOB_CODE
-AND SS_STAFF_ID = SM_STAFF_ID
-AND SS_JOB_STATUS = SJS_STATUS_CODE
-AND SS_STATUS_STS = 'ACTIVE'
-AND SM_STAFF_TYPE = 'STAFF'
-AND SS_JOB_STATUS IN ('01','03','08','09')
-AND (SS_JOIN_DATE IS NOT NULL
-AND (($P{YEAR_YEAR} IS NULL AND SS_JOIN_DATE <= SYSDATE)
-OR ($P{YEAR_YEAR} IS NOT NULL AND SS_JOIN_DATE <= TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy'))))
-AND STH_STATUS = 'APPROVE'
-AND TH_STATUS = 'APPROVE'
-AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
-AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
-AND (($P{YEAR_YEAR} IS NULL AND TH_DATE_TO < SYSDATE)
-OR ($P{YEAR_YEAR} IS NOT NULL AND TH_DATE_TO < TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy')))
-AND (($P{YEAR_YEAR} IS NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = TO_CHAR(SYSDATE,'yyyy'))
-OR ($P{YEAR_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR}))
-UNION
-SELECT STH_STAFF_ID, STH_STATUS, TH_DATE_FROM, TH_DATE_TO, SS_SERVICE_KUMPP
-FROM STAFF_TRAINING_HEAD, TRAINING_HEAD, STAFF_MAIN, 
-STAFF_STATUS, STAFF_SERVICE,SERVICE_SCHEME,
-STAFF_JOB_STATUS
-WHERE STH_TRAINING_REFID = TH_REF_ID
-AND SM_STAFF_ID = STH_STAFF_ID
-AND SM_STAFF_STATUS = SS_STATUS_CODE
-AND SS_SERVICE_CODE = SM_JOB_CODE
-AND SS_STAFF_ID = SM_STAFF_ID
-AND SS_JOB_STATUS = SJS_STATUS_CODE
-AND SS_STATUS_STS = 'ACTIVE'
-AND SM_STAFF_TYPE = 'STAFF'
-AND SS_JOB_STATUS IN ('01','03','08','09')
-AND (SS_JOIN_DATE IS NOT NULL
-AND (($P{YEAR_YEAR} IS NULL AND SS_JOIN_DATE <= SYSDATE)
-OR ($P{YEAR_YEAR} IS NOT NULL AND SS_JOIN_DATE <= TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy'))))
-AND STH_STATUS = 'APPROVE'
-AND TH_STATUS = 'APPROVE'
-AND TH_INTERNAL_EXTERNAL = 'EXTERNAL_AGENCY'
-AND (($P{YEAR_YEAR} IS NULL AND TH_DATE_TO < SYSDATE)
-OR ($P{YEAR_YEAR} IS NOT NULL AND TH_DATE_TO < TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy')))
-AND (($P{YEAR_YEAR} IS NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = TO_CHAR(SYSDATE,'yyyy'))
-OR ($P{YEAR_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR}))
-UNION
-SELECT STH_STAFF_ID, STH_STATUS, TH_DATE_FROM, TH_DATE_TO, SS_SERVICE_KUMPP
-FROM STAFF_TRAINING_HEAD, TRAINING_HEAD, STAFF_MAIN, 
-STAFF_STATUS, STAFF_SERVICE,SERVICE_SCHEME,
-STAFF_JOB_STATUS,STAFF_TRAINING_DETL
-WHERE STH_TRAINING_REFID = TH_REF_ID
-AND SM_STAFF_ID = STH_STAFF_ID
-AND STH_TRAINING_REFID = STD_TRAINING_REFID
-AND STH_STAFF_ID = STD_STAFF_ID
-AND SM_STAFF_STATUS = SS_STATUS_CODE
-AND SS_SERVICE_CODE = SM_JOB_CODE
-AND SS_STAFF_ID = SM_STAFF_ID
-AND SS_JOB_STATUS = SJS_STATUS_CODE
-AND SS_STATUS_STS = 'ACTIVE'
-AND SM_STAFF_TYPE = 'STAFF'
-AND SS_JOB_STATUS IN ('01','03','08','09')
-AND (SS_JOIN_DATE IS NOT NULL
-AND (($P{YEAR_YEAR} IS NULL AND SS_JOIN_DATE <= SYSDATE)
-OR ($P{YEAR_YEAR} IS NOT NULL AND SS_JOIN_DATE <= TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy'))))
-AND STH_STATUS = 'APPROVE'
-AND TH_STATUS = 'APPROVE'
-AND NVL(STD_ATTEND,'N') IN ('Y','A')
-AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
-AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
-AND (($P{YEAR_YEAR} IS NULL AND TH_DATE_TO < SYSDATE)
-OR ($P{YEAR_YEAR} IS NOT NULL AND TH_DATE_TO < TO_DATE('31/12/'||$P{YEAR_YEAR},'dd/mm/yyyy')))
-AND (($P{YEAR_YEAR} IS NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = TO_CHAR(SYSDATE,'yyyy'))
-OR ($P{YEAR_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR}))
-
-)
-WHERE STH_STAFF_ID NOT IN (
-    SELECT DISTINCT SSLH_STAFF_ID
-    FROM STAFF_STUDY_LEAVE_HEAD, STUDY_LEAVE_TYPE, 
-    STAFF_MAIN, STAFF_STATUS,STAFF_SERVICE, 
-    STAFF_JOB_STATUS
-    WHERE SSLH_PROGRAM_TYPE = SLT_CODE
-    AND SSLH_STAFF_ID = SM_STAFF_ID
-    AND SS_STAFF_ID = SM_STAFF_ID
-    AND SM_STAFF_STATUS = SS_STATUS_CODE
-    AND SS_JOB_STATUS = SJS_STATUS_CODE
-    AND SS_STATUS_STS = 'ACTIVE'
-    AND SM_STAFF_TYPE = 'STAFF'
-    AND SS_JOB_STATUS IN ('01','03','08','09')
-    AND SLT_TYPE = 'FULL_TIME'
-    AND NVL(SSLH_STATUS,'APPROVE') = 'APPROVE'
-    AND TRIM(UPPER(NVL(SSLH_REP_DUTY_STATUS,'N'))) <> TRIM(UPPER('Lapor Diri'))
-    AND SM_STAFF_TYPE = 'STAFF'
-)
-GROUP BY (CASE SS_SERVICE_KUMPP
-WHEN 'C' THEN 'Sokongan 2'
-WHEN 'D' THEN 'Sokongan 2'
-WHEN 'B' THEN 'Sokongan 1'
-WHEN 'JUSA' THEN 'JUSA'
-ELSE 'Pengurusan dan Profesional'
-END),STH_STAFF_ID
-HAVING SUM(TH_DATE_TO-TH_DATE_FROM+1) < 7
-)
-GROUP BY SS_SERVICE_KUMPP3
-) ON SS_SERVICE_KUMPP1 = SS_SERVICE_KUMPP3
-ORDER BY SS_SERVICE_KUMPP1]]>
+    GROUP BY (CASE SS_SERVICE_KUMPP
+        WHEN 'C' THEN 'Sokongan 2'
+        WHEN 'D' THEN 'Sokongan 2'
+        WHEN 'B' THEN 'Sokongan 1'
+        WHEN 'JUSA' THEN 'JUSA'
+        ELSE 'Pengurusan dan Profesional'
+        END),STH_STAFF_ID
+        HAVING SUM(DURATION) < 42
+    ) GROUP BY SS_SERVICE_KUMPP
+) ON SS_SERVICE_KUMPP3 = SS_SERVICE_KUMPP
+ORDER BY SS_SERVICE_KUMPP]]>
 		</queryString>
-		<field name="SS_SERVICE_KUMPP1" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.label" value="SS_SERVICE_KUMPP1"/>
+		<field name="SS_SERVICE_KUMPP" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="SS_SERVICE_KUMPP"/>
 		</field>
 		<field name="COUNTKUMPP" class="java.math.BigDecimal">
 			<property name="com.jaspersoft.studio.field.label" value="COUNTKUMPP"/>
@@ -357,23 +342,23 @@ ORDER BY SS_SERVICE_KUMPP1]]>
 		<field name="CF_COUNTM7" class="java.math.BigDecimal">
 			<property name="com.jaspersoft.studio.field.label" value="CF_COUNTM7"/>
 		</field>
+		<field name="CF_COUNTL7" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="CF_COUNTL7"/>
+		</field>
 		<field name="CF_COUNTNOTRAIN" class="java.math.BigDecimal">
 			<property name="com.jaspersoft.studio.field.label" value="CF_COUNTNOTRAIN"/>
 		</field>
-		<variable name="SUM1" class="java.math.BigDecimal" calculation="Sum">
+		<variable name="SUM_COUNTKUMPP" class="java.lang.Integer" calculation="Sum">
 			<variableExpression><![CDATA[$F{COUNTKUMPP}]]></variableExpression>
 		</variable>
-		<variable name="SUM2" class="java.math.BigDecimal" calculation="Sum">
+		<variable name="SUM_COUNTM7" class="java.lang.Integer" calculation="Sum">
 			<variableExpression><![CDATA[$F{CF_COUNTM7}]]></variableExpression>
 		</variable>
-		<variable name="SUM3" class="java.math.BigDecimal" calculation="Sum">
+		<variable name="SUM_COUNTL7" class="java.lang.Integer" calculation="Sum">
+			<variableExpression><![CDATA[$F{CF_COUNTL7}]]></variableExpression>
+		</variable>
+		<variable name="SUM_COUNTNOTRAIN" class="java.lang.Integer" calculation="Sum">
 			<variableExpression><![CDATA[$F{CF_COUNTNOTRAIN}]]></variableExpression>
-		</variable>
-		<variable name="CALC_NOTRAIN" class="java.math.BigDecimal">
-			<variableExpression><![CDATA[$F{COUNTKUMPP} - (($F{CF_COUNTM7}==null?0:$F{CF_COUNTM7})+($F{CF_COUNTNOTRAIN}==null?0:$F{CF_COUNTNOTRAIN}))]]></variableExpression>
-		</variable>
-		<variable name="SUM4" class="java.math.BigDecimal" calculation="Sum">
-			<variableExpression><![CDATA[$V{CALC_NOTRAIN}]]></variableExpression>
 		</variable>
 	</subDataset>
 	<parameter name="YEAR_YEAR" class="java.lang.String"/>
@@ -522,7 +507,7 @@ ORDER BY SS_SERVICE_KUMPP1]]>
 										<font fontName="Arial" size="10"/>
 										<paragraph leftIndent="3"/>
 									</textElement>
-									<textFieldExpression><![CDATA[$F{SS_SERVICE_KUMPP1}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$F{SS_SERVICE_KUMPP}]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>
@@ -538,7 +523,7 @@ ORDER BY SS_SERVICE_KUMPP1]]>
 									<font fontName="Arial" size="10" isBold="true"/>
 									<paragraph rightIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$V{SUM1}==null?0:$V{SUM1}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$V{SUM_COUNTKUMPP}]]></textFieldExpression>
 							</textField>
 						</jr:tableFooter>
 						<jr:columnHeader style="Table_CH" height="59" rowSpan="2">
@@ -584,7 +569,7 @@ ORDER BY SS_SERVICE_KUMPP1]]>
 										<font fontName="Arial" size="10" isBold="true"/>
 										<paragraph rightIndent="20"/>
 									</textElement>
-									<textFieldExpression><![CDATA[$V{SUM2}==null?0:$V{SUM2}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$V{SUM_COUNTM7}]]></textFieldExpression>
 								</textField>
 							</jr:tableFooter>
 							<jr:columnHeader style="Table_CH" height="29" rowSpan="1">
@@ -598,7 +583,7 @@ ORDER BY SS_SERVICE_KUMPP1]]>
 										<paragraph spacingBefore="0"/>
 									</textElement>
 									<text><![CDATA[Bilangan Anggota Yang
-Hadir > 7 Hari Setahun]]></text>
+Hadir > 42 Jam Setahun]]></text>
 								</staticText>
 							</jr:columnHeader>
 							<jr:detailCell style="Table_TD" height="30">
@@ -608,7 +593,7 @@ Hadir > 7 Hari Setahun]]></text>
 										<font fontName="Arial" size="10"/>
 										<paragraph rightIndent="20"/>
 									</textElement>
-									<textFieldExpression><![CDATA[$F{CF_COUNTM7}==null?0:$F{CF_COUNTM7}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$F{CF_COUNTM7}]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>
@@ -623,7 +608,7 @@ Hadir > 7 Hari Setahun]]></text>
 										<font fontName="Arial" size="10" isBold="true"/>
 										<paragraph rightIndent="20"/>
 									</textElement>
-									<textFieldExpression><![CDATA[$V{SUM3}==null?0:$V{SUM3}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$V{SUM_COUNTL7}]]></textFieldExpression>
 								</textField>
 							</jr:tableFooter>
 							<jr:columnHeader style="Table_CH" height="29" rowSpan="1">
@@ -634,7 +619,7 @@ Hadir > 7 Hari Setahun]]></text>
 										<paragraph spacingBefore="0"/>
 									</textElement>
 									<text><![CDATA[Bilangan Anggota Yang
-Hadir < 7 Hari Setahun]]></text>
+Hadir < 42 Jam Setahun]]></text>
 								</staticText>
 							</jr:columnHeader>
 							<jr:detailCell style="Table_TD" height="30">
@@ -646,7 +631,7 @@ Hadir < 7 Hari Setahun]]></text>
 										<font fontName="Arial" size="10"/>
 										<paragraph rightIndent="20"/>
 									</textElement>
-									<textFieldExpression><![CDATA[$F{CF_COUNTNOTRAIN}==null?0:$F{CF_COUNTNOTRAIN}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$F{CF_COUNTL7}]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>
@@ -661,7 +646,7 @@ Hadir < 7 Hari Setahun]]></text>
 										<font fontName="Arial" size="10" isBold="true"/>
 										<paragraph rightIndent="20"/>
 									</textElement>
-									<textFieldExpression><![CDATA[$V{SUM4}==null?0:$V{SUM4}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$V{SUM_COUNTNOTRAIN}]]></textFieldExpression>
 								</textField>
 							</jr:tableFooter>
 							<jr:columnHeader style="Table_CH" height="29" rowSpan="1">
@@ -684,7 +669,7 @@ Yang Tidak Berkursus]]></text>
 										<font fontName="Arial" size="10"/>
 										<paragraph rightIndent="20"/>
 									</textElement>
-									<textFieldExpression><![CDATA[$V{CALC_NOTRAIN}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$F{CF_COUNTNOTRAIN}]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>
