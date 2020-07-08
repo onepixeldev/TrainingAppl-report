@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR123" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bf536f7a-1256-4c37-8d3b-bce6d7103a0a">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
@@ -382,12 +382,12 @@ HADIR]]></text>
 					</componentElement>
 				</frame>
 				<frame>
-					<reportElement stretchType="RelativeToBandHeight" x="170" y="0" width="70" height="30" isPrintWhenDetailOverflows="true" uuid="fa20e1cd-d30d-4bd2-83c6-83e90a3034db"/>
+					<reportElement stretchType="RelativeToBandHeight" x="170" y="0" width="140" height="30" isPrintWhenDetailOverflows="true" uuid="fa20e1cd-d30d-4bd2-83c6-83e90a3034db"/>
 					<box>
 						<pen lineWidth="0.5"/>
 					</box>
 					<componentElement>
-						<reportElement x="0" y="0" width="70" height="30" uuid="303fefe8-ffc2-4c27-8883-d6958d1b0991"/>
+						<reportElement x="0" y="0" width="140" height="30" uuid="303fefe8-ffc2-4c27-8883-d6958d1b0991"/>
 						<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 							<datasetRun subDataset="BITARA" uuid="35212625-7e17-48f7-8dc4-eef5914cf1de">
 								<datasetParameter name="TRAINING_MONTH">
@@ -407,7 +407,7 @@ HADIR]]></text>
 								</datasetParameter>
 								<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 							</datasetRun>
-							<jr:listContents height="30" width="70">
+							<jr:listContents height="30" width="140">
 								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 									<reportElement x="0" y="0" width="70" height="30" uuid="d377eb55-4fd5-41f7-a182-a1bfce6521d2">
 										<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -417,9 +417,9 @@ HADIR]]></text>
 									<box>
 										<pen lineWidth="0.5"/>
 										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 									</box>
 									<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
 										<font fontName="Arial" isBold="true"/>
@@ -427,17 +427,36 @@ HADIR]]></text>
 									</textElement>
 									<textFieldExpression><![CDATA[$F{BH_TITLE}+"<br>"+"("+$F{BH_DATE}+")"]]></textFieldExpression>
 								</textField>
+								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+									<reportElement x="70" y="0" width="70" height="30" uuid="206d0393-8474-4942-8ddc-f67754d47e32">
+										<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+										<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+									</reportElement>
+									<box>
+										<pen lineWidth="0.5"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+										<font fontName="Arial" isBold="true"/>
+										<paragraph spacingBefore="4" spacingAfter="4"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$F{TSL_DESC}==null?"-":$F{TSL_DESC}]]></textFieldExpression>
+								</textField>
 							</jr:listContents>
 						</jr:list>
 					</componentElement>
 				</frame>
 				<frame>
-					<reportElement stretchType="RelativeToBandHeight" x="240" y="0" width="70" height="30" isPrintWhenDetailOverflows="true" uuid="4b9e0952-1343-4d7e-ae00-cccf6f18d2be"/>
+					<reportElement stretchType="RelativeToBandHeight" x="390" y="0" width="70" height="30" isPrintWhenDetailOverflows="true" uuid="4b9e0952-1343-4d7e-ae00-cccf6f18d2be"/>
 					<box>
 						<pen lineWidth="0.5"/>
 					</box>
 					<componentElement>
-						<reportElement x="0" y="0" width="70" height="30" uuid="262f18a6-20dc-4cf2-a5de-7d54e7cf219c"/>
+						<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="70" height="30" uuid="262f18a6-20dc-4cf2-a5de-7d54e7cf219c"/>
 						<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 							<datasetRun subDataset="BITARA" uuid="bee83282-8b60-4d91-bd18-174825ead648">
 								<datasetParameter name="TRAINING_MONTH">

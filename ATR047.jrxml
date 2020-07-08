@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR047" language="groovy" pageWidth="842" pageHeight="595" columnWidth="742" leftMargin="50" rightMargin="50" topMargin="20" bottomMargin="20" uuid="23877205-5ff4-4830-9af3-e4c3034b0421">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
@@ -102,12 +102,21 @@ ORDER BY BH_DATE_FROM]]>
 	CASE 
     WHEN
     (
-        SELECT COUNT(SB_STAFF_ID) SB_TOTAL
-        FROM BITARA_HEAD,STAFF_BITARA
-        WHERE BH_REF_ID=SB_REF_ID
-        AND SB_STATUS='APPROVED'
-        AND SB_ATTENDANCE='Y'
-        AND TO_CHAR(BH_DATE_FROM,'yyyy')=$P{TRAINING_YEAR} 
+    	SELECT COUNT(BH_REF_ID)
+    	FROM
+    	(
+    		SELECT 'Program Bitara UPSI' BHTITLE,BH_REF_ID,BH_TITLE,
+			TO_CHAR(BH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(BH_END_DATE,'dd/mm/yyyy') BH_DATE,
+			BH_VENUE,BH_DATE_FROM,COUNT(SB_STAFF_ID) SB_TOTAL
+			FROM BITARA_HEAD,STAFF_BITARA
+			WHERE BH_REF_ID=SB_REF_ID
+			AND SB_STATUS='APPROVED'
+			AND SB_ATTENDANCE='Y'
+			AND TO_CHAR(BH_DATE_FROM,'yyyy')=$P{TRAINING_YEAR}  
+			GROUP BY 'Program Bitara UPSI',BH_REF_ID,BH_TITLE,
+			TO_CHAR(BH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(BH_END_DATE,'dd/mm/yyyy'),
+			BH_VENUE,BH_DATE_FROM
+    	)
     ) !=0 THEN 1
     ELSE 0
     END AS BITARA,
