@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR123" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bf536f7a-1256-4c37-8d3b-bce6d7103a0a">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
@@ -160,21 +160,6 @@ LEFT JOIN
 		<field name="CF_PERATUS_THADIR" class="java.math.BigDecimal">
 			<property name="com.jaspersoft.studio.field.label" value="CF_PERATUS_THADIR"/>
 		</field>
-		<variable name="total_tawaran_bitara" class="java.math.BigDecimal" calculation="Sum">
-			<variableExpression><![CDATA[$F{BH_PARTICIPANT}==null?0:$F{BH_PARTICIPANT}]]></variableExpression>
-		</variable>
-		<variable name="total_hadir_bitara" class="java.math.BigDecimal" calculation="Sum">
-			<variableExpression><![CDATA[$F{SB_TOTAL}==null?0:$F{SB_TOTAL}]]></variableExpression>
-		</variable>
-		<variable name="total_peratus_hadir_b" class="java.math.BigDecimal" calculation="Sum">
-			<variableExpression><![CDATA[$F{CF_PERATUS_BITARA}==null?0:$F{CF_PERATUS_BITARA}]]></variableExpression>
-		</variable>
-		<variable name="total_thadir_bitara" class="java.math.BigDecimal" calculation="Sum">
-			<variableExpression><![CDATA[$F{CF_THADIR}==null?0:$F{CF_THADIR}]]></variableExpression>
-		</variable>
-		<variable name="total_peratus_thadir_bitara" class="java.math.BigDecimal" calculation="Sum">
-			<variableExpression><![CDATA[$F{CF_PERATUS_THADIR}==null?0:$F{CF_PERATUS_THADIR}]]></variableExpression>
-		</variable>
 	</subDataset>
 	<subDataset name="NON_BITARA" uuid="8f08c176-023d-4f6c-843b-2821f1d3e521">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
@@ -357,21 +342,6 @@ ORDER BY TH_DATE_FROM]]>
 		<field name="TH_DATE_FROM" class="java.sql.Timestamp">
 			<property name="com.jaspersoft.studio.field.label" value="TH_DATE_FROM"/>
 		</field>
-		<variable name="total_tawaran_nonbitara" class="java.math.BigDecimal" calculation="Sum">
-			<variableExpression><![CDATA[$F{TH_MAX_PARTICIPANT}==null?0:$F{TH_MAX_PARTICIPANT}]]></variableExpression>
-		</variable>
-		<variable name="total_hadir_nbitara" class="java.math.BigDecimal" calculation="Sum">
-			<variableExpression><![CDATA[$F{STH_TOTAL}==null?0:$F{STH_TOTAL}]]></variableExpression>
-		</variable>
-		<variable name="total_peratus_hadir_nb" class="java.math.BigDecimal" calculation="Sum">
-			<variableExpression><![CDATA[$F{CF_PERATUS}==null?0:$F{CF_PERATUS}]]></variableExpression>
-		</variable>
-		<variable name="total_thadir_nbitara" class="java.math.BigDecimal" calculation="Sum">
-			<variableExpression><![CDATA[$F{CF_TIDAKHADIR}==null?0:$F{CF_TIDAKHADIR}]]></variableExpression>
-		</variable>
-		<variable name="total_peratus_thadir_nbitara" class="java.math.BigDecimal" calculation="Sum">
-			<variableExpression><![CDATA[$F{CF_PERATUS_TIDAKHADIR}==null?0:$F{CF_PERATUS_TIDAKHADIR}]]></variableExpression>
-		</variable>
 	</subDataset>
 	<subDataset name="ANJURAN" uuid="479677f9-30cb-436a-8eab-57d7b77dedcf">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
@@ -397,6 +367,173 @@ WHERE TSL_CODE = $P{SECTOR}]]>
 		</queryString>
 		<field name="TSL_DESC" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="TSL_DESC"/>
+		</field>
+	</subDataset>
+	<subDataset name="BIG_TOTAL" uuid="97e561b0-b02a-42a2-91a6-f267e0539f50">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="COORDINATOR" class="java.lang.String"/>
+		<parameter name="P_OPTION" class="java.lang.String"/>
+		<parameter name="P_PTJ" class="java.lang.String"/>
+		<parameter name="SECTOR" class="java.lang.String"/>
+		<parameter name="TRAINING_MONTH" class="java.lang.String"/>
+		<parameter name="TRAINING_MONTH2" class="java.lang.String"/>
+		<parameter name="TRAINING_YEAR" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[SELECT
+TOTAL_TAWARAN,
+TOTAL_HADIR,
+TOTAL_THADIR,
+ROUND((TOTAL_HADIR / TOTAL_TAWARAN) * 100,0) TOTAL_PERCENT_HADIR,
+ROUND((TOTAL_THADIR / TOTAL_TAWARAN) * 100,0) TOTAL_PERCENT_THADIR
+FROM
+(
+    SELECT
+    SUM(BH_PARTICIPANT) TOTAL_TAWARAN,
+    SUM(SB_TOTAL) TOTAL_HADIR,
+    SUM(CF_THADIR) TOTAL_THADIR
+    FROM
+    (
+        SELECT
+        BH_REF_ID,
+        BH_TITLE,
+        BH_PARTICIPANT,
+        SB_TOTAL,
+        CF_THADIR
+        FROM
+        (
+            SELECT
+            BH_REF_ID,
+            BH_TITLE,
+            BH_PARTICIPANT,
+            SB_TOTAL,
+            (BH_PARTICIPANT - SB_TOTAL) CF_THADIR
+            FROM
+            (
+                SELECT 'Program Bitara UPSI' BHTITLE,BH_REF_ID,BH_TITLE,
+                TO_CHAR(BH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(BH_END_DATE,'dd/mm/yyyy') BH_DATE,
+                BH_VENUE,BH_DATE_FROM,COUNT(SB_STAFF_ID) SB_TOTAL,BH_PARTICIPANT 
+                FROM BITARA_HEAD,STAFF_BITARA
+                WHERE BH_REF_ID=SB_REF_ID
+                AND SB_STATUS='APPROVED'
+                AND SB_ATTENDANCE='Y'
+                AND TO_CHAR(BH_DATE_FROM,'yyyy')=$P{TRAINING_YEAR}
+                AND (BH_DATE_FROM BETWEEN TO_DATE($P{TRAINING_MONTH},'mm/yyyy')
+                AND LAST_DAY(TO_DATE($P{TRAINING_MONTH2},'mm/yyyy')))
+                AND ($P{P_OPTION} IS NULL OR ($P{P_OPTION} IS NOT NULL AND $P{P_OPTION}='INTERNAL'))
+                AND ($P{P_PTJ} IS NULL OR ($P{P_PTJ} IS NOT NULL AND $P{P_PTJ} = $P{P_PTJ}))
+                GROUP BY 'Program Bitara UPSI',BH_REF_ID,BH_TITLE,
+                TO_CHAR(BH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(BH_END_DATE,'dd/mm/yyyy'),
+                BH_VENUE,BH_DATE_FROM,BH_PARTICIPANT
+                ORDER BY BH_DATE_FROM
+            )
+        )
+        UNION
+        (
+            SELECT
+            TH_REF_ID,
+            TH_TRAINING_TITLE,
+            TH_MAX_PARTICIPANT,
+            STH_TOTAL,
+            CF_TIDAKHADIR
+            FROM
+            (
+                SELECT TH_REF_ID,TH_TRAINING_TITLE,LEVEL2,TH_DATE,TH_TRAINING_VENUE,TH_TRAINING_COUNTRY,TH_MAX_PARTICIPANT,THD_COORDINATOR,
+                TH_DATE_FROM,STH_TOTAL,(TH_MAX_PARTICIPANT - STH_TOTAL) CF_TIDAKHADIR
+                FROM (
+                SELECT TH_REF_ID,TH_TRAINING_TITLE,THD_COORDINATOR_SECTOR LEVEL2,THD_COORDINATOR,
+                TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy') TH_DATE,
+                TH_TRAINING_VENUE,TH_TRAINING_COUNTRY,TH_MAX_PARTICIPANT,
+                TH_DATE_FROM,COUNT(STH_STAFF_ID) STH_TOTAL
+                FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,TRAINING_HEAD_DETL
+                WHERE TH_REF_ID=STH_TRAINING_REFID
+                AND TH_STATUS = 'APPROVE'
+                AND STH_STATUS = 'APPROVE'
+                AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+                AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
+                AND TH_REF_ID = THD_REF_ID
+                AND TH_CATEGORY <> 'AKEPT'
+                AND ($P{P_OPTION} IS NULL OR ($P{P_OPTION} IS NOT NULL AND TH_INTERNAL_EXTERNAL = NVL($P{P_OPTION},'INTERNAL')))
+                AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{TRAINING_YEAR}
+                AND (TH_DATE_FROM BETWEEN TO_DATE($P{TRAINING_MONTH},'mm/yyyy')
+                AND LAST_DAY(TO_DATE($P{TRAINING_MONTH2},'mm/yyyy')))
+                AND ($P{P_PTJ} IS NULL OR ($P{P_PTJ} IS NOT NULL AND TH_ORGANIZER_NAME = $P{P_PTJ}))
+                AND ($P{SECTOR} IS NULL OR ($P{SECTOR} IS NOT NULL AND THD_COORDINATOR_SECTOR  = $P{SECTOR}))
+                AND ($P{COORDINATOR} IS NULL OR ($P{COORDINATOR} IS NOT NULL AND THD_COORDINATOR  = $P{COORDINATOR}))
+                AND STH_PARTICIPANT_ROLE = 'D'
+                GROUP BY TH_REF_ID,TH_TRAINING_TITLE,THD_COORDINATOR_SECTOR,THD_COORDINATOR,
+                TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy'),
+                TH_TRAINING_VENUE,TH_TRAINING_COUNTRY,TH_DATE_FROM,TH_MAX_PARTICIPANT
+                UNION
+                SELECT TH_REF_ID,TH_TRAINING_TITLE,THD_COORDINATOR_SECTOR LEVEL2,THD_COORDINATOR,
+                TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy') TH_DATE,
+                TH_TRAINING_VENUE,TH_TRAINING_COUNTRY,TH_MAX_PARTICIPANT,
+                TH_DATE_FROM,COUNT(STH_STAFF_ID) STH_TOTAL
+                FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,TRAINING_HEAD_DETL
+                WHERE TH_REF_ID=STH_TRAINING_REFID
+                AND TH_STATUS = 'APPROVE'
+                AND STH_STATUS = 'APPROVE'
+                AND TH_INTERNAL_EXTERNAL = 'EXTERNAL_AGENCY'
+                AND TH_REF_ID = THD_REF_ID
+                AND TH_CATEGORY <> 'AKEPT'
+                AND ($P{P_OPTION} IS NULL OR ($P{P_OPTION} IS NOT NULL AND TH_INTERNAL_EXTERNAL = NVL($P{P_OPTION},'INTERNAL')))
+                AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{TRAINING_YEAR}
+                AND (TH_DATE_FROM BETWEEN TO_DATE($P{TRAINING_MONTH},'mm/yyyy')
+                AND LAST_DAY(TO_DATE($P{TRAINING_MONTH2},'mm/yyyy')))
+                AND ($P{P_PTJ} IS NULL OR ($P{P_PTJ} IS NOT NULL AND TH_ORGANIZER_NAME = $P{P_PTJ}))
+                AND ($P{SECTOR} IS NULL OR ($P{SECTOR} IS NOT NULL AND THD_COORDINATOR_SECTOR  = $P{SECTOR}))
+                AND ($P{COORDINATOR} IS NULL OR ($P{COORDINATOR} IS NOT NULL AND THD_COORDINATOR  = $P{COORDINATOR}))
+                AND STH_PARTICIPANT_ROLE = 'D'
+                GROUP BY TH_REF_ID,TH_TRAINING_TITLE,THD_COORDINATOR_SECTOR,THD_COORDINATOR,
+                TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy'),
+                TH_TRAINING_VENUE,TH_TRAINING_COUNTRY,TH_DATE_FROM,TH_MAX_PARTICIPANT
+                UNION
+                SELECT TH_REF_ID,TH_TRAINING_TITLE,THD_COORDINATOR_SECTOR LEVEL2,THD_COORDINATOR,
+                TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy') TH_DATE,
+                TH_TRAINING_VENUE,TH_TRAINING_COUNTRY,TH_MAX_PARTICIPANT,
+                TH_DATE_FROM,COUNT(STH_STAFF_ID) STH_TOTAL
+                FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,TRAINING_HEAD_DETL,STAFF_TRAINING_DETL
+                WHERE TH_REF_ID=STH_TRAINING_REFID
+                AND TH_STATUS = 'APPROVE'
+                AND STH_STATUS = 'APPROVE'
+                AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+                AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
+                AND STH_TRAINING_REFID = STD_TRAINING_REFID
+                AND STH_STAFF_ID = STD_STAFF_ID
+                AND STD_ATTEND IN ('Y','A')
+                AND TH_REF_ID = THD_REF_ID
+                AND TH_CATEGORY <> 'AKEPT'
+                AND ($P{P_OPTION} IS NULL OR ($P{P_OPTION} IS NOT NULL AND TH_INTERNAL_EXTERNAL = NVL($P{P_OPTION},'INTERNAL')))
+                AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{TRAINING_YEAR}
+                AND (TH_DATE_FROM BETWEEN TO_DATE($P{TRAINING_MONTH},'mm/yyyy')
+                AND LAST_DAY(TO_DATE($P{TRAINING_MONTH2},'mm/yyyy')))
+                AND ($P{P_PTJ} IS NULL OR ($P{P_PTJ} IS NOT NULL AND TH_ORGANIZER_NAME = $P{P_PTJ}))
+                AND ($P{SECTOR} IS NULL OR ($P{SECTOR} IS NOT NULL AND THD_COORDINATOR_SECTOR  = $P{SECTOR}))
+                AND ($P{COORDINATOR} IS NULL OR ($P{COORDINATOR} IS NOT NULL AND THD_COORDINATOR  = $P{COORDINATOR}))
+                AND STH_PARTICIPANT_ROLE = 'D'
+                GROUP BY TH_REF_ID,TH_TRAINING_TITLE,THD_COORDINATOR_SECTOR,THD_COORDINATOR,
+                TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy'),
+                TH_TRAINING_VENUE,TH_TRAINING_COUNTRY,TH_DATE_FROM,TH_MAX_PARTICIPANT
+                )
+            )
+        )
+    )
+)]]>
+		</queryString>
+		<field name="TOTAL_TAWARAN" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="TOTAL_TAWARAN"/>
+		</field>
+		<field name="TOTAL_HADIR" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="TOTAL_HADIR"/>
+		</field>
+		<field name="TOTAL_THADIR" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="TOTAL_THADIR"/>
+		</field>
+		<field name="TOTAL_PERCENT_HADIR" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="TOTAL_PERCENT_HADIR"/>
+		</field>
+		<field name="TOTAL_PERCENT_THADIR" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="TOTAL_PERCENT_THADIR"/>
 		</field>
 	</subDataset>
 	<parameter name="COORDINATOR" class="java.lang.String"/>
@@ -426,25 +563,6 @@ FROM DUAL]]>
 	<field name="YEAR_TO" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="YEAR_TO"/>
 	</field>
-	<variable name="total_tawaran_nonbitara" class="java.math.BigDecimal"/>
-	<variable name="total_tawaran_bitara" class="java.math.BigDecimal"/>
-	<variable name="total_hadir_bitara" class="java.math.BigDecimal" calculation="Sum"/>
-	<variable name="total_peratus_hadir_b" class="java.math.BigDecimal" calculation="Sum"/>
-	<variable name="total_thadir_bitara" class="java.math.BigDecimal" calculation="Sum"/>
-	<variable name="total_peratus_thadir_bitara" class="java.math.BigDecimal" calculation="Sum"/>
-	<variable name="total_hadir_nbitara" class="java.math.BigDecimal" calculation="Sum"/>
-	<variable name="total_peratus_hadir_nb" class="java.math.BigDecimal" calculation="Sum"/>
-	<variable name="total_thadir_nbitara" class="java.math.BigDecimal" calculation="Sum"/>
-	<variable name="total_peratus_thadir_nbitara" class="java.math.BigDecimal" calculation="Sum"/>
-	<variable name="big_total_tawaran" class="java.math.BigDecimal" resetType="None" calculation="Sum">
-		<variableExpression><![CDATA[$V{total_tawaran_nonbitara}]]></variableExpression>
-	</variable>
-	<variable name="big_total_hadir" class="java.math.BigDecimal" resetType="None">
-		<variableExpression><![CDATA[($V{total_hadir_bitara}==null?0:$V{total_hadir_bitara})+($V{total_hadir_nbitara}==null?0:$V{total_hadir_nbitara})]]></variableExpression>
-	</variable>
-	<variable name="big_total_thadir" class="java.math.BigDecimal" resetType="None">
-		<variableExpression><![CDATA[($V{total_thadir_bitara}==null?0:$V{total_thadir_bitara})+($V{total_thadir_nbitara}==null?0:$V{total_thadir_nbitara})]]></variableExpression>
-	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -787,7 +905,7 @@ $P{P_OPTION}=="EXTERNAL_AGENCY"?"Agensi Luar":"Semua"]]></textFieldExpression>
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="110" splitType="Immediate">
+		<band height="111" splitType="Immediate">
 			<frame borderSplitType="DrawBorders">
 				<reportElement x="0" y="0" width="810" height="40" isRemoveLineWhenBlank="true" uuid="c57cb422-44b1-4ede-bafc-08685eb1426a"/>
 				<box>
@@ -824,11 +942,6 @@ $P{P_OPTION}=="EXTERNAL_AGENCY"?"Agensi Luar":"Semua"]]></textFieldExpression>
 									<datasetParameterExpression><![CDATA[$P{P_PTJ}]]></datasetParameterExpression>
 								</datasetParameter>
 								<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-								<returnValue fromVariable="total_tawaran_bitara" toVariable="total_tawaran_bitara"/>
-								<returnValue fromVariable="total_hadir_bitara" toVariable="total_hadir_bitara"/>
-								<returnValue fromVariable="total_peratus_hadir_b" toVariable="total_peratus_hadir_b"/>
-								<returnValue fromVariable="total_thadir_bitara" toVariable="total_thadir_bitara"/>
-								<returnValue fromVariable="total_peratus_thadir_bitara" toVariable="total_peratus_thadir_bitara"/>
 							</datasetRun>
 							<jr:listContents height="40" width="640">
 								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
@@ -1156,11 +1269,6 @@ $P{P_OPTION}=="EXTERNAL_AGENCY"?"Agensi Luar":"Semua"]]></textFieldExpression>
 							<datasetParameterExpression><![CDATA[$P{TRAINING_YEAR}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-						<returnValue fromVariable="total_tawaran_nonbitara" toVariable="total_tawaran_nonbitara"/>
-						<returnValue fromVariable="total_hadir_nbitara" toVariable="total_hadir_nbitara"/>
-						<returnValue fromVariable="total_peratus_hadir_nb" toVariable="total_peratus_hadir_nb"/>
-						<returnValue fromVariable="total_thadir_nbitara" toVariable="total_thadir_nbitara"/>
-						<returnValue fromVariable="total_peratus_thadir_nbitara" toVariable="total_peratus_thadir_nbitara"/>
 					</datasetRun>
 					<jr:column width="30" uuid="c79421d6-9e97-4e80-bb60-c133cf6943cc">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
@@ -1442,107 +1550,141 @@ $P{P_OPTION}=="EXTERNAL_AGENCY"?"Agensi Luar":"Semua"]]></textFieldExpression>
 				</jr:table>
 			</componentElement>
 			<frame>
-				<reportElement positionType="Float" x="0" y="70" width="810" height="40" uuid="f9a269f1-0868-4d68-bb22-406d1ab54757"/>
+				<reportElement positionType="Float" x="0" y="70" width="810" height="40" uuid="ce56b5e4-c53d-4b4b-9e08-5a2f20e42c09"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
-				<textField isStretchWithOverflow="true" evaluationTime="Report" isBlankWhenNull="true">
-					<reportElement positionType="Float" x="570" y="0" width="60" height="40" uuid="5adda1c5-b333-404f-bb5f-ea4f711ba19f">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+				<componentElement>
+					<reportElement positionType="Float" x="570" y="0" width="240" height="40" uuid="5037457e-9a8b-4986-aeee-009451873beb">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<box>
-						<pen lineWidth="0.5"/>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Top" markup="html">
-						<font fontName="Arial" isBold="true"/>
-						<paragraph spacingBefore="6" spacingAfter="4"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{big_total_tawaran}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" evaluationTime="Report" isBlankWhenNull="true">
-					<reportElement positionType="Float" x="630" y="0" width="50" height="40" uuid="de1a8ec2-773e-40fb-8652-d0b7ccd4bba5">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					</reportElement>
-					<box>
-						<pen lineWidth="0.5"/>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Top" markup="html">
-						<font fontName="Arial" isBold="true"/>
-						<paragraph spacingBefore="6" spacingAfter="4"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{big_total_hadir}+" orang"]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" evaluationTime="Report" isBlankWhenNull="true">
-					<reportElement positionType="Float" x="680" y="0" width="40" height="40" uuid="37150b4d-8d5f-4ee2-9650-16b05140ab28">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					</reportElement>
-					<box>
-						<pen lineWidth="0.5"/>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Top" markup="html">
-						<font fontName="Arial" isBold="true"/>
-						<paragraph spacingBefore="6" spacingAfter="4"/>
-					</textElement>
-					<textFieldExpression><![CDATA[($V{big_total_hadir} > 0&&$V{big_total_tawaran} > 0?Math.round(($V{big_total_hadir}/$V{big_total_tawaran})*100)+" %":0+" %")]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" evaluationTime="Report" isBlankWhenNull="true">
-					<reportElement positionType="Float" x="720" y="0" width="50" height="40" uuid="8be02096-c732-4819-aa53-4e3e47764aa7">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					</reportElement>
-					<box>
-						<pen lineWidth="0.5"/>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Top" markup="html">
-						<font fontName="Arial" isBold="true"/>
-						<paragraph spacingBefore="6" spacingAfter="4"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{big_total_thadir}+" orang"]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" evaluationTime="Report" isBlankWhenNull="true">
-					<reportElement positionType="Float" x="770" y="0" width="40" height="40" uuid="283b14c8-56e3-4f9c-a966-def0c65175a5">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					</reportElement>
-					<box>
-						<pen lineWidth="0.5"/>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Top" markup="html">
-						<font fontName="Arial" isBold="true"/>
-						<paragraph spacingBefore="6" spacingAfter="4"/>
-					</textElement>
-					<textFieldExpression><![CDATA[($V{big_total_thadir}>0&&$V{big_total_tawaran}>0?Math.round(($V{big_total_thadir}/$V{big_total_tawaran})*100)+" %":0+" %")]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" evaluationTime="Report" isBlankWhenNull="true">
-					<reportElement positionType="Float" x="0" y="0" width="570" height="40" uuid="8a22c9a2-7134-47e2-850c-c614a0f167ce">
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="BIG_TOTAL" uuid="61b04fb7-c735-4d63-8eb4-00ca80d04bc4">
+							<datasetParameter name="COORDINATOR">
+								<datasetParameterExpression><![CDATA[$P{COORDINATOR}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="P_OPTION">
+								<datasetParameterExpression><![CDATA[$P{P_OPTION}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="P_PTJ">
+								<datasetParameterExpression><![CDATA[$P{P_PTJ}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="SECTOR">
+								<datasetParameterExpression><![CDATA[$P{SECTOR}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="TRAINING_MONTH">
+								<datasetParameterExpression><![CDATA[$P{TRAINING_MONTH}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="TRAINING_MONTH2">
+								<datasetParameterExpression><![CDATA[$P{TRAINING_MONTH2}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="TRAINING_YEAR">
+								<datasetParameterExpression><![CDATA[$P{TRAINING_YEAR}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:listContents height="40" width="240">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="60" height="40" uuid="e1ec83dc-b2f1-4b76-854c-d4a2c930cb3f">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Top" markup="html">
+									<font fontName="Arial" isBold="true"/>
+									<paragraph spacingBefore="6" spacingAfter="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{TOTAL_TAWARAN}]]></textFieldExpression>
+							</textField>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="110" y="0" width="40" height="40" uuid="dca7e5fd-955d-499c-86ac-29a69c8a9a9d">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Top" markup="html">
+									<font fontName="Arial" isBold="true"/>
+									<paragraph spacingBefore="6" spacingAfter="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{TOTAL_PERCENT_HADIR}==null?0+" %":$F{TOTAL_PERCENT_HADIR}+" %"]]></textFieldExpression>
+							</textField>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="200" y="0" width="40" height="40" uuid="5f9b0781-3cd7-4818-a309-62d130dbb630">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Top" markup="html">
+									<font fontName="Arial" isBold="true"/>
+									<paragraph spacingBefore="6" spacingAfter="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{TOTAL_PERCENT_THADIR}==null?0+" %":$F{TOTAL_PERCENT_THADIR}+" %"]]></textFieldExpression>
+							</textField>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="150" y="0" width="50" height="40" uuid="d8e4b5f0-7c05-40cb-8e78-e4972e27572b">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Top" markup="html">
+									<font fontName="Arial" isBold="true"/>
+									<paragraph spacingBefore="6" spacingAfter="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{TOTAL_THADIR}==null?0+" orang":$F{TOTAL_THADIR}+" orang"]]></textFieldExpression>
+							</textField>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="60" y="0" width="50" height="40" uuid="d56f82c3-428a-439a-a504-51fb0ffe989a">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Top" markup="html">
+									<font fontName="Arial" isBold="true"/>
+									<paragraph spacingBefore="6" spacingAfter="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{TOTAL_HADIR}==null?0+" orang":$F{TOTAL_HADIR}+" orang"]]></textFieldExpression>
+							</textField>
+						</jr:listContents>
+					</jr:list>
+				</componentElement>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement positionType="Float" x="0" y="0" width="570" height="40" uuid="a6064fc0-082f-4601-a8c4-8ef2e967f0cf">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 						<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
@@ -1550,9 +1692,9 @@ $P{P_OPTION}=="EXTERNAL_AGENCY"?"Agensi Luar":"Semua"]]></textFieldExpression>
 					</reportElement>
 					<box>
 						<pen lineWidth="0.5"/>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Top" markup="html">
