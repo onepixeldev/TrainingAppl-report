@@ -1558,7 +1558,7 @@ $P{P_OPTION}=="EXTERNAL_AGENCY"?"Agensi Luar":"Semua"]]></textFieldExpression>
 					<reportElement positionType="Float" x="570" y="0" width="240" height="40" uuid="5037457e-9a8b-4986-aeee-009451873beb">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 						<datasetRun subDataset="BIG_TOTAL" uuid="61b04fb7-c735-4d63-8eb4-00ca80d04bc4">
 							<datasetParameter name="COORDINATOR">
 								<datasetParameterExpression><![CDATA[$P{COORDINATOR}]]></datasetParameterExpression>
