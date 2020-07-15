@@ -131,7 +131,8 @@
 			<![CDATA[SELECT 'Program Bitara UPSI' BHTITLE,BH_REF_ID,BH_TITLE,
 TO_CHAR(BH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(BH_END_DATE,'dd/mm/yyyy') BH_DATE,
 BH_VENUE,BH_DATE_FROM,COUNT(SB_STAFF_ID) SB_TOTAL,
-INITCAP((TO_CHAR(BH_DATE_FROM, 'fmDD-MON-YY')))BH_DATE_FROM2
+INITCAP((TO_CHAR(BH_DATE_FROM, 'fmDD-MON-')))BH_DATE_FROM2,
+TO_CHAR(BH_DATE_FROM, 'YY')BH_DATE_FROM3
 FROM BITARA_HEAD,STAFF_BITARA
 WHERE BH_REF_ID=SB_REF_ID
 AND SB_STATUS='APPROVED'
@@ -165,6 +166,9 @@ ORDER BY BH_DATE_FROM]]>
 		</field>
 		<field name="BH_DATE_FROM2" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="BH_DATE_FROM2"/>
+		</field>
+		<field name="BH_DATE_FROM3" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="BH_DATE_FROM3"/>
 		</field>
 	</subDataset>
 	<subDataset name="PROG_LIST_NOT_BITARA" uuid="fb99b636-3555-49ea-b8b7-606b771b3607">
@@ -203,7 +207,8 @@ ORDER BY BH_DATE_FROM]]>
     TH_DATE_FROM,
     STH_TOTAL,
     TH_TRAINING_COUNTRY,
-    INITCAP(TO_CHAR(TH_DATE_FROM, 'fmDD-MON-YY')) TH_DATE_FROM2
+    INITCAP(TO_CHAR(TH_DATE_FROM, 'fmDD-MON-')) TH_DATE_FROM2,
+    TO_CHAR(TH_DATE_FROM, 'YY') TH_DATE_FROM3
     FROM (
     SELECT
     TH_TRAINING_TITLE,
@@ -297,6 +302,9 @@ ORDER BY BH_DATE_FROM]]>
 		</field>
 		<field name="TH_DATE_FROM2" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="TH_DATE_FROM2"/>
+		</field>
+		<field name="TH_DATE_FROM3" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="TH_DATE_FROM3"/>
 		</field>
 	</subDataset>
 	<subDataset name="summary" uuid="392ac4c2-3b3d-4521-ac96-d5a273721b30">
@@ -515,7 +523,7 @@ FROM DUAL]]>
 								<textElement textAlignment="Right">
 									<font fontName="Calibri" size="11"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{TH_DATE_FROM2}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{TH_DATE_FROM2}+$F{TH_DATE_FROM3}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -843,7 +851,7 @@ FROM DUAL]]>
 								<textElement textAlignment="Right">
 									<font fontName="Calibri" size="11"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{BH_DATE_FROM2}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{BH_DATE_FROM2}+$F{BH_DATE_FROM3}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

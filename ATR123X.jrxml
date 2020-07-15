@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR123X_EXP3" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="8527b728-47bd-43b8-9d3b-09782289442d">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
@@ -236,7 +236,8 @@ TH_DATE_FROM,
 THD_COORDINATOR,
 LEVEL2,
 TH_TRAINING_COUNTRY,
-INITCAP(TO_CHAR(TH_DATE_FROM, 'fmDD-MON-YY')) TH_DATE_FROM2
+INITCAP(TO_CHAR(TH_DATE_FROM, 'fmDD-MON-')) TH_DATE_FROM2,
+TO_CHAR(TH_DATE_FROM, 'YY') TH_DATE_FROM3
 FROM
 (
     SELECT TH_REF_ID,TH_TRAINING_TITLE,LEVEL2,TH_DATE,TH_TRAINING_VENUE,TH_TRAINING_COUNTRY,TH_MAX_PARTICIPANT,THD_COORDINATOR,
@@ -258,7 +259,7 @@ FROM
     AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{TRAINING_YEAR}
     AND (TH_DATE_FROM BETWEEN TO_DATE($P{TRAINING_MONTH},'mm/yyyy')
     AND LAST_DAY(TO_DATE($P{TRAINING_MONTH2},'mm/yyyy')))
-    AND (($P{P_PTJ} IS NOT NULL AND TH_ORGANIZER_NAME = $P{P_PTJ}) OR TH_ORGANIZER_NAME IS NOT NULL)
+    AND ($P{P_PTJ} IS NULL OR ($P{P_PTJ} IS NOT NULL AND TH_ORGANIZER_NAME = $P{P_PTJ}))
     AND ($P{SECTOR} IS NULL OR ($P{SECTOR} IS NOT NULL AND THD_COORDINATOR_SECTOR  = $P{SECTOR}))
     AND ($P{COORDINATOR} IS NULL OR ($P{COORDINATOR} IS NOT NULL AND THD_COORDINATOR  = $P{COORDINATOR}))
     AND STH_PARTICIPANT_ROLE = 'D'
@@ -281,7 +282,7 @@ FROM
     AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{TRAINING_YEAR}
     AND (TH_DATE_FROM BETWEEN TO_DATE($P{TRAINING_MONTH},'mm/yyyy')
     AND LAST_DAY(TO_DATE($P{TRAINING_MONTH2},'mm/yyyy')))
-    AND (($P{P_PTJ} IS NOT NULL AND TH_ORGANIZER_NAME = $P{P_PTJ}) OR TH_ORGANIZER_NAME IS NOT NULL)
+    AND ($P{P_PTJ} IS NULL OR ($P{P_PTJ} IS NOT NULL AND TH_ORGANIZER_NAME = $P{P_PTJ}))
     AND ($P{SECTOR} IS NULL OR ($P{SECTOR} IS NOT NULL AND THD_COORDINATOR_SECTOR  = $P{SECTOR}))
     AND ($P{COORDINATOR} IS NULL OR ($P{COORDINATOR} IS NOT NULL AND THD_COORDINATOR  = $P{COORDINATOR}))
     AND STH_PARTICIPANT_ROLE = 'D'
@@ -308,7 +309,7 @@ FROM
     AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{TRAINING_YEAR}
     AND (TH_DATE_FROM BETWEEN TO_DATE($P{TRAINING_MONTH},'mm/yyyy')
     AND LAST_DAY(TO_DATE($P{TRAINING_MONTH2},'mm/yyyy')))
-    AND (($P{P_PTJ} IS NOT NULL AND TH_ORGANIZER_NAME = $P{P_PTJ}) OR TH_ORGANIZER_NAME IS NOT NULL)
+    AND ($P{P_PTJ} IS NULL OR ($P{P_PTJ} IS NOT NULL AND TH_ORGANIZER_NAME = $P{P_PTJ}))
     AND ($P{SECTOR} IS NULL OR ($P{SECTOR} IS NOT NULL AND THD_COORDINATOR_SECTOR  = $P{SECTOR}))
     AND ($P{COORDINATOR} IS NULL OR ($P{COORDINATOR} IS NOT NULL AND THD_COORDINATOR  = $P{COORDINATOR}))
     AND STH_PARTICIPANT_ROLE = 'D'
@@ -380,6 +381,9 @@ ORDER BY TH_DATE_FROM]]>
 		</field>
 		<field name="TH_DATE_FROM2" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="TH_DATE_FROM2"/>
+		</field>
+		<field name="TH_DATE_FROM3" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="TH_DATE_FROM3"/>
 		</field>
 	</subDataset>
 	<subDataset name="ANJURAN" uuid="6aad5772-60d3-4339-b947-b34fdfc258c8">
@@ -1136,7 +1140,7 @@ ORDER BY TH_DATE_FROM]]>
 								<textElement>
 									<font fontName="Calibri" size="11"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{TH_DATE_FROM2}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{TH_DATE_FROM2}+$F{TH_DATE_FROM3}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
