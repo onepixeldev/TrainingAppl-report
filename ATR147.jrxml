@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR147" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="913cd930-f27a-41dc-aa62-d71a6a5fb952">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="P_TH_DATE_FROM" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT TH_REF_ID,UPPER(TH_TRAINING_TITLE) TH_TRAINING_TITLE,
+TO_CHAR(TH_DATE_FROM,'dd-mm-yyyy') TH_DATE_FROM, TO_CHAR(TH_DATE_TO,'dd-mm-yyyy') TH_DATE_TO,
+STH_STAFF_ID,TM_TITLE_DESC||' '||SM_STAFF_NAME SM_STAFF_NAME,SM_DEPT_CODE, SS_SERVICE_DESC,SS_SALARY_GRADE,DM_DEPT_DESC,
+STH_STATUS
+FROM STAFF_TRAINING_HEAD,STAFF_MAIN,TRAINING_HEAD,TRAINING_TYPE,DEPARTMENT_MAIN, COUNTRY_MAIN, SERVICE_GROUP,STATE_MAIN, SERVICE_SCHEME,TITLE_MAIN
+WHERE SM_STAFF_ID = STH_STAFF_ID
+AND DM_DEPT_CODE = SM_DEPT_CODE
+AND SM_JOB_CODE = SS_SERVICE_CODE
+AND SM_STAS_TITLE = TM_TITLE_CODE
+AND TH_REF_ID = STH_TRAINING_REFID
+AND TH_TRAINING_COUNTRY=CM_COUNTRY_CODE
+AND SM_STATE_CODE(+)=TH_TRAINING_STATE
+AND SG_GROUP_CODE(+)=TH_SERVICE_GROUP
+AND TT_CODE(+) = TH_TYPE
+AND ($P{P_TH_DATE_FROM} IS NULL OR ($P{P_TH_DATE_FROM} IS NOT NULL AND (TO_CHAR(TH_DATE_FROM,'yyyy') = $P{P_TH_DATE_FROM} OR TO_CHAR(TH_DATE_FROM,'mm-yyyy') = $P{P_TH_DATE_FROM} OR TO_CHAR(TH_DATE_FROM,'dd-mm-yyyy') = $P{P_TH_DATE_FROM})))
+ORDER BY TH_REF_ID, STH_STAFF_ID  ]]>
+	</queryString>
+	<field name="TH_REF_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TH_REF_ID"/>
+	</field>
+	<field name="TH_TRAINING_TITLE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TH_TRAINING_TITLE"/>
+	</field>
+	<field name="TH_DATE_FROM" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TH_DATE_FROM"/>
+	</field>
+	<field name="TH_DATE_TO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TH_DATE_TO"/>
+	</field>
+	<field name="STH_STAFF_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STH_STAFF_ID"/>
+	</field>
+	<field name="SM_STAFF_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SM_STAFF_NAME"/>
+	</field>
+	<field name="SM_DEPT_CODE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SM_DEPT_CODE"/>
+	</field>
+	<field name="SS_SERVICE_DESC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SS_SERVICE_DESC"/>
+	</field>
+	<field name="SS_SALARY_GRADE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SS_SALARY_GRADE"/>
+	</field>
+	<field name="DM_DEPT_DESC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DM_DEPT_DESC"/>
+	</field>
+	<field name="STH_STATUS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STH_STATUS"/>
+	</field>
+	<group name="Group1" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{TH_REF_ID}]]></groupExpression>
+		<groupHeader>
+			<band height="66">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="0" y="0" width="310" height="30" uuid="9c800ced-4585-4d83-b6f2-db0ab42a7273"/>
+					<textElement>
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{TH_TRAINING_TITLE}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="125" splitType="Prevent"/>
+	</detail>
+</jasperReport>
