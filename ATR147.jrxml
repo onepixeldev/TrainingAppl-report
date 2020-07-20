@@ -9,7 +9,7 @@
 TO_CHAR(TH_DATE_FROM,'dd-mm-yyyy') TH_DATE_FROM, TO_CHAR(TH_DATE_TO,'dd-mm-yyyy') TH_DATE_TO,
 STH_STAFF_ID,TM_TITLE_DESC||' '||SM_STAFF_NAME SM_STAFF_NAME,SM_DEPT_CODE, SS_SERVICE_DESC,SS_SALARY_GRADE,DM_DEPT_DESC,
 STH_STATUS
-FROM STAFF_TRAINING_HEAD,STAFF_MAIN,TRAINING_HEAD,TRAINING_TYPE,DEPARTMENT_MAIN, COUNTRY_MAIN, SERVICE_GROUP,STATE_MAIN, SERVICE_SCHEME,TITLE_MAIN
+FROM STAFF_TRAINING_HEAD STHA,STAFF_MAIN,TRAINING_HEAD THA,TRAINING_TYPE,DEPARTMENT_MAIN, COUNTRY_MAIN, SERVICE_GROUP,STATE_MAIN, SERVICE_SCHEME,TITLE_MAIN
 WHERE SM_STAFF_ID = STH_STAFF_ID
 AND DM_DEPT_CODE = SM_DEPT_CODE
 AND SM_JOB_CODE = SS_SERVICE_CODE
@@ -19,8 +19,20 @@ AND TH_TRAINING_COUNTRY=CM_COUNTRY_CODE
 AND SM_STATE_CODE(+)=TH_TRAINING_STATE
 AND SG_GROUP_CODE(+)=TH_SERVICE_GROUP
 AND TT_CODE(+) = TH_TYPE
+AND STH_STAFF_ID IN (
+SELECT STH1.STH_STAFF_ID
+FROM TRAINING_HEAD TH1,STAFF_TRAINING_HEAD STH1
+WHERE TH1.TH_STATUS = 'APPROVE'
+AND STH1.STH_STATUS = 'APPROVE'
+AND STH1.STH_TRAINING_REFID = TH1.TH_REF_ID
+AND TH1.TH_REF_ID IS NOT NULL  
+AND TH1.TH_DATE_FROM IS NOT NULL
+AND ($P{P_TH_DATE_FROM} IS NULL OR ($P{P_TH_DATE_FROM} IS NOT NULL AND (TO_CHAR(TH1.TH_DATE_FROM,'yyyy') = $P{P_TH_DATE_FROM} OR TO_CHAR(TH1.TH_DATE_FROM,'mm-yyyy') = $P{P_TH_DATE_FROM} OR TO_CHAR(TH1.TH_DATE_FROM,'dd-mm-yyyy') = $P{P_TH_DATE_FROM})))
+GROUP BY STH1.STH_STAFF_ID
+HAVING COUNT(TH1.TH_REF_ID) >1
+)
 AND ($P{P_TH_DATE_FROM} IS NULL OR ($P{P_TH_DATE_FROM} IS NOT NULL AND (TO_CHAR(TH_DATE_FROM,'yyyy') = $P{P_TH_DATE_FROM} OR TO_CHAR(TH_DATE_FROM,'mm-yyyy') = $P{P_TH_DATE_FROM} OR TO_CHAR(TH_DATE_FROM,'dd-mm-yyyy') = $P{P_TH_DATE_FROM})))
-ORDER BY TH_REF_ID, STH_STAFF_ID  ]]>
+ORDER BY TH_REF_ID,STH_STAFF_ID]]>
 	</queryString>
 	<field name="TH_REF_ID" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="TH_REF_ID"/>
@@ -73,6 +85,57 @@ ORDER BY TH_REF_ID, STH_STAFF_ID  ]]>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="125" splitType="Prevent"/>
+		<band height="30" splitType="Prevent">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="50" y="0" width="100" height="30" uuid="c0100d46-f40b-4c69-b471-2b8b0ba72313"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STH_STAFF_ID}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="150" y="0" width="100" height="30" uuid="1ea6d7cf-f579-4d53-941e-1ab550744465"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SM_STAFF_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="250" y="0" width="100" height="30" uuid="a5b288ad-678b-40f1-b066-ce800bbdcd95"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SS_SERVICE_DESC}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="350" y="0" width="100" height="30" uuid="69fd63fc-9bca-4318-8ce4-0c2390183a12"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DM_DEPT_DESC}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="450" y="0" width="100" height="30" uuid="1f9e8932-4615-48d7-856b-010587a4f4f9"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STH_STATUS}]]></textFieldExpression>
+			</textField>
+		</band>
 	</detail>
 </jasperReport>

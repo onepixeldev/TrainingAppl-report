@@ -3,6 +3,10 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR123" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bf536f7a-1256-4c37-8d3b-bce6d7103a0a">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
+	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/ATR123_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/ATR123"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -905,7 +909,7 @@ $P{P_OPTION}=="EXTERNAL_AGENCY"?"Agensi Luar":"Semua"]]></textFieldExpression>
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="111" splitType="Immediate">
+		<band height="111" splitType="Prevent">
 			<frame borderSplitType="DrawBorders">
 				<reportElement x="0" y="0" width="810" height="40" isRemoveLineWhenBlank="true" uuid="c57cb422-44b1-4ede-bafc-08685eb1426a"/>
 				<box>
@@ -921,7 +925,7 @@ $P{P_OPTION}=="EXTERNAL_AGENCY"?"Agensi Luar":"Semua"]]></textFieldExpression>
 						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<componentElement>
-						<reportElement x="0" y="0" width="640" height="40" isRemoveLineWhenBlank="true" uuid="a5523bff-7e62-4e7d-8b8b-8ebb077ffb0d">
+						<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="640" height="40" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="a5523bff-7e62-4e7d-8b8b-8ebb077ffb0d">
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						</reportElement>
 						<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
@@ -1190,7 +1194,7 @@ $P{P_OPTION}=="EXTERNAL_AGENCY"?"Agensi Luar":"Semua"]]></textFieldExpression>
 						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<componentElement>
-						<reportElement x="0" y="0" width="140" height="40" isRemoveLineWhenBlank="true" uuid="b339a966-5069-4d7e-afad-e333e24d67e3">
+						<reportElement x="0" y="0" width="140" height="40" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="b339a966-5069-4d7e-afad-e333e24d67e3">
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						</reportElement>
