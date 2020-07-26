@@ -73,16 +73,16 @@
 			<![CDATA[SELECT DEPARTMENT,
 DM_DEPT_CODE1,
 COALESCE(BIL_STAFF, 0) BIL_STAFF,
-COALESCE(BIL_HADIR_BITARA, 0) BIL_HADIR_BITARA,
+COALESCE(BIL_HADIR_ORENTASI, 0) BIL_HADIR_ORENTASI,
 CASE 
 WHEN COALESCE(BIL_STAFF, 0) = 0 THEN 0
-ELSE ROUND((COALESCE(BIL_HADIR_BITARA, 0)/COALESCE(BIL_STAFF, 0))*100,0)
-END PERATUS_HADIR_BITARA,
-(COALESCE(BIL_STAFF, 0) - COALESCE(BIL_HADIR_BITARA, 0)) BIL_TIDAK_HADIR_BITARA,
+ELSE ROUND((COALESCE(BIL_HADIR_ORENTASI, 0)/COALESCE(BIL_STAFF, 0))*100,0)
+END PERATUS_HADIR_ORENTASI,
+(COALESCE(BIL_STAFF, 0) - COALESCE(BIL_HADIR_ORENTASI, 0)) BIL_TIDAK_HADIR_ORENTASI,
 CASE 
 WHEN COALESCE(BIL_STAFF, 0) = 0 THEN 0
-ELSE ROUND(((COALESCE(BIL_STAFF, 0) - COALESCE(BIL_HADIR_BITARA, 0))/COALESCE(BIL_STAFF, 0))*100,0)
-END PERATUS_TIDAK_HADIR_BITARA
+ELSE ROUND(((COALESCE(BIL_STAFF, 0) - COALESCE(BIL_HADIR_ORENTASI, 0))/COALESCE(BIL_STAFF, 0))*100,0)
+END PERATUS_TIDAK_HADIR_ORENTASI
 FROM
 (
     SELECT (DM_DEPT_DESC||CHR(10)||'( '||DM_DEPT_CODE||' ) ')DEPARTMENT,DM_DEPT_CODE DM_DEPT_CODE1
@@ -104,53 +104,37 @@ LEFT JOIN
 ) ON SM_DEPT_CODE = DM_DEPT_CODE1
 LEFT JOIN 
 (
-    SELECT COUNT(1) BIL_HADIR_BITARA, SM_DEPT_CODE SM_DEPT_CODE2
+    SELECT COUNT(1) BIL_HADIR_ORENTASI, SM_DEPT_CODE SM_DEPT_CODE2
     FROM 
     (
-        SELECT SB_STAFF_ID, SM_DEPT_CODE
-        FROM BITARA_HEAD,STAFF_BITARA,STAFF_MAIN,STAFF_STATUS,DEPARTMENT_MAIN
-        WHERE BH_REF_ID = SB_REF_ID
-        AND SM_STAFF_TYPE = 'STAFF'
-        AND SM_STAFF_STATUS = SS_STATUS_CODE
-        AND SM_STAFF_STATUS = '01'
-        AND SS_STATUS_STS = 'ACTIVE'
-        AND SB_STATUS='APPROVED'
-        AND SB_ATTENDANCE='Y'
-        AND SM_STAFF_ID = SB_STAFF_ID
-        AND SM_DEPT_CODE = DM_DEPT_CODE
-        UNION
-        SELECT STH_STAFF_ID SB_STAFF_ID, SM_DEPT_CODE
-        FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,TRAINING_TYPE,STAFF_MAIN,STAFF_STATUS,DEPARTMENT_MAIN
+        SELECT STH_STAFF_ID, SM_DEPT_CODE
+        FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,STAFF_MAIN,STAFF_STATUS,DEPARTMENT_MAIN
         WHERE TH_REF_ID = STH_TRAINING_REFID
         AND SM_STAFF_TYPE = 'STAFF'
         AND SM_STAFF_STATUS = SS_STATUS_CODE
         AND SM_STAFF_STATUS = '01'
         AND SS_STATUS_STS = 'ACTIVE'
-        AND TH_TYPE = TT_CODE
         AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
-        AND TH_STATUS='APPROVE'
-        AND STH_STATUS='APPROVE'
-        AND (UPPER(TT_DESC) = 'BITARA' OR UPPER(TH_TRAINING_TITLE) LIKE UPPER('%BITARA%'))
-        AND UPPER(TH_CATEGORY) = 'PERKHIDMATAN'
+        AND TH_STATUS = 'APPROVE'
+        AND STH_STATUS = 'APPROVE'
+        AND TH_TRAINING_TITLE LIKE ('%Orientasi%')
         AND SM_STAFF_ID = STH_STAFF_ID
         AND SM_DEPT_CODE = DM_DEPT_CODE
         UNION
-        SELECT STH_STAFF_ID SB_STAFF_ID, SM_DEPT_CODE
-        FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,TRAINING_TYPE,STAFF_MAIN,STAFF_STATUS,DEPARTMENT_MAIN,STAFF_TRAINING_DETL
+        SELECT STH_STAFF_ID, SM_DEPT_CODE
+        FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,STAFF_MAIN,STAFF_STATUS,DEPARTMENT_MAIN,STAFF_TRAINING_DETL
         WHERE TH_REF_ID = STH_TRAINING_REFID
         AND SM_STAFF_TYPE = 'STAFF'
         AND SM_STAFF_STATUS = SS_STATUS_CODE
         AND SM_STAFF_STATUS = '01'
         AND SS_STATUS_STS = 'ACTIVE'
-        AND TH_TYPE = TT_CODE
         AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
         AND STH_TRAINING_REFID = STD_TRAINING_REFID
         AND STH_STAFF_ID = STD_STAFF_ID
         AND STD_ATTEND IN ('Y','A')
-        AND TH_STATUS='APPROVE'
-        AND STH_STATUS='APPROVE'
-        AND (UPPER(TT_DESC) = 'BITARA' OR UPPER(TH_TRAINING_TITLE) LIKE UPPER('%BITARA%'))
-        AND UPPER(TH_CATEGORY) = 'PERKHIDMATAN'
+        AND TH_STATUS = 'APPROVE'
+        AND STH_STATUS = 'APPROVE'
+        AND TH_TRAINING_TITLE LIKE ('%Orientasi%')
         AND SM_STAFF_ID = STH_STAFF_ID
         AND SM_DEPT_CODE = DM_DEPT_CODE
     ) GROUP BY SM_DEPT_CODE
@@ -165,17 +149,17 @@ LEFT JOIN
 		<field name="BIL_STAFF" class="java.math.BigDecimal">
 			<property name="com.jaspersoft.studio.field.label" value="BIL_STAFF"/>
 		</field>
-		<field name="BIL_HADIR_BITARA" class="java.math.BigDecimal">
-			<property name="com.jaspersoft.studio.field.label" value="BIL_HADIR_BITARA"/>
+		<field name="BIL_HADIR_ORENTASI" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="BIL_HADIR_ORENTASI"/>
 		</field>
-		<field name="PERATUS_HADIR_BITARA" class="java.math.BigDecimal">
-			<property name="com.jaspersoft.studio.field.label" value="PERATUS_HADIR_BITARA"/>
+		<field name="PERATUS_HADIR_ORENTASI" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="PERATUS_HADIR_ORENTASI"/>
 		</field>
-		<field name="BIL_TIDAK_HADIR_BITARA" class="java.math.BigDecimal">
-			<property name="com.jaspersoft.studio.field.label" value="BIL_TIDAK_HADIR_BITARA"/>
+		<field name="BIL_TIDAK_HADIR_ORENTASI" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="BIL_TIDAK_HADIR_ORENTASI"/>
 		</field>
-		<field name="PERATUS_TIDAK_HADIR_BITARA" class="java.math.BigDecimal">
-			<property name="com.jaspersoft.studio.field.label" value="PERATUS_TIDAK_HADIR_BITARA"/>
+		<field name="PERATUS_TIDAK_HADIR_ORENTASI" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="PERATUS_TIDAK_HADIR_ORENTASI"/>
 		</field>
 	</subDataset>
 	<subDataset name="SUM_BITARA" uuid="35e14d9a-a77d-4b60-b03a-d4171bae793e">
@@ -184,25 +168,25 @@ LEFT JOIN
 		<queryString>
 			<![CDATA[SELECT 
 SUM(BIL_STAFF) SUM_STAFF,
-SUM(BIL_HADIR_BITARA) SUM_HADIR,
-(ROUND((SUM(BIL_HADIR_BITARA)/SUM(BIL_STAFF))*100,0)) PERATUS_BESAR_HADIR,
-SUM(BIL_TIDAK_HADIR_BITARA) SUM_TIDAK_HADIR,
-(ROUND((SUM(BIL_TIDAK_HADIR_BITARA)/SUM(BIL_STAFF))*100,0)) PERATUS_BESAR_TIDAK_HADIR
+SUM(BIL_HADIR_ORENTASI) SUM_HADIR,
+(ROUND((SUM(BIL_HADIR_ORENTASI)/SUM(BIL_STAFF))*100,0)) PERATUS_BESAR_HADIR,
+SUM(BIL_TIDAK_HADIR_ORENTASI) SUM_TIDAK_HADIR,
+(ROUND((SUM(BIL_TIDAK_HADIR_ORENTASI)/SUM(BIL_STAFF))*100,0)) PERATUS_BESAR_TIDAK_HADIR
 FROM
 (
     SELECT DEPARTMENT,
     DM_DEPT_CODE1,
     COALESCE(BIL_STAFF, 0) BIL_STAFF,
-    COALESCE(BIL_HADIR_BITARA, 0) BIL_HADIR_BITARA,
+    COALESCE(BIL_HADIR_ORENTASI, 0) BIL_HADIR_ORENTASI,
     CASE 
     WHEN COALESCE(BIL_STAFF, 0) = 0 THEN 0
-    ELSE ROUND((COALESCE(BIL_HADIR_BITARA, 0)/COALESCE(BIL_STAFF, 0))*100,0)
-    END PERATUS_HADIR_BITARA,
-    (COALESCE(BIL_STAFF, 0) - COALESCE(BIL_HADIR_BITARA, 0)) BIL_TIDAK_HADIR_BITARA,
+    ELSE ROUND((COALESCE(BIL_HADIR_ORENTASI, 0)/COALESCE(BIL_STAFF, 0))*100,0)
+    END PERATUS_HADIR_ORENTASI,
+    (COALESCE(BIL_STAFF, 0) - COALESCE(BIL_HADIR_ORENTASI, 0)) BIL_TIDAK_HADIR_ORENTASI,
     CASE 
     WHEN COALESCE(BIL_STAFF, 0) = 0 THEN 0
-    ELSE ROUND(((COALESCE(BIL_STAFF, 0) - COALESCE(BIL_HADIR_BITARA, 0))/COALESCE(BIL_STAFF, 0))*100,0)
-    END PERATUS_TIDAK_HADIR_BITARA
+    ELSE ROUND(((COALESCE(BIL_STAFF, 0) - COALESCE(BIL_HADIR_ORENTASI, 0))/COALESCE(BIL_STAFF, 0))*100,0)
+    END PERATUS_TIDAK_HADIR_ORENTASI
     FROM
     (
         SELECT (DM_DEPT_DESC||CHR(10)||'( '||DM_DEPT_CODE||' ) ')DEPARTMENT,DM_DEPT_CODE DM_DEPT_CODE1
@@ -224,53 +208,37 @@ FROM
     ) ON SM_DEPT_CODE = DM_DEPT_CODE1
     LEFT JOIN 
     (
-        SELECT COUNT(1) BIL_HADIR_BITARA, SM_DEPT_CODE SM_DEPT_CODE2
+        SELECT COUNT(1) BIL_HADIR_ORENTASI, SM_DEPT_CODE SM_DEPT_CODE2
         FROM 
         (
-            SELECT SB_STAFF_ID, SM_DEPT_CODE
-            FROM BITARA_HEAD,STAFF_BITARA,STAFF_MAIN,STAFF_STATUS,DEPARTMENT_MAIN
-            WHERE BH_REF_ID = SB_REF_ID
-            AND SM_STAFF_TYPE = 'STAFF'
-            AND SM_STAFF_STATUS = SS_STATUS_CODE
-            AND SM_STAFF_STATUS = '01'
-            AND SS_STATUS_STS = 'ACTIVE'
-            AND SB_STATUS='APPROVED'
-            AND SB_ATTENDANCE='Y'
-            AND SM_STAFF_ID = SB_STAFF_ID
-            AND SM_DEPT_CODE = DM_DEPT_CODE
-            UNION
-            SELECT STH_STAFF_ID SB_STAFF_ID, SM_DEPT_CODE
-            FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,TRAINING_TYPE,STAFF_MAIN,STAFF_STATUS,DEPARTMENT_MAIN
+            SELECT STH_STAFF_ID, SM_DEPT_CODE
+            FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,STAFF_MAIN,STAFF_STATUS,DEPARTMENT_MAIN
             WHERE TH_REF_ID = STH_TRAINING_REFID
             AND SM_STAFF_TYPE = 'STAFF'
             AND SM_STAFF_STATUS = SS_STATUS_CODE
             AND SM_STAFF_STATUS = '01'
             AND SS_STATUS_STS = 'ACTIVE'
-            AND TH_TYPE = TT_CODE
             AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
-            AND TH_STATUS='APPROVE'
-            AND STH_STATUS='APPROVE'
-            AND (UPPER(TT_DESC) = 'BITARA' OR UPPER(TH_TRAINING_TITLE) LIKE UPPER('%BITARA%'))
-            AND UPPER(TH_CATEGORY) = 'PERKHIDMATAN'
+            AND TH_STATUS = 'APPROVE'
+            AND STH_STATUS = 'APPROVE'
+            AND TH_TRAINING_TITLE LIKE ('%Orientasi%')
             AND SM_STAFF_ID = STH_STAFF_ID
             AND SM_DEPT_CODE = DM_DEPT_CODE
             UNION
-            SELECT STH_STAFF_ID SB_STAFF_ID, SM_DEPT_CODE
-            FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,TRAINING_TYPE,STAFF_MAIN,STAFF_STATUS,DEPARTMENT_MAIN,STAFF_TRAINING_DETL
+            SELECT STH_STAFF_ID, SM_DEPT_CODE
+            FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,STAFF_MAIN,STAFF_STATUS,DEPARTMENT_MAIN,STAFF_TRAINING_DETL
             WHERE TH_REF_ID = STH_TRAINING_REFID
             AND SM_STAFF_TYPE = 'STAFF'
             AND SM_STAFF_STATUS = SS_STATUS_CODE
             AND SM_STAFF_STATUS = '01'
             AND SS_STATUS_STS = 'ACTIVE'
-            AND TH_TYPE = TT_CODE
             AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
             AND STH_TRAINING_REFID = STD_TRAINING_REFID
             AND STH_STAFF_ID = STD_STAFF_ID
             AND STD_ATTEND IN ('Y','A')
-            AND TH_STATUS='APPROVE'
-            AND STH_STATUS='APPROVE'
-            AND (UPPER(TT_DESC) = 'BITARA' OR UPPER(TH_TRAINING_TITLE) LIKE UPPER('%BITARA%'))
-            AND UPPER(TH_CATEGORY) = 'PERKHIDMATAN'
+            AND TH_STATUS = 'APPROVE'
+            AND STH_STATUS = 'APPROVE'
+            AND TH_TRAINING_TITLE LIKE ('%Orientasi%')
             AND SM_STAFF_ID = STH_STAFF_ID
             AND SM_DEPT_CODE = DM_DEPT_CODE
         ) GROUP BY SM_DEPT_CODE
@@ -309,7 +277,7 @@ FROM
 				<textElement textAlignment="Center">
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
-				<text><![CDATA[STATISTIK KEHADIRAN KURSUS BITARA UPSI
+				<text><![CDATA[STATISTIK KEHADIRAN KURSUS ORENTASI UPSI
 UNIVERSITI PENDIDIKAN SULTAN IDRIS ]]></text>
 			</staticText>
 			<frame>
@@ -366,7 +334,7 @@ UNIVERSITI PENDIDIKAN SULTAN IDRIS ]]></text>
 					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font fontName="Arial" size="9" isBold="false"/>
 					</textElement>
-					<text><![CDATA[ATR141]]></text>
+					<text><![CDATA[ATR144]]></text>
 				</staticText>
 			</frame>
 		</band>
@@ -400,10 +368,11 @@ UNIVERSITI PENDIDIKAN SULTAN IDRIS ]]></text>
 							<jr:tableFooter style="Table_TH" height="0" rowSpan="1">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</jr:tableFooter>
-							<jr:columnHeader style="Table_CH" height="79" rowSpan="1">
+							<jr:columnHeader style="Table_CH" height="90" rowSpan="1">
 								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 								<staticText>
-									<reportElement x="0" y="0" width="30" height="79" uuid="9eeb9f38-3c23-4f6d-a245-438496b6615f"/>
+									<reportElement x="0" y="0" width="30" height="90" uuid="9eeb9f38-3c23-4f6d-a245-438496b6615f"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial" isBold="true"/>
 									</textElement>
@@ -425,10 +394,10 @@ UNIVERSITI PENDIDIKAN SULTAN IDRIS ]]></text>
 							<jr:tableFooter style="Table_TH" height="0" rowSpan="1">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</jr:tableFooter>
-							<jr:columnHeader style="Table_CH" height="79" rowSpan="1">
+							<jr:columnHeader style="Table_CH" height="90" rowSpan="1">
 								<property name="com.jaspersoft.studio.unit.width" value="px"/>
 								<staticText>
-									<reportElement x="0" y="0" width="250" height="79" uuid="a59dc835-3f36-401f-9987-ed91a3a6f28b"/>
+									<reportElement x="0" y="0" width="250" height="90" uuid="a59dc835-3f36-401f-9987-ed91a3a6f28b"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial" isBold="true"/>
 									</textElement>
@@ -531,9 +500,9 @@ UNIVERSITI PENDIDIKAN SULTAN IDRIS ]]></text>
 							<jr:tableFooter style="Table_TH" height="0" rowSpan="1">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</jr:tableFooter>
-							<jr:columnHeader style="Table_CH" height="79" rowSpan="1">
+							<jr:columnHeader style="Table_CH" height="90" rowSpan="1">
 								<staticText>
-									<reportElement x="0" y="0" width="104" height="79" uuid="176e336a-6443-4ae5-bc94-099a2f29a4d3"/>
+									<reportElement x="0" y="0" width="104" height="90" uuid="176e336a-6443-4ae5-bc94-099a2f29a4d3"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial" isBold="true"/>
 									</textElement>
@@ -556,9 +525,9 @@ KAKITANGAN]]></text>
 							<jr:tableFooter style="Table_TH" height="0" rowSpan="1">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</jr:tableFooter>
-							<jr:columnHeader style="Table_CH" height="79" rowSpan="1">
+							<jr:columnHeader style="Table_CH" height="90" rowSpan="1">
 								<staticText>
-									<reportElement x="0" y="0" width="104" height="79" uuid="cf4555f3-f980-456d-a9c6-ccdc447a5990"/>
+									<reportElement x="0" y="0" width="104" height="90" uuid="cf4555f3-f980-456d-a9c6-ccdc447a5990"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial" isBold="true"/>
 									</textElement>
@@ -566,7 +535,7 @@ KAKITANGAN]]></text>
 KAKITANGAN
 MENGHADIRI
 KURSUS
-BITARA]]></text>
+ORIENTASI]]></text>
 								</staticText>
 							</jr:columnHeader>
 							<jr:detailCell style="Table_TD" height="30">
@@ -575,7 +544,7 @@ BITARA]]></text>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial" size="10"/>
 									</textElement>
-									<textFieldExpression><![CDATA[$F{BIL_HADIR_BITARA}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$F{BIL_HADIR_ORENTASI}]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>
@@ -585,9 +554,9 @@ BITARA]]></text>
 								<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</jr:tableFooter>
-							<jr:columnHeader style="Table_CH" height="79" rowSpan="1">
+							<jr:columnHeader style="Table_CH" height="90" rowSpan="1">
 								<staticText>
-									<reportElement x="0" y="0" width="105" height="79" uuid="b572bf29-8fc7-43b6-80ec-ca7a8b821a18"/>
+									<reportElement x="0" y="0" width="105" height="90" uuid="b572bf29-8fc7-43b6-80ec-ca7a8b821a18"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial" isBold="true"/>
 									</textElement>
@@ -595,7 +564,8 @@ BITARA]]></text>
 BIL
 KAKITANGAN
 MENGHADIRI
-KURSUS BITARA
+KURSUS 
+ORIENTASI
 (%)]]></text>
 								</staticText>
 							</jr:columnHeader>
@@ -605,7 +575,7 @@ KURSUS BITARA
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial" size="10"/>
 									</textElement>
-									<textFieldExpression><![CDATA[$F{PERATUS_HADIR_BITARA}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$F{PERATUS_HADIR_ORENTASI}]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>
@@ -614,9 +584,9 @@ KURSUS BITARA
 							<jr:tableFooter style="Table_TH" height="0" rowSpan="1">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</jr:tableFooter>
-							<jr:columnHeader style="Table_CH" height="79" rowSpan="1">
+							<jr:columnHeader style="Table_CH" height="90" rowSpan="1">
 								<staticText>
-									<reportElement x="0" y="0" width="104" height="79" uuid="14630748-57b4-4ead-9198-1782b69e059f"/>
+									<reportElement x="0" y="0" width="104" height="90" uuid="14630748-57b4-4ead-9198-1782b69e059f"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial" isBold="true"/>
 									</textElement>
@@ -625,7 +595,7 @@ KAKITANGAN
 TIDAK
 MENGHADIRI
 KURSUS
-BITARA]]></text>
+ORIENTASI]]></text>
 								</staticText>
 							</jr:columnHeader>
 							<jr:detailCell style="Table_TD" height="30">
@@ -634,7 +604,7 @@ BITARA]]></text>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial" size="10"/>
 									</textElement>
-									<textFieldExpression><![CDATA[$F{BIL_TIDAK_HADIR_BITARA}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$F{BIL_TIDAK_HADIR_ORENTASI}]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>
@@ -643,9 +613,9 @@ BITARA]]></text>
 							<jr:tableFooter style="Table_TH" height="0" rowSpan="1">
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</jr:tableFooter>
-							<jr:columnHeader style="Table_CH" height="79" rowSpan="1">
+							<jr:columnHeader style="Table_CH" height="90" rowSpan="1">
 								<staticText>
-									<reportElement x="0" y="0" width="105" height="79" uuid="394cea87-875d-4cb8-8ff1-b525dcf48cb0"/>
+									<reportElement x="0" y="0" width="105" height="90" uuid="394cea87-875d-4cb8-8ff1-b525dcf48cb0"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial" isBold="true"/>
 									</textElement>
@@ -653,7 +623,8 @@ BITARA]]></text>
 KAKITANGAN
 TIDAK
 MENGHADIRI
-KURSUS BITARA
+KURSUS 
+ORIENTASI
 (%)]]></text>
 								</staticText>
 							</jr:columnHeader>
@@ -663,7 +634,7 @@ KURSUS BITARA
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial" size="10"/>
 									</textElement>
-									<textFieldExpression><![CDATA[$F{PERATUS_TIDAK_HADIR_BITARA}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$F{PERATUS_TIDAK_HADIR_ORENTASI}]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>

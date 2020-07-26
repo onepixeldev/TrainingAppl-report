@@ -1,0 +1,1008 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR047X" language="groovy" pageWidth="500" pageHeight="842" columnWidth="500" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="23877205-5ff4-4830-9af3-e4c3034b0421">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
+	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR087_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR087"/>
+	<property name="net.sf.jasperreports.export.ignore.page.margins" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.collapse.row.span" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.ignore.cell.background" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.one.page.per.sheet" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.ignore.cell.border" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.wrap.text" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 3_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 3_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="PROG_LIST" uuid="7c8e8470-c077-4354-a46c-8baa8d7e06c7">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="TRAINING_YEAR" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[SELECT 'Program Bitara UPSI' BHTITLE,BH_REF_ID,BH_TITLE,
+TO_CHAR(BH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(BH_END_DATE,'dd/mm/yyyy') BH_DATE,
+BH_VENUE,BH_DATE_FROM,COUNT(SB_STAFF_ID) SB_TOTAL,
+INITCAP((TO_CHAR(BH_DATE_FROM, 'fmDD-MON-')))BH_DATE_FROM2,
+TO_CHAR(BH_DATE_FROM, 'YY')BH_DATE_FROM3
+FROM BITARA_HEAD,STAFF_BITARA
+WHERE BH_REF_ID=SB_REF_ID
+AND SB_STATUS='APPROVED'
+AND SB_ATTENDANCE='Y'
+AND TO_CHAR(BH_DATE_FROM,'yyyy')=$P{TRAINING_YEAR}  
+GROUP BY 'Program Bitara UPSI',BH_REF_ID,BH_TITLE,
+TO_CHAR(BH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(BH_END_DATE,'dd/mm/yyyy'),
+BH_VENUE,BH_DATE_FROM
+ORDER BY BH_DATE_FROM]]>
+		</queryString>
+		<field name="BHTITLE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="BHTITLE"/>
+		</field>
+		<field name="BH_REF_ID" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="BH_REF_ID"/>
+		</field>
+		<field name="BH_TITLE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="BH_TITLE"/>
+		</field>
+		<field name="BH_DATE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="BH_DATE"/>
+		</field>
+		<field name="BH_VENUE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="BH_VENUE"/>
+		</field>
+		<field name="BH_DATE_FROM" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.label" value="BH_DATE_FROM"/>
+		</field>
+		<field name="SB_TOTAL" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="SB_TOTAL"/>
+		</field>
+		<field name="BH_DATE_FROM2" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="BH_DATE_FROM2"/>
+		</field>
+		<field name="BH_DATE_FROM3" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="BH_DATE_FROM3"/>
+		</field>
+	</subDataset>
+	<subDataset name="PROG_LIST_NOT_BITARA" uuid="fb99b636-3555-49ea-b8b7-606b771b3607">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="TRAINING_YEAR" class="java.lang.String"/>
+		<parameter name="P_OPTION" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[SELECT 
+	CASE 
+    WHEN
+    (
+    	SELECT COUNT(BH_REF_ID)
+    	FROM
+    	(
+    		SELECT 'Program Bitara UPSI' BHTITLE,BH_REF_ID,BH_TITLE,
+			TO_CHAR(BH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(BH_END_DATE,'dd/mm/yyyy') BH_DATE,
+			BH_VENUE,BH_DATE_FROM,COUNT(SB_STAFF_ID) SB_TOTAL
+			FROM BITARA_HEAD,STAFF_BITARA
+			WHERE BH_REF_ID=SB_REF_ID
+			AND SB_STATUS='APPROVED'
+			AND SB_ATTENDANCE='Y'
+			AND TO_CHAR(BH_DATE_FROM,'yyyy')=$P{TRAINING_YEAR}  
+			GROUP BY 'Program Bitara UPSI',BH_REF_ID,BH_TITLE,
+			TO_CHAR(BH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(BH_END_DATE,'dd/mm/yyyy'),
+			BH_VENUE,BH_DATE_FROM
+    	)
+    ) !=0 THEN 1
+    ELSE 0
+    END AS BITARA,
+	'X_BITARA' BHTITLE, 
+    TH_REF_ID,
+    TH_TRAINING_TITLE, 
+    TH_DATE,
+    TH_TRAINING_VENUE,
+    TH_DATE_FROM,
+    STH_TOTAL,
+    TH_TRAINING_COUNTRY,
+    INITCAP(TO_CHAR(TH_DATE_FROM, 'fmDD-MON-')) TH_DATE_FROM2,
+    TO_CHAR(TH_DATE_FROM, 'YY') TH_DATE_FROM3
+    FROM (
+    SELECT
+    TH_TRAINING_TITLE,
+    TH_REF_ID,
+    TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy') TH_DATE,
+    TH_TRAINING_VENUE,
+    TH_DATE_FROM,
+    COUNT(STH_STAFF_ID) STH_TOTAL,
+    TH_TRAINING_COUNTRY
+    FROM TRAINING_HEAD,STAFF_TRAINING_HEAD
+    WHERE TH_REF_ID = STH_TRAINING_REFID
+    AND TH_STATUS = 'APPROVE'
+    AND STH_STATUS = 'APPROVE'
+    AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'  
+    AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
+    AND ($P{P_OPTION} IS NULL OR ($P{P_OPTION} IS NOT NULL AND TH_INTERNAL_EXTERNAL = NVL($P{P_OPTION},'INTERNAL')))
+    AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{TRAINING_YEAR}
+    GROUP BY TH_REF_ID,TH_TRAINING_TITLE,
+    TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy'),
+    TH_TRAINING_VENUE,TH_TRAINING_COUNTRY,TH_DATE_FROM
+    UNION
+    SELECT 
+    TH_TRAINING_TITLE,
+    TH_REF_ID,
+    TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy') TH_DATE,
+    TH_TRAINING_VENUE,
+    TH_DATE_FROM,
+    COUNT(STH_STAFF_ID) STH_TOTAL,
+    TH_TRAINING_COUNTRY
+    FROM TRAINING_HEAD,STAFF_TRAINING_HEAD
+    WHERE TH_REF_ID = STH_TRAINING_REFID
+    AND TH_STATUS = 'APPROVE'
+    AND STH_STATUS = 'APPROVE'
+    AND TH_INTERNAL_EXTERNAL = 'EXTERNAL_AGENCY'
+    AND ($P{P_OPTION} IS NULL OR ($P{P_OPTION} IS NOT NULL AND TH_INTERNAL_EXTERNAL = NVL($P{P_OPTION},'INTERNAL')))
+    AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{TRAINING_YEAR}
+    GROUP BY TH_REF_ID,TH_TRAINING_TITLE,
+    TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy'),
+    TH_TRAINING_VENUE,TH_TRAINING_COUNTRY,TH_DATE_FROM
+    UNION
+    SELECT 
+    TH_TRAINING_TITLE,
+    TH_REF_ID,
+    TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy') TH_DATE,
+    TH_TRAINING_VENUE,
+    TH_DATE_FROM,
+    COUNT(STH_STAFF_ID) STH_TOTAL,
+    TH_TRAINING_COUNTRY
+    FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,STAFF_TRAINING_DETL
+    WHERE TH_REF_ID = STH_TRAINING_REFID
+    AND STH_TRAINING_REFID = STD_TRAINING_REFID
+    AND TH_STATUS = 'APPROVE'
+    AND STH_STATUS = 'APPROVE'
+    AND STH_STAFF_ID = STD_STAFF_ID
+    AND NVL(STD_ATTEND,'N') IN ('Y','A')
+    AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+    AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
+    AND ($P{P_OPTION} IS NULL OR ($P{P_OPTION} IS NOT NULL AND TH_INTERNAL_EXTERNAL = NVL($P{P_OPTION},'INTERNAL')))
+    AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{TRAINING_YEAR}
+    GROUP BY TH_REF_ID,TH_TRAINING_TITLE,
+    TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy'),
+    TH_TRAINING_VENUE,TH_TRAINING_COUNTRY,TH_DATE_FROM
+ ) ORDER BY TH_DATE_FROM]]>
+		</queryString>
+		<field name="BITARA" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="BITARA"/>
+		</field>
+		<field name="BHTITLE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="BHTITLE"/>
+		</field>
+		<field name="TH_REF_ID" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="TH_REF_ID"/>
+		</field>
+		<field name="TH_TRAINING_TITLE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="TH_TRAINING_TITLE"/>
+		</field>
+		<field name="TH_DATE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="TH_DATE"/>
+		</field>
+		<field name="TH_TRAINING_VENUE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="TH_TRAINING_VENUE"/>
+		</field>
+		<field name="TH_DATE_FROM" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.label" value="TH_DATE_FROM"/>
+		</field>
+		<field name="STH_TOTAL" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="STH_TOTAL"/>
+		</field>
+		<field name="TH_TRAINING_COUNTRY" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="TH_TRAINING_COUNTRY"/>
+		</field>
+		<field name="TH_DATE_FROM2" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="TH_DATE_FROM2"/>
+		</field>
+		<field name="TH_DATE_FROM3" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="TH_DATE_FROM3"/>
+		</field>
+	</subDataset>
+	<subDataset name="summary" uuid="392ac4c2-3b3d-4521-ac96-d5a273721b30">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="TRAINING_YEAR" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[SELECt
+CASE 
+WHEN
+(
+	SELECT COUNT(BH_REF_ID)
+	FROM
+	(
+		SELECT 'Program Bitara UPSI' BHTITLE,BH_REF_ID,BH_TITLE,
+		TO_CHAR(BH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(BH_END_DATE,'dd/mm/yyyy') BH_DATE,
+		BH_VENUE,BH_DATE_FROM,COUNT(SB_STAFF_ID) SB_TOTAL
+		FROM BITARA_HEAD,STAFF_BITARA
+		WHERE BH_REF_ID=SB_REF_ID
+		AND SB_STATUS='APPROVED'
+		AND SB_ATTENDANCE='Y'
+		AND TO_CHAR(BH_DATE_FROM,'yyyy')=$P{TRAINING_YEAR}  
+		GROUP BY 'Program Bitara UPSI',BH_REF_ID,BH_TITLE,
+		TO_CHAR(BH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(BH_END_DATE,'dd/mm/yyyy'),
+		BH_VENUE,BH_DATE_FROM
+	)
+) !=0 THEN 1
+ELSE 0
+END AS BITARA
+FROM DUAL]]>
+		</queryString>
+		<field name="BITARA" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="BITARA"/>
+		</field>
+	</subDataset>
+	<parameter name="TRAINING_YEAR" class="java.lang.String"/>
+	<parameter name="P_OPTION" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT * FROM DUAL]]>
+	</queryString>
+	<field name="DUMMY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DUMMY"/>
+	</field>
+	<group name="DummyG"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="420" splitType="Stretch">
+			<componentElement>
+				<reportElement x="0" y="0" width="582" height="60" uuid="65e2e639-1f7f-456a-9e94-e4f9f0e26577">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table 2_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table 2_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table 2_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="PROG_LIST_NOT_BITARA" uuid="8e0480b7-58e1-4fe1-b1fb-1bf5f6387d03">
+						<datasetParameter name="P_OPTION">
+							<datasetParameterExpression><![CDATA[$P{P_OPTION}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="TRAINING_YEAR">
+							<datasetParameterExpression><![CDATA[$P{TRAINING_YEAR}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="53" uuid="61bb51e2-48d1-46c9-abca-00584c85e52d">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:tableHeader style="Table 2_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="fddbffd4-f44a-479d-8945-7124d6a7b5e3">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["TH_TRAINING_COUNTRY"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="34c8df94-9d97-4084-98ed-b1de4dbb48cd">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{TH_TRAINING_COUNTRY}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="31bb9054-87ee-41b4-8ae7-e1e3743da4ef">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:tableHeader style="Table 2_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="942a555e-0176-4660-9f85-4f94fe3169e9">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["TH_REF_ID"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="3fc5c204-a053-478b-8a0d-bf831506539e">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{TH_REF_ID}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="5f58c938-5f74-4cd7-a3d3-3b667a53cb83">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+						<jr:tableHeader style="Table 2_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="80663f83-0ef8-4b70-9a20-2f0625bceb73">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["TH_TRAINING_TITLE"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="a5eeb3a7-181e-46e3-8089-6153d26adbb1">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{TH_TRAINING_TITLE}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="9ecb1ce5-a393-4e99-9e71-0a1ff74f4c79">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+						<jr:tableHeader style="Table 2_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="1ee65923-427e-48c3-8f95-2bf0630f4397">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["TH_DATE"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="947e1112-d3ee-44aa-b64b-56045a35c6ad">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{TH_DATE}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="4032e634-e8f7-4a18-a764-9df431db83f2">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+						<jr:tableHeader style="Table 2_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="563bba71-90ec-4581-a047-14806d1dc4b3">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["TH_TRAINING_VENUE"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="3f7c9558-43a9-4ab3-8641-967d49b8891e">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{TH_TRAINING_VENUE}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="8df0d22f-dfda-44cf-829b-cbeff7f089c1">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
+						<jr:tableHeader style="Table 2_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="e6e856d4-fa29-404d-b54a-b3a13735156f">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["TH_DATE_FROM"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="c5c47ec4-d670-4985-86cf-59dd9e0bcb32">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Right">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{TH_DATE_FROM2}+$F{TH_DATE_FROM3}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="24699a78-a515-4202-8f98-f2641a519ab9">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
+						<jr:tableHeader style="Table 2_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="a59ec040-bc38-4fd4-9a62-98ecd4570345">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["TOTAL_STAFF"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="342d5b9c-3cc3-4d73-ba76-5e5f74e19e3c">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Right">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{STH_TOTAL}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="c06f6032-3545-4efd-bf4d-c9b50070cb71">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column8"/>
+						<jr:tableHeader style="Table 2_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="1ec359d0-0415-4b5e-80a2-46ff2d7d6085">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["CS_COUNT_TH"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="00035f6a-095f-4986-bc49-880c5e15bf21">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Right">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="15bd834e-c4d3-48f7-9e14-e06cd259a5d9">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column9"/>
+						<jr:tableHeader style="Table 2_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="65710639-6105-4a3e-b382-f8ae61bd8552">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["CF_TOTAL_TH"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="8654d66b-9bff-48f8-83d9-06a13b71738f">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{STH_TOTAL}== null?0+" orang":$F{STH_TOTAL}+" orang"]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="6254a255-3b41-4e4d-a0e6-97b5857e64fa">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column10"/>
+						<jr:tableHeader style="Table 2_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="0802ecfa-5cd6-4103-9900-054db565ef85">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["CF_TOTAL_TRAINING"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="64dc83f9-22a8-4d93-9f47-4b1b9142ef82">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Right">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{BITARA}==1?$V{REPORT_COUNT}+1:$V{REPORT_COUNT}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="9cd2628f-c2d3-4e28-8731-2144149962df">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column11"/>
+						<jr:tableHeader style="Table 2_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="68f0e20a-8345-4150-ae28-edc7cee8cdb0">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["CF_COUNT_TH_BH"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="437d5c92-24f7-44b5-8d3f-5d9e6918d4b6">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Right">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{BITARA}==1?$V{REPORT_COUNT}+1:$V{REPORT_COUNT}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement positionType="Float" x="0" y="100" width="530" height="60" uuid="43d6d200-5589-448b-9d77-b96635ee7c4c">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="PROG_LIST" uuid="47d905e3-f9f1-4f2a-ac05-a35b37508dd4">
+						<datasetParameter name="TRAINING_YEAR">
+							<datasetParameterExpression><![CDATA[$P{TRAINING_YEAR}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="53" uuid="a0175471-4fc0-4171-bbf2-82a19e4aba1e">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="058ae2ba-a092-4e21-bc1b-7382aacc93b8">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["BHTITLE"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="74a9fc17-183c-4b7b-9e64-7c625bf36652">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{BHTITLE}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="4e784834-a9d9-46b2-8c49-d6e571448396">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="4701816e-8a62-4799-b83d-3fae14fce710">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["CS_COUNT_BH"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="6beeeada-7aa0-4ad2-a9d0-896e8e34c80b">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Right">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[1]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="5f7a3a04-0604-4392-b69e-96b38d7c3b46">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+						<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="3ff44e23-5d7d-4215-ace2-13dabb46afbd">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["BH_REF_ID"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="f110f13d-5670-49b9-8c33-44e018f6433b">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{BH_REF_ID}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="8db0f511-2732-4236-a42c-ce682e592e62">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+						<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="cfad898e-5d08-49f3-94a1-c7d148f3971a">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["BH_TITLE"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="4765d31a-4557-498e-be9b-da72350dc999">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{BH_TITLE}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="da221dd6-3a87-4055-bf95-84eaa3c3c0be">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+						<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="9941daab-ffff-4f77-8982-266f2c13df4c">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["BH_DATE"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="b1465eae-3d27-4530-b32f-a2e23a9f8380">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{BH_DATE}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="78e44bff-a48d-4ad7-9655-090d016a770f">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
+						<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="c47e9f26-d21f-499f-b5a7-4890e851ac2c">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["BH_VENUE"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="254f8551-67ef-439a-bc2c-c804b95399f4">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{BH_VENUE}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="d26509b0-965e-4059-835b-f469a6e090cf">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
+						<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="5cf695d9-3c0d-40e7-8fd3-9aee5f7b1440">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["BH_DATE_FROM"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="ebcc8ead-8b52-4157-992c-a4dcac73855a">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Right">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{BH_DATE_FROM2}+$F{BH_DATE_FROM3}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="76612b49-9970-44b4-8f17-db063e272691">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column8"/>
+						<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="d3179ddc-cf0a-4262-ab75-8b2a9f0d64c0">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["SBH_TOTAL"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="aa20cd22-08a7-4ca1-92fc-b8ce032730e2">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Right">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{SB_TOTAL}==null?0:$F{SB_TOTAL}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="4823f2b0-0704-4f80-844f-e31a05c79aa1">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column9"/>
+						<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="80c0a81a-057e-400d-a443-a7bb4cfcf989">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["CF_TOTAL_BH"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="f9971c8e-9cd4-430b-a9a1-4040570ff3d5">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{SB_TOTAL}==null?0+" orang":$F{SB_TOTAL}+" orang"]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="7952d16d-3862-42c5-aaea-57a7282fe209">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column10"/>
+						<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="818bc3a0-91a9-4b90-839e-95b5812cd7b1">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["CF_TITLE_DATE"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="23b97f75-42f8-4706-8a2b-06126130e654">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{BH_TITLE}+" ("+$F{BH_DATE}+")"]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement positionType="Float" x="0" y="180" width="110" height="60" uuid="4d05015d-c2b8-4f5f-ad1b-9bc27ab20954">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table 3_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table 3_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table 3_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="summary" uuid="8fad36a9-ffb5-426a-b4a8-44c4c9d8dc8f">
+						<datasetParameter name="TRAINING_YEAR">
+							<datasetParameterExpression><![CDATA[$P{TRAINING_YEAR}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="53" uuid="aae05ad3-8627-4c74-a63f-b4d4d4221a3f">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:tableHeader style="Table 3_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="24d1123a-43e0-43c4-8dd2-4fc7c72ea26b">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["CF_TRAINING_YEAR"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table 3_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="f155b7f4-7b27-4440-9558-3d41676da547">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["LAPORAN TAHUNAN AKTIVITI UNIT LATIHAN BAGI TAHUN "+$P{TRAINING_YEAR}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="53" uuid="6bec4e5c-1742-4a87-bea2-48056a9a16a7">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:tableHeader style="Table 3_TH" height="30" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="53" height="30" uuid="9e6b91a0-227a-45ff-88f4-cadf947a4665">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA["CS_COUNT_ALL_BH"]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:detailCell style="Table 3_TD" height="30">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="53" height="30" uuid="54316832-c684-4ebf-b6f8-194214938e90">
+									<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+								</reportElement>
+								<textElement textAlignment="Left">
+									<font fontName="Calibri" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{BITARA}==1?1:""]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+</jasperReport>
