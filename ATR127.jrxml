@@ -94,33 +94,38 @@ SM_STAFF_ID,
 SM_DEPT_DESC,
 SS_SERVICE_DESC,
 SS_JOIN_DATE,
+SS_JOB_START_DATE,
 BH_DATE,
 TH_DATE2,
 TH_DATE3
 FROM
 (
-  SELECT SM_STAFF_ID,TM_TITLE_DESC||' '||SM_STAFF_NAME SM_STAFF_NAME,SM_DEPT_CODE,
-  (SELECT DM_DEPT_DESC FROM DEPARTMENT_MAIN WHERE DM_DEPT_CODE = SM_DEPT_CODE) SM_DEPT_DESC,
-  SS_SERVICE_DESC,TO_CHAR(SS_JOIN_DATE,'dd/mm/yyyy') SS_JOIN_DATE,TO_CHAR(SS_JOB_START_DATE,'dd/mm/yyyy') SS_JOB_START_DATE
-  FROM STAFF_MAIN,TITLE_MAIN,SERVICE_SCHEME,STAFF_SERVICE,STAFF_STATUS
-  WHERE SM_STAS_TITLE = TM_TITLE_CODE
-  AND SM_STAFF_STATUS = SS_STATUS_CODE
-  AND SM_JOB_CODE = SS_SERVICE_CODE
-  AND SS_STAFF_ID = SM_STAFF_ID
-  AND SS_STATUS_STS = 'ACTIVE'
-  AND COALESCE(SS_CONFIRM_STATUS,'07') <> '01'
-  AND SS_JOB_STATUS = '01'
-  AND COALESCE(SS_ACADEMIC,'N') = 'N'
-  AND ($P{STAFFID1} IS NULL OR SM_STAFF_ID = $P{STAFFID1})  
-  ORDER BY SM_STAFF_ID
+    SELECT SM_STAFF_ID,TM_TITLE_DESC||' '||SM_STAFF_NAME SM_STAFF_NAME,SM_DEPT_CODE,
+    (SELECT DM_DEPT_DESC FROM DEPARTMENT_MAIN WHERE DM_DEPT_CODE = SM_DEPT_CODE) SM_DEPT_DESC,
+    SS_SERVICE_DESC,TO_CHAR(SS_JOIN_DATE,'dd/mm/yyyy') SS_JOIN_DATE,TO_CHAR(SS_JOB_START_DATE,'dd/mm/yyyy') SS_JOB_START_DATE
+    FROM STAFF_MAIN,TITLE_MAIN,SERVICE_SCHEME,STAFF_SERVICE,STAFF_STATUS
+    ,STAFF_TRAINING_EXAM
+    WHERE SM_STAS_TITLE = TM_TITLE_CODE
+    AND SM_STAFF_STATUS = SS_STATUS_CODE
+    AND SM_JOB_CODE = SS_SERVICE_CODE
+    AND SS_STAFF_ID = SM_STAFF_ID
+    AND SS_STATUS_STS = 'ACTIVE'
+    AND NVL(SS_CONFIRM_STATUS,'07') <> '01'
+    AND SS_JOB_STATUS = '01'
+    AND SS_ACADEMIC = 'N'
+    AND STE_STAFF_ID = SM_STAFF_ID
+    AND STE_STATUS = 'PENGECUALIAN'
+    AND ($P{STAFFID1} IS NULL OR SM_STAFF_ID = $P{STAFFID1})  
+    ORDER BY SM_STAFF_ID
 )
 LEFT JOIN
 (
-    SELECT SB_STAFF_ID, LISTAGG(BH_DATE, chr(10)||chr(10)) WITHIN GROUP (ORDER BY BH_DATE) AS BH_DATE
+    SELECT SB_STAFF_ID, LISTAGG(BH_DATE, chr(10)) WITHIN GROUP (ORDER BY BH_DATE_FROM DESC) AS BH_DATE
     FROM 
     (
-        SELECT DISTINCT SB_STAFF_ID,BH_DATE
-          FROM (
+        SELECT DISTINCT SB_STAFF_ID,BH_REF_ID,BH_DATE,BH_DATE_FROM
+        FROM 
+        (
             SELECT SB_STAFF_ID,BH_REF_ID,
             BH_TITLE||' ('||TO_CHAR(BH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(BH_END_DATE,'dd/mm/yyyy')||') ' BH_DATE,
             BH_DATE_FROM
@@ -138,8 +143,9 @@ LEFT JOIN
             AND TH_STATUS='APPROVE'
             AND STH_STATUS='APPROVE'
             AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
-            AND (UPPER(TH_TRAINING_TITLE) LIKE UPPER('%BITARA LIVING%')
-            OR UPPER(TH_TRAINING_TITLE) LIKE UPPER('BITARA'))
+            AND (UPPER(TH_TRAINING_TITLE) LIKE UPPER('BITARA LIVING%')
+            OR UPPER(TH_TRAINING_TITLE) LIKE UPPER('BITARA')
+            OR UPPER(TH_TRAINING_TITLE) LIKE UPPER('BITARA EKSEKUTIF%'))
             UNION
             SELECT STH_STAFF_ID SB_STAFF_ID,TH_REF_ID BH_REF_ID,TH_TRAINING_TITLE||' ('||
             TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy')||')' BH_DATE,
@@ -153,30 +159,80 @@ LEFT JOIN
             AND STH_TRAINING_REFID = STD_TRAINING_REFID
             AND STH_STAFF_ID = STD_STAFF_ID
             AND STD_ATTEND IN ('Y','A')
-            AND (UPPER(TH_TRAINING_TITLE) LIKE UPPER('%BITARA LIVING%')
-            OR UPPER(TH_TRAINING_TITLE) LIKE UPPER('BITARA'))
-          )
+            AND (UPPER(TH_TRAINING_TITLE) LIKE UPPER('BITARA LIVING%')
+            OR UPPER(TH_TRAINING_TITLE) LIKE UPPER('BITARA')
+            OR UPPER(TH_TRAINING_TITLE) LIKE UPPER('BITARA EKSEKUTIF%'))
+        )
     ) GROUP BY SB_STAFF_ID
 ) ON SB_STAFF_ID = SM_STAFF_ID
 LEFT JOIN
 (
-    SELECT STH_STAFF_ID2, LISTAGG(TH_DATE2, ',') WITHIN GROUP (ORDER BY TH_DATE2) AS TH_DATE2
+    SELECT STH_STAFF_ID2, LISTAGG(TH_DATE2, ',') WITHIN GROUP (ORDER BY TH_DATE_FROM) AS TH_DATE2
     FROM 
-    (
-        SELECT DISTINCT STH_STAFF_ID STH_STAFF_ID2,TH_DATE TH_DATE2
+    (   
+        SELECT DISTINCT STH_STAFF_ID STH_STAFF_ID2,TH_REF_ID,TH_TRAINING_TITLE,TH_DATE TH_DATE2,TH_DATE_FROM
         FROM
         (
-            SELECT STH_STAFF_ID,
-            TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy') TH_DATE
+            SELECT STH_STAFF_ID,TH_REF_ID,TH_TRAINING_TITLE,
+		    TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy') TH_DATE,
+		    TH_DATE_FROM
+		    FROM TRAINING_HEAD,STAFF_TRAINING_HEAD
+		    WHERE TH_REF_ID=STH_TRAINING_REFID
+		    AND TH_STATUS='APPROVE'
+		    AND STH_STATUS='APPROVE'
+		    AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
+		    AND UPPER(TH_TRAINING_TITLE) LIKE UPPER('%INDUKSI%KHUSUS%')
+		    UNION
+		    SELECT STH_STAFF_ID,TH_REF_ID,TH_TRAINING_TITLE,
+		    TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy') TH_DATE,
+		    TH_DATE_FROM
+		    FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,STAFF_TRAINING_DETL
+		    WHERE TH_REF_ID=STH_TRAINING_REFID
+		    AND TH_STATUS='APPROVE'
+		    AND STH_STATUS='APPROVE'
+		    AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
+		    AND STH_TRAINING_REFID = STD_TRAINING_REFID
+		    AND STH_STAFF_ID = STD_STAFF_ID
+		    AND STD_ATTEND IN ('Y','A')
+		    AND UPPER(TH_TRAINING_TITLE) LIKE UPPER('%INDUKSI%KHUSUS%')
+        )
+    )
+    GROUP BY STH_STAFF_ID2
+) ON STH_STAFF_ID2 = SM_STAFF_ID
+LEFT JOIN
+(
+    SELECT STH_STAFF_ID3,
+    LISTAGG(TH_DATE3, chr(10)||chr(10)) WITHIN GROUP (ORDER BY TH_DATE_FROM) AS TH_DATE3
+    FROM
+    (
+        SELECT STH_STAFF_ID STH_STAFF_ID3,TH_REF_ID,TH_DATE,MPE,TH_DATE_FROM,TH_DATE||CHR(10)||MPE TH_DATE3
+        FROM
+        (
+            SELECT STH_STAFF_ID,TH_REF_ID,TH_TRAINING_TITLE||' ('||
+            TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy')||')' TH_DATE,
+            TH_DATE_FROM
             FROM TRAINING_HEAD,STAFF_TRAINING_HEAD
             WHERE TH_REF_ID=STH_TRAINING_REFID
             AND TH_STATUS='APPROVE'
             AND STH_STATUS='APPROVE'
             AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
-            AND UPPER(TH_TRAINING_TITLE) LIKE UPPER('%INDUKSI%KHUSUS%')
+            AND (UPPER(TH_TRAINING_TITLE) LIKE UPPER('%LET%SPEAK%ENGLISH%')
+            OR UPPER(TH_TRAINING_TITLE) LIKE UPPER('%ENGLISH%FOR%WORK%'))
             UNION
-            SELECT STH_STAFF_ID,
-            TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy') TH_DATE
+            SELECT STH_STAFF_ID,TH_REF_ID,TH_TRAINING_TITLE||' ('||
+            TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy')||')' TH_DATE,
+            TH_DATE_FROM
+            FROM TRAINING_HEAD,STAFF_TRAINING_HEAD
+            WHERE TH_REF_ID=STH_TRAINING_REFID
+            AND TH_STATUS='APPROVE'
+            AND STH_STATUS='APPROVE'
+            AND TH_DATE_FROM IS NULL
+            AND (UPPER(TH_TRAINING_TITLE) LIKE UPPER('%LET%SPEAK%ENGLISH%PENGECUALIAN%')
+            OR UPPER(TH_TRAINING_TITLE) LIKE UPPER('%ENGLISH%FOR%WORK%PENGECUALIAN%'))
+            UNION
+            SELECT STH_STAFF_ID,TH_REF_ID,TH_TRAINING_TITLE||' ('||
+            TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy')||')' TH_DATE,
+            TH_DATE_FROM
             FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,STAFF_TRAINING_DETL
             WHERE TH_REF_ID=STH_TRAINING_REFID
             AND TH_STATUS='APPROVE'
@@ -185,76 +241,20 @@ LEFT JOIN
             AND STH_TRAINING_REFID = STD_TRAINING_REFID
             AND STH_STAFF_ID = STD_STAFF_ID
             AND STD_ATTEND IN ('Y','A')
-            AND UPPER(TH_TRAINING_TITLE) LIKE UPPER('%INDUKSI%KHUSUS%')
-        )
+            AND (UPPER(TH_TRAINING_TITLE) LIKE UPPER('%LET%SPEAK%ENGLISH%')
+            OR UPPER(TH_TRAINING_TITLE) LIKE UPPER('%ENGLISH%FOR%WORK%'))
+        ) 
+        LEFT JOIN
+        (
+            SELECT TO_CHAR(STE_MPE_DATE,'dd/mm/yyyy')||CHR(10)||'( '||STE_STATUS||' )'MPE, STH_STAFF_ID STH_STAFF_ID4, STH_TRAINING_REFID
+            FROM STAFF_TRAINING_HEAD,STAFF_TRAINING_EXAM
+            WHERE STH_STAFF_ID = STE_STAFF_ID
+            AND STH_TRAINING_REFID = STE_REF_ID
+        --    AND STH_TRAINING_REFID = :TH_REF_ID2
+        --    AND STH_STAFF_ID = :STH_STAFF_ID2
+        ) ON STH_TRAINING_REFID = TH_REF_ID AND STH_STAFF_ID4 = STH_STAFF_ID
     )
-    GROUP BY STH_STAFF_ID2
-) ON STH_STAFF_ID2 = SM_STAFF_ID
-LEFT JOIN
-(
-    SELECT STH_STAFF_ID3,
-	LISTAGG(TH_DATE3, chr(10)||chr(10)) WITHIN GROUP (ORDER BY TH_DATE3) AS TH_DATE3
-	FROM
-	(
-	  SELECT STH_STAFF_ID STH_STAFF_ID3,TH_REF_ID,TH_DATE,TH_DATE_FROM,TH_DATE||CHR(10)||MPE TH_DATE3
-	  FROM
-	  (
-	    SELECT STH_STAFF_ID,TH_REF_ID,TH_TRAINING_TITLE||' ('||
-	    TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy')||')' TH_DATE,
-	    TH_DATE_FROM
-	    FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,CPD_HEAD
-	    WHERE TH_REF_ID=STH_TRAINING_REFID
-	    AND TH_STATUS='APPROVE'
-	    AND STH_STATUS='APPROVE'
-	    AND CH_TRAINING_REFID = TH_REF_ID
-	    AND TH_CATEGORY IN ('PERKHIDMATAN','ASAS KOMUNIKASI','BAHASA INGGERIS','KOMPETENSI ASAS')
-	    AND CH_COMPETENCY = 'UMUM'
-	    AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
-	    AND (UPPER(TH_TRAINING_TITLE) LIKE UPPER('%LET%SPEAK%ENGLISH%')
-	    OR UPPER(TH_TRAINING_TITLE) LIKE UPPER('%ENGLISH%FOR%WORK%'))
-	    UNION
-	    SELECT STH_STAFF_ID,TH_REF_ID,TH_TRAINING_TITLE||' ('||
-	    TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy')||')' TH_DATE,
-	    TH_DATE_FROM
-	    FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,CPD_HEAD
-	    WHERE TH_REF_ID=STH_TRAINING_REFID
-	    AND TH_STATUS='APPROVE'
-	    AND STH_STATUS='APPROVE'
-	    AND CH_TRAINING_REFID = TH_REF_ID
-	    AND TH_CATEGORY IN ('PERKHIDMATAN','ASAS KOMUNIKASI','BAHASA INGGERIS','KOMPETENSI ASAS')
-	    AND CH_COMPETENCY = 'UMUM'
-	    AND TH_DATE_FROM IS NULL
-	    AND (UPPER(TH_TRAINING_TITLE) LIKE UPPER('%LET%SPEAK%ENGLISH%PENGECUALIAN%')
-	    OR UPPER(TH_TRAINING_TITLE) LIKE UPPER('%ENGLISH%FOR%WORK%PENGECUALIAN%'))
-	    UNION
-	    SELECT STH_STAFF_ID,TH_REF_ID,TH_TRAINING_TITLE||' ('||
-	    TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy')||')' TH_DATE,
-	    TH_DATE_FROM
-	    FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,STAFF_TRAINING_DETL,CPD_HEAD
-	    WHERE TH_REF_ID=STH_TRAINING_REFID
-	    AND TH_STATUS='APPROVE'
-	    AND STH_STATUS='APPROVE'
-	    AND CH_TRAINING_REFID = TH_REF_ID
-	    AND TH_CATEGORY IN ('PERKHIDMATAN','ASAS KOMUNIKASI','BAHASA INGGERIS','KOMPETENSI ASAS')
-	    AND CH_COMPETENCY = 'UMUM'
-	    AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
-	    AND STH_TRAINING_REFID = STD_TRAINING_REFID
-	    AND STH_STAFF_ID = STD_STAFF_ID
-	    AND STD_ATTEND IN ('Y','A')
-	    AND (UPPER(TH_TRAINING_TITLE) LIKE UPPER('%LET%SPEAK%ENGLISH%')
-	    OR UPPER(TH_TRAINING_TITLE) LIKE UPPER('%ENGLISH%FOR%WORK%'))
-	  )
-	  LEFT JOIN
-	  (
-	    SELECT TO_CHAR(STE_MPE_DATE,'dd/mm/yyyy')||CHR(10)||'( '||STE_STATUS||' )'MPE, STH_STAFF_ID STH_STAFF_ID4, STH_TRAINING_REFID
-	    FROM STAFF_TRAINING_HEAD,STAFF_TRAINING_EXAM
-	    WHERE STH_STAFF_ID = STE_STAFF_ID
-	    AND STH_TRAINING_REFID = STE_REF_ID
-	--    AND STH_TRAINING_REFID = :TH_REF_ID2
-	--    AND STH_STAFF_ID = :STH_STAFF_ID2
-	  ) ON STH_TRAINING_REFID = TH_REF_ID AND STH_STAFF_ID4 = STH_STAFF_ID
-	)
-	GROUP BY STH_STAFF_ID3
+    GROUP BY STH_STAFF_ID3
 ) ON STH_STAFF_ID3 = SM_STAFF_ID
 ORDER BY SM_STAFF_ID]]>
 		</queryString>
@@ -273,6 +273,9 @@ ORDER BY SM_STAFF_ID]]>
 		<field name="SS_JOIN_DATE" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="SS_JOIN_DATE"/>
 		</field>
+		<field name="SS_JOB_START_DATE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="SS_JOB_START_DATE"/>
+		</field>
 		<field name="BH_DATE" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="BH_DATE"/>
 		</field>
@@ -288,42 +291,57 @@ ORDER BY SM_STAFF_ID]]>
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<parameter name="STAFFID1" class="java.lang.String"/>
 		<queryString>
-			<![CDATA[SELECT STH_STAFF_ID,TH_DATE,MPE
+			<![CDATA[SELECT STH_STAFF_ID,TH_REF_ID,TH_DATE,TH_DATE_FROM,MPE
 FROM
 (
-    SELECT STH_STAFF_ID,TH_REF_ID,TH_TRAINING_TITLE||' ('||TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy')||')' TH_DATE,TH_DATE_FROM,TO_CHAR(STE_MPE_DATE,'dd/mm/yyyy')||CHR(10)||'( '||STE_STATUS||' )'MPE,STE_STATUS
+    SELECT STH_STAFF_ID,TH_REF_ID,TH_TRAINING_TITLE||' ('||
+    TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy')||')' TH_DATE,
+    TH_DATE_FROM
+    ,TO_CHAR(STE_MPE_DATE,'dd/mm/yyyy')||CHR(10)||'( '||STE_STATUS||' )'MPE
     FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,STAFF_TRAINING_EXAM
     WHERE TH_REF_ID = STH_TRAINING_REFID
     AND TH_STATUS='APPROVE'
     AND STH_STATUS='APPROVE'
-    AND COALESCE('-',TO_CHAR(TH_DATE_FROM,'yyyy')) < '2016'
+    AND NVL('-',TO_CHAR(TH_DATE_FROM,'yyyy')) < '2016'
     AND (UPPER(TH_TRAINING_TITLE) LIKE UPPER('%INDUKSI%UMUM%')
     OR TH_TYPE = 'Q')
-    AND STH_STAFF_ID = STE_STAFF_ID
-    AND STH_TRAINING_REFID = STE_REF_ID
+    AND STE_STAFF_ID = STH_STAFF_ID
+    AND STE_REF_ID = STH_TRAINING_REFID
+    AND STE_STATUS = 'PENGECUALIAN'
     AND STH_STAFF_ID = $P{STAFFID1}
     UNION
-    SELECT STH_STAFF_ID,TH_REF_ID,TH_TRAINING_TITLE||' ('||TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy')||')' TH_DATE,TH_DATE_FROM,TO_CHAR(STE_MPE_DATE,'dd/mm/yyyy')||CHR(10)||'( '||STE_STATUS||' )'MPE,STE_STATUS
+    SELECT STH_STAFF_ID,TH_REF_ID,TH_TRAINING_TITLE||' ('||
+    TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy')||')' TH_DATE,
+    TH_DATE_FROM
+    ,TO_CHAR(STE_MPE_DATE,'dd/mm/yyyy')||CHR(10)||'( '||STE_STATUS||' )'MPE
     FROM TRAINING_HEAD,STAFF_TRAINING_HEAD,STAFF_TRAINING_EXAM,STAFF_TRAINING_DETL
     WHERE TH_REF_ID = STH_TRAINING_REFID
     AND TH_STATUS='APPROVE'
     AND STH_STATUS='APPROVE'
-    AND COALESCE('-',TO_CHAR(TH_DATE_FROM,'yyyy')) >= '2016'
+    AND NVL('-',TO_CHAR(TH_DATE_FROM,'yyyy')) >= '2016'
     AND STH_TRAINING_REFID = STD_TRAINING_REFID
     AND STH_STAFF_ID = STD_STAFF_ID
     AND STD_ATTEND IN ('Y','A')
     AND (UPPER(TH_TRAINING_TITLE) LIKE UPPER('%INDUKSI%UMUM%')
     OR TH_TYPE = 'Q')
-    AND STH_STAFF_ID = STE_STAFF_ID
-    AND STH_TRAINING_REFID = STE_REF_ID
+    AND STE_STAFF_ID = STH_STAFF_ID
+    AND STE_REF_ID = STH_TRAINING_REFID
+    AND STE_STATUS = 'PENGECUALIAN'
     AND STH_STAFF_ID = $P{STAFFID1} 
-)]]>
+)
+ORDER BY TH_DATE_FROM]]>
 		</queryString>
 		<field name="STH_STAFF_ID" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="STH_STAFF_ID"/>
 		</field>
+		<field name="TH_REF_ID" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="TH_REF_ID"/>
+		</field>
 		<field name="TH_DATE" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="TH_DATE"/>
+		</field>
+		<field name="TH_DATE_FROM" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.label" value="TH_DATE_FROM"/>
 		</field>
 		<field name="MPE" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="MPE"/>
@@ -337,15 +355,15 @@ FROM
 			<![CDATA[SELECT LISTAGG(SPE_STAFF_ID, chr(10)) WITHIN GROUP (ORDER BY SPE_STAFF_ID) AS SPE_STAFF_ID
 FROM
 (
-    SELECT DISTINCT SPE_STAFF_ID
-    FROM PPA_EXAM_MAIN,STAFF_PPA_EXAM
-    WHERE PEM_EXAM_REFID = SPE_EXAM_REFID
-    AND SPE_STATUS = 'APPROVE'
-    AND SPE_SEQUENCE IS NOT NULL
-    AND COALESCE(SPE_RELEASE,'N') = 'Y'
-    AND COALESCE(SPE_GRADE,NULL) = 'PASS'
-    AND PPA.GET_PREV_EXAM_PASS ($P{STAFFID1},PEM_GROUP_REFID) = 'PASS'
-    ORDER BY SPE_STAFF_ID
+	SELECT DISTINCT SPE_STAFF_ID
+	FROM PPA_EXAM_MAIN,STAFF_PPA_EXAM
+	WHERE PEM_EXAM_REFID = SPE_EXAM_REFID
+	AND SPE_STATUS = 'APPROVE'
+	AND SPE_SEQUENCE IS NOT NULL
+	AND NVL(SPE_RELEASE,'N') = 'Y'
+	AND NVL(SPE_GRADE,NULL) = 'PASS'
+	AND PPA.GET_PREV_EXAM_PASS ($P{STAFFID1},PEM_GROUP_REFID) = 'PASS'
+	ORDER BY SPE_STAFF_ID
 )]]>
 		</queryString>
 		<field name="SPE_STAFF_ID" class="java.lang.String">
@@ -370,7 +388,7 @@ FROM
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Status Peperiksaan Induksi Umum : SEMUA]]></text>
+				<text><![CDATA[Status Peperiksaan Induksi Umum : PENGECUALIAN]]></text>
 			</staticText>
 			<frame>
 				<reportElement x="660" y="17" width="142" height="32" uuid="2b2baf9f-e320-4dc4-af4f-ee4431b505ba"/>
@@ -379,7 +397,7 @@ FROM
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Report ID : ATR124]]></text>
+					<text><![CDATA[Report ID : ATR127]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="true" evaluationTime="Master" isBlankWhenNull="true">
 					<reportElement x="0" y="16" width="142" height="16" uuid="95c16b57-f65e-4c4a-9b21-5eda1ef3382c"/>
@@ -512,11 +530,12 @@ UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="77" uuid="63221a09-3e76-4256-8fec-19a8565c0fb0">
+					<jr:column width="60" uuid="63221a09-3e76-4256-8fec-19a8565c0fb0">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
 						<jr:columnHeader style="Table_CH" height="90" rowSpan="1">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="77" height="90" uuid="85b08819-84ed-42f5-b1da-fe4c4b67a54b">
+								<reportElement x="0" y="0" width="60" height="90" uuid="85b08819-84ed-42f5-b1da-fe4c4b67a54b">
 									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Top">
@@ -528,14 +547,14 @@ UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="77" height="30" uuid="5e10c471-a5e7-4757-98f2-1e982c16fd55">
+								<reportElement x="0" y="0" width="60" height="30" uuid="5e10c471-a5e7-4757-98f2-1e982c16fd55">
 									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 								</reportElement>
 								<textElement textAlignment="Center">
 									<font fontName="Arial" size="8"/>
 									<paragraph spacingBefore="4"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{SS_JOIN_DATE}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{SS_JOB_START_DATE}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -568,7 +587,7 @@ UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="154" uuid="ae153053-3ac5-424f-826b-0de50b0cfded">
+					<jr:column width="171" uuid="ae153053-3ac5-424f-826b-0de50b0cfded">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
 						<jr:columnHeader style="Table_CH" height="90" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -593,7 +612,7 @@ TRANSFORMASI MINDA
 ]]></text>
 							</staticText>
 							<staticText>
-								<reportElement x="90" y="0" width="64" height="90" uuid="27c06ec5-ff99-4f37-9ff2-16ae86100960">
+								<reportElement x="90" y="0" width="81" height="90" uuid="27c06ec5-ff99-4f37-9ff2-16ae86100960">
 									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 								</reportElement>
 								<box>
@@ -610,9 +629,9 @@ PENILAIAN]]></text>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
 							<frame>
-								<reportElement stretchType="ContainerHeight" x="0" y="0" width="154" height="30" uuid="b31ff203-6756-4a4c-aba9-a974a9ec1dfb"/>
+								<reportElement stretchType="ContainerHeight" x="0" y="0" width="171" height="30" uuid="b31ff203-6756-4a4c-aba9-a974a9ec1dfb"/>
 								<componentElement>
-									<reportElement stretchType="ContainerHeight" x="0" y="0" width="154" height="30" uuid="a52cf115-93d2-4cb4-8afb-62b5145277b6"/>
+									<reportElement stretchType="ContainerHeight" x="0" y="0" width="171" height="30" uuid="a52cf115-93d2-4cb4-8afb-62b5145277b6"/>
 									<jr:list printOrder="Vertical">
 										<datasetRun subDataset="DT1" uuid="e980f563-edec-4b7e-b681-da37ec72f4c2">
 											<datasetParameter name="STAFFID1">
@@ -620,7 +639,7 @@ PENILAIAN]]></text>
 											</datasetParameter>
 											<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 										</datasetRun>
-										<jr:listContents height="30" width="154">
+										<jr:listContents height="30" width="171">
 											<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 												<reportElement stretchType="ContainerHeight" x="0" y="0" width="90" height="30" uuid="26909947-1441-4054-a8dc-185c0aa8801c">
 													<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
@@ -643,7 +662,7 @@ PENILAIAN]]></text>
 												<textFieldExpression><![CDATA[$F{TH_DATE}]]></textFieldExpression>
 											</textField>
 											<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-												<reportElement stretchType="ContainerHeight" x="90" y="0" width="64" height="30" uuid="5973424a-a731-4e36-a2bb-810f25c85695">
+												<reportElement stretchType="ContainerHeight" x="90" y="0" width="80" height="30" uuid="5973424a-a731-4e36-a2bb-810f25c85695">
 													<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 													<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 													<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -678,7 +697,7 @@ PENILAIAN]]></text>
 									</box>
 								</frame>
 								<frame>
-									<reportElement stretchType="ContainerHeight" x="90" y="0" width="64" height="30" uuid="0dfb66ee-5c8d-471c-80a9-5fdc89e56fe2">
+									<reportElement stretchType="ContainerHeight" x="90" y="0" width="81" height="30" uuid="0dfb66ee-5c8d-471c-80a9-5fdc89e56fe2">
 										<property name="com.jaspersoft.studio.unit.width" value="px"/>
 									</reportElement>
 									<box>
