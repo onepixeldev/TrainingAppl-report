@@ -94,6 +94,7 @@ SM_STAFF_ID,
 SM_DEPT_DESC,
 SS_SERVICE_DESC,
 SS_JOIN_DATE,
+SS_JOB_START_DATE,
 BH_DATE,
 TH_DATE2,
 TH_DATE3
@@ -160,7 +161,7 @@ LEFT JOIN
 ) ON SB_STAFF_ID = SM_STAFF_ID
 LEFT JOIN
 (
-    SELECT STH_STAFF_ID2, LISTAGG(TH_DATE2, ',') WITHIN GROUP (ORDER BY TH_DATE2) AS TH_DATE2
+    SELECT STH_STAFF_ID2, LISTAGG(TH_DATE2,  chr(10)||chr(10)) WITHIN GROUP (ORDER BY TH_DATE2) AS TH_DATE2
     FROM 
     (
         SELECT DISTINCT STH_STAFF_ID STH_STAFF_ID2,TH_DATE TH_DATE2
@@ -272,6 +273,9 @@ ORDER BY SM_STAFF_ID]]>
 		</field>
 		<field name="SS_JOIN_DATE" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="SS_JOIN_DATE"/>
+		</field>
+		<field name="SS_JOB_START_DATE" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="SS_JOB_START_DATE"/>
 		</field>
 		<field name="BH_DATE" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="BH_DATE"/>
@@ -535,7 +539,7 @@ UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
 									<font fontName="Arial" size="8"/>
 									<paragraph spacingBefore="4"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{SS_JOIN_DATE}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{SS_JOB_START_DATE}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
