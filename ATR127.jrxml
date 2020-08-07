@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR124" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b15dee52-2174-445c-930c-1b705eaed25c">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR127" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b15dee52-2174-445c-930c-1b705eaed25c">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
@@ -438,7 +438,10 @@ UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
 					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
-					<datasetRun subDataset="MAIN_LIST" uuid="24cacb13-ce82-4daa-9dc1-67aec10d47f7">
+					<datasetRun subDataset="MAIN_LIST" uuid="7a363de6-3b5d-47a2-a749-9a86b61d09eb">
+						<datasetParameter name="STAFFID1">
+							<datasetParameterExpression><![CDATA[$P{STAFFID1}]]></datasetParameterExpression>
+						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
 					<jr:column width="30" uuid="3b74fe35-8775-453a-a85a-0c511d831fc0">
@@ -446,12 +449,10 @@ UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
 						<jr:columnHeader style="Table_CH" height="90" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="30" height="90" uuid="9e8a4ee8-104e-4fb7-b405-58a05ef07af2">
-									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-								</reportElement>
+								<reportElement x="0" y="0" width="30" height="90" uuid="9e8a4ee8-104e-4fb7-b405-58a05ef07af2"/>
 								<textElement textAlignment="Center" verticalAlignment="Top">
 									<font fontName="Arial" isBold="true"/>
-									<paragraph spacingBefore="4"/>
+									<paragraph spacingBefore="15"/>
 								</textElement>
 								<text><![CDATA[BIL.]]></text>
 							</staticText>
@@ -474,12 +475,10 @@ UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
 						<jr:columnHeader style="Table_CH" height="90" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="150" height="90" uuid="450130ff-f548-4208-92da-02298f4863ea">
-									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-								</reportElement>
+								<reportElement x="0" y="0" width="150" height="90" uuid="450130ff-f548-4208-92da-02298f4863ea"/>
 								<textElement textAlignment="Center" verticalAlignment="Top">
 									<font fontName="Arial" isBold="true"/>
-									<paragraph spacingBefore="4"/>
+									<paragraph spacingBefore="15"/>
 								</textElement>
 								<text><![CDATA[NAMA]]></text>
 							</staticText>
@@ -504,12 +503,10 @@ UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
 						<jr:columnHeader style="Table_CH" height="90" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="77" height="90" uuid="bb2de3e1-0776-4e49-bd90-7726ad74675e">
-									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-								</reportElement>
+								<reportElement x="0" y="0" width="77" height="90" uuid="bb2de3e1-0776-4e49-bd90-7726ad74675e"/>
 								<textElement textAlignment="Center" verticalAlignment="Top">
 									<font fontName="Arial" isBold="true"/>
-									<paragraph spacingBefore="4"/>
+									<paragraph spacingBefore="15"/>
 								</textElement>
 								<text><![CDATA[JAWATAN]]></text>
 							</staticText>
@@ -540,7 +537,7 @@ UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
 								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Top">
 									<font fontName="Arial" isBold="true"/>
-									<paragraph spacingBefore="4"/>
+									<paragraph spacingBefore="15"/>
 								</textElement>
 								<text><![CDATA[LANTIKAN]]></text>
 							</staticText>
@@ -562,12 +559,10 @@ UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
 						<jr:columnHeader style="Table_CH" height="90" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="76" height="90" uuid="727a599f-1d36-4204-9a50-58344611dfb3">
-									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-								</reportElement>
+								<reportElement x="0" y="0" width="76" height="90" uuid="727a599f-1d36-4204-9a50-58344611dfb3"/>
 								<textElement textAlignment="Center" verticalAlignment="Top">
 									<font fontName="Arial" isBold="true"/>
-									<paragraph spacingBefore="4"/>
+									<paragraph spacingBefore="15"/>
 								</textElement>
 								<text><![CDATA[BITARA]]></text>
 							</staticText>
@@ -612,15 +607,13 @@ TRANSFORMASI MINDA
 ]]></text>
 							</staticText>
 							<staticText>
-								<reportElement x="90" y="0" width="81" height="90" uuid="27c06ec5-ff99-4f37-9ff2-16ae86100960">
-									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-								</reportElement>
+								<reportElement x="90" y="0" width="81" height="90" uuid="27c06ec5-ff99-4f37-9ff2-16ae86100960"/>
 								<box>
 									<pen lineWidth="0.5"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Top">
 									<font fontName="Arial" isBold="true"/>
-									<paragraph spacingBefore="4"/>
+									<paragraph spacingBefore="15"/>
 								</textElement>
 								<text><![CDATA[TARIKH
 LULUS
@@ -715,12 +708,10 @@ PENILAIAN]]></text>
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
 						<jr:columnHeader style="Table_CH" height="90" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="77" height="90" uuid="05f71662-f76a-4885-8d39-85abda749605">
-									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-								</reportElement>
+								<reportElement x="0" y="0" width="77" height="90" uuid="05f71662-f76a-4885-8d39-85abda749605"/>
 								<textElement textAlignment="Center" verticalAlignment="Top">
 									<font fontName="Arial" isBold="true"/>
-									<paragraph spacingBefore="4"/>
+									<paragraph spacingBefore="15"/>
 								</textElement>
 								<text><![CDATA[INDUKSI
 KHUSUS
@@ -746,12 +737,10 @@ KHUSUS
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column8"/>
 						<jr:columnHeader style="Table_CH" height="90" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="76" height="90" uuid="4690a621-430c-41d9-8d7e-15ca15c06d56">
-									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-								</reportElement>
+								<reportElement x="0" y="0" width="76" height="90" uuid="4690a621-430c-41d9-8d7e-15ca15c06d56"/>
 								<textElement textAlignment="Center" verticalAlignment="Top">
 									<font fontName="Arial" isBold="true"/>
-									<paragraph spacingBefore="4"/>
+									<paragraph spacingBefore="15"/>
 								</textElement>
 								<text><![CDATA[KURSUS
 BAHASA
@@ -779,12 +768,10 @@ INGGERIS
 						<jr:columnHeader style="Table_CH" height="90" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<staticText>
-								<reportElement x="0" y="0" width="85" height="90" uuid="d1991999-1f96-45e4-966a-f1ad6cc978b8">
-									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-								</reportElement>
+								<reportElement x="0" y="0" width="85" height="90" uuid="d1991999-1f96-45e4-966a-f1ad6cc978b8"/>
 								<textElement textAlignment="Center" verticalAlignment="Top">
 									<font fontName="Arial" isBold="true"/>
-									<paragraph spacingBefore="4"/>
+									<paragraph spacingBefore="15"/>
 								</textElement>
 								<text><![CDATA[PEPERIKSAAN
 PERKHIDMATAN
