@@ -2,6 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR220" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="762" leftMargin="40" rightMargin="40" topMargin="30" bottomMargin="30" uuid="8ce27e54-521e-42a3-bc9d-68fdbb8766f7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<style name="Table_TH" mode="Transparent" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -269,13 +270,13 @@ FROM DUAL]]>
 				</textElement>
 				<text><![CDATA[UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="0" y="19" width="762" height="31" uuid="2919647c-afb6-4465-a3a9-08ee54e18164"/>
+			<textField>
+				<reportElement x="0" y="19" width="762" height="31" uuid="1839fbf6-fb1f-456a-a145-07793d0d4592"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[ATR220 : STATISTIK KEHADIRAN KAKITANGAN KE PERHIMPUNAN BULANAN UPSI TAHUN 2016]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["ATR220 : STATISTIK KEHADIRAN KAKITANGAN KE PERHIMPUNAN BULANAN UPSI TAHUN "+$P{TRAINING_YEAR}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>
@@ -501,7 +502,8 @@ HADIR]]></text>
 										<font fontName="Arial" isBold="true"/>
 									</textElement>
 									<text><![CDATA[%
-KEHADIRAN]]></text>
+KEHADIRAN
+]]></text>
 								</staticText>
 							</jr:columnHeader>
 							<jr:detailCell style="Table_TD" height="30">
@@ -572,7 +574,8 @@ KETIDAKHADIRAN]]></text>
 										<font fontName="Arial" isBold="true"/>
 									</textElement>
 									<text><![CDATA[JUMLAH
-KAKITANGAN]]></text>
+KAKITANGAN
+]]></text>
 								</staticText>
 							</jr:columnHeader>
 							<jr:detailCell style="Table_TD" height="30">
@@ -591,7 +594,7 @@ KAKITANGAN]]></text>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="54" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="762" height="10" uuid="2de5241b-13ba-497e-a7ad-9b47cdf3e56f"/>
 				<textElement>
