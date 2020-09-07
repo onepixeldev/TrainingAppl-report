@@ -594,21 +594,24 @@ KAKITANGAN
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="20" splitType="Stretch">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="762" height="10" uuid="2de5241b-13ba-497e-a7ad-9b47cdf3e56f"/>
-				<textElement>
-					<font fontName="Arial" size="8" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Tarikh Cetak : "+$F{CURR_DATE}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" evaluationTime="Master" isBlankWhenNull="true">
-				<reportElement x="0" y="10" width="762" height="10" uuid="e66d6876-7672-4850-a948-afafc43c39e3"/>
-				<textElement textAlignment="Right">
-					<font fontName="Arial" size="8" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{MASTER_CURRENT_PAGE}+" / "+$V{MASTER_TOTAL_PAGES}]]></textFieldExpression>
-			</textField>
+		<band height="41" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="21" width="762" height="20" uuid="961abcb1-ecbd-4e20-b428-4740edd687d4"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="0" y="0" width="762" height="10" uuid="2de5241b-13ba-497e-a7ad-9b47cdf3e56f"/>
+					<textElement>
+						<font fontName="Arial" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Tarikh Cetak : "+$F{CURR_DATE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Master" isBlankWhenNull="true">
+					<reportElement x="0" y="10" width="762" height="10" uuid="e66d6876-7672-4850-a948-afafc43c39e3"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{MASTER_CURRENT_PAGE}+" / "+$V{MASTER_TOTAL_PAGES}]]></textFieldExpression>
+				</textField>
+			</frame>
 		</band>
 	</pageFooter>
 </jasperReport>
