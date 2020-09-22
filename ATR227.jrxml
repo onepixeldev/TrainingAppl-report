@@ -447,7 +447,8 @@ ORDER BY SM_DEPT_CODE,SM_STAFF_NAME]]>
 	<parameter name="DEPARTMENT" class="java.lang.String"/>
 	<parameter name="TRAINING_YEAR" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT SM_DEPT_CODE
+		<![CDATA[SELECT SM_DEPT_CODE,
+TO_CHAR(SYSDATE, 'DD-MON-YY HH:MI PM') CURR_DATE
 FROM STAFF_MAIN,SERVICE_SCHEME,STAFF_STATUS
 WHERE SM_JOB_CODE = SS_SERVICE_CODE 
 AND SM_STAFF_STATUS = SS_STATUS_CODE
@@ -460,11 +461,32 @@ ORDER BY SM_DEPT_CODE]]>
 	<field name="SM_DEPT_CODE" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="SM_DEPT_CODE"/>
 	</field>
+	<field name="CURR_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CURR_DATE"/>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="35" splitType="Stretch"/>
+		<band height="53" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="822" height="50" uuid="4eac9e28-6b9e-48ea-a790-187af8b6c561"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="0" y="19" width="762" height="31" uuid="0498ea8f-ba72-4e13-9cf0-056d2bf0732b"/>
+					<textElement markup="html">
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ATR227 : STATISTIK KEHADIRAN KAKITANGAN KE PERHIMPUNAN BULANAN UPSI TAHUN "+$P{TRAINING_YEAR}+"<br>"+"Mengikut Individu"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="0" width="762" height="19" uuid="53223a7c-9269-427f-91ae-64ad035a7d75"/>
+					<textElement>
+						<font fontName="Arial" size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
+				</staticText>
+			</frame>
+		</band>
 	</pageHeader>
 	<columnHeader>
 		<band height="40">
@@ -955,6 +977,24 @@ ORDER BY SM_DEPT_CODE]]>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="34" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="14" width="822" height="20" uuid="74f3b787-e9cb-40cc-84d1-a88bf66e6877"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="0" y="0" width="822" height="10" uuid="da4c5375-f0dc-44c5-8d95-075298dd3b22"/>
+					<textElement>
+						<font fontName="Arial" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Tarikh Cetak : "+$F{CURR_DATE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Master" isBlankWhenNull="true">
+					<reportElement x="0" y="10" width="822" height="10" uuid="09da7d3e-6df7-46fb-9ffc-f8b8e3aeef1e"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{MASTER_CURRENT_PAGE}+" / "+$V{MASTER_TOTAL_PAGES}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
 	</pageFooter>
 </jasperReport>
