@@ -514,13 +514,14 @@ FROM DUAL]]>
 		<band height="35" splitType="Stretch"/>
 	</pageHeader>
 	<detail>
-		<band height="60" splitType="Stretch">
+		<band height="90" splitType="Prevent">
 			<componentElement>
-				<reportElement x="0" y="0" width="822" height="60" uuid="c62bfcf9-0dc7-46b3-867f-622703231127">
+				<reportElement x="0" y="0" width="822" height="90" uuid="c62bfcf9-0dc7-46b3-867f-622703231127">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table 2_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table 2_CH"/>
 					<property name="com.jaspersoft.studio.table.style.detail" value="Table 2_TD"/>
+					<property name="com.jaspersoft.studio.components.autoresize.next" value="true"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="MAIN" uuid="a861f158-aa97-4c7b-b064-9127ebb4b3f8">
@@ -545,8 +546,8 @@ FROM DUAL]]>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table 2_TD" height="30">
-							<textField>
-								<reportElement x="0" y="0" width="30" height="30" uuid="f7c2f8b1-d74b-4965-9789-7cffa38c0fdd"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="30" height="30" isPrintWhenDetailOverflows="true" uuid="f7c2f8b1-d74b-4965-9789-7cffa38c0fdd"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Arial"/>
 								</textElement>
@@ -567,7 +568,7 @@ FROM DUAL]]>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table 2_TD" height="30">
-							<textField>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement x="0" y="0" width="70" height="30" uuid="0a6dd590-3315-4569-b0e2-f074fcb947a0"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Arial"/>
@@ -576,7 +577,7 @@ FROM DUAL]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="720" uuid="c56b7919-7137-482c-8c0d-c03b5a999d2c">
+					<jr:column width="722" uuid="c56b7919-7137-482c-8c0d-c03b5a999d2c">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
 						<jr:columnHeader style="Table 2_CH" height="60" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -584,14 +585,14 @@ FROM DUAL]]>
 						</jr:columnHeader>
 						<jr:detailCell style="Table 2_TD" height="30">
 							<componentElement>
-								<reportElement x="0" y="0" width="720" height="30" uuid="c0b44778-66cb-4f48-91ca-5c194b319ff4">
+								<reportElement x="0" y="0" width="722" height="30" uuid="8745f7bd-9d65-4aa3-97d1-f7baf11da352">
 									<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 									<property name="com.jaspersoft.studio.table.style.table_header" value="Table 3_TH"/>
 									<property name="com.jaspersoft.studio.table.style.column_header" value="Table 3_CH"/>
 									<property name="com.jaspersoft.studio.table.style.detail" value="Table 3_TD"/>
 								</reportElement>
 								<jr:table>
-									<datasetRun subDataset="MAIN2" uuid="97bfc608-858f-475d-ae48-c0ab84d9a764">
+									<datasetRun subDataset="MAIN2" uuid="a6c4df75-70b0-4b4f-b99c-a528ced451e3">
 										<datasetParameter name="DEPARTMENT">
 											<datasetParameterExpression><![CDATA[$F{SM_DEPT_CODE}]]></datasetParameterExpression>
 										</datasetParameter>
@@ -600,191 +601,19 @@ FROM DUAL]]>
 										</datasetParameter>
 										<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 									</datasetRun>
-									<jr:column width="172" uuid="da20189c-4685-4e02-8173-26db6a31aa2a">
+									<jr:column width="100" uuid="fd7e790c-de0f-42df-8c8d-828010db05de">
 										<jr:detailCell style="Table 3_TD" height="30">
-											<property name="com.jaspersoft.studio.unit.width" value="px"/>
 											<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-												<reportElement x="0" y="0" width="172" height="30" uuid="ef0e0b55-b74f-4bfa-b4f3-63e98b5678cb">
-													<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-													<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-												</reportElement>
-												<textElement textAlignment="Left" verticalAlignment="Middle">
-													<font fontName="Arial" size="10"/>
-													<paragraph leftIndent="4" rightIndent="2"/>
-												</textElement>
+												<reportElement x="0" y="0" width="100" height="30" uuid="4a7a934c-0b5f-4d50-827f-d67921649389"/>
 												<textFieldExpression><![CDATA[$F{SM_STAFF_NAME}]]></textFieldExpression>
 											</textField>
 										</jr:detailCell>
 									</jr:column>
-									<jr:column width="50" uuid="75a24c45-50b5-43a2-a6fe-b0e57c926805">
+									<jr:column width="100" uuid="8b775ac2-195b-4b4f-a5e7-b29d3aac674b">
 										<jr:detailCell style="Table 3_TD" height="30">
-											<property name="com.jaspersoft.studio.unit.width" value="px"/>
 											<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-												<reportElement x="0" y="0" width="50" height="30" uuid="d9642d07-40d6-43f1-9950-050947e04969"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Arial"/>
-												</textElement>
+												<reportElement x="0" y="0" width="100" height="30" uuid="d02725a6-89ec-45cf-891c-6daef7842fa4"/>
 												<textFieldExpression><![CDATA[$F{SM_STAFF_ID}]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="140" uuid="bdfaebf0-2299-4f07-830c-09d7f18117c4">
-										<jr:detailCell style="Table 3_TD" height="30">
-											<property name="com.jaspersoft.studio.unit.width" value="px"/>
-											<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-												<reportElement x="0" y="0" width="140" height="30" uuid="a51fcadd-6931-4fed-b919-cff17ec34bf4">
-													<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-													<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-												</reportElement>
-												<textElement textAlignment="Left" verticalAlignment="Middle">
-													<font fontName="Arial" size="10"/>
-													<paragraph leftIndent="4" rightIndent="2"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$F{SS_SERVICE_DESC}]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="30" uuid="3689d838-6093-412c-8358-2690145e2b18">
-										<jr:detailCell style="Table 3_TD" height="30">
-											<property name="com.jaspersoft.studio.unit.width" value="px"/>
-											<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-												<reportElement x="0" y="0" width="30" height="30" uuid="21d33ebf-63a1-4d5c-ae8d-0fb76c5790fc"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Arial" size="10"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$F{JAN}]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="30" uuid="2d6a3203-58f6-4024-9d08-07af04a04cfb">
-										<jr:detailCell style="Table 3_TD" height="30">
-											<property name="com.jaspersoft.studio.unit.width" value="px"/>
-											<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-												<reportElement x="0" y="0" width="30" height="30" uuid="b9488211-2c30-4916-b405-8b22600d8065"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Arial" size="10"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$F{FEB}]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="30" uuid="1c3c8015-826f-4b7b-8c86-5d69af9cefa9">
-										<jr:detailCell style="Table 3_TD" height="30">
-											<property name="com.jaspersoft.studio.unit.width" value="px"/>
-											<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-												<reportElement x="0" y="0" width="30" height="30" uuid="6e3c1b9d-72f3-4b4b-9eeb-58b554a7a8e9"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Arial" size="10"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$F{MAC}]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="30" uuid="cc71b70d-6167-4bab-b91a-31de88d87d20">
-										<jr:detailCell style="Table 3_TD" height="30">
-											<property name="com.jaspersoft.studio.unit.width" value="px"/>
-											<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-												<reportElement x="0" y="0" width="30" height="30" uuid="984a87a8-a1f6-4a81-8b3a-ad8cc69d4649"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Arial" size="10"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$F{APRIL}]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="30" uuid="2bcd7772-2199-4b10-922a-9e7160dcc103">
-										<jr:detailCell style="Table 3_TD" height="30">
-											<property name="com.jaspersoft.studio.unit.width" value="px"/>
-											<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-												<reportElement x="0" y="0" width="30" height="30" uuid="225f42b0-7c12-4701-be6a-a23611239e14"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Arial" size="10"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$F{MEI}]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="30" uuid="10aaa0cd-756d-4219-9052-649509d3ec7b">
-										<jr:detailCell style="Table 3_TD" height="30">
-											<property name="com.jaspersoft.studio.unit.width" value="px"/>
-											<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-												<reportElement x="0" y="0" width="30" height="30" uuid="1002a173-4bfa-4a54-b1cb-dd72b1472244"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Arial" size="10"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$F{JUN}]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="30" uuid="301120f9-70cc-4ef6-a90b-504a8374a8be">
-										<jr:detailCell style="Table 3_TD" height="30">
-											<property name="com.jaspersoft.studio.unit.width" value="px"/>
-											<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-												<reportElement x="0" y="0" width="30" height="30" uuid="cb5396f9-0152-4cfa-8747-1517bac020e0"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Arial" size="10"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$F{JULAI}]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="30" uuid="37b488c1-d6bd-4931-bfb8-aaa56be9b303">
-										<jr:detailCell style="Table 3_TD" height="30">
-											<property name="com.jaspersoft.studio.unit.width" value="px"/>
-											<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-												<reportElement x="0" y="0" width="30" height="30" uuid="a35956db-38cd-43ee-9334-275c29e9c8f5"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Arial" size="10"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$F{OGOS}]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="30" uuid="4d9ff3d0-d313-41dc-a427-c2101a62426e">
-										<jr:detailCell style="Table 3_TD" height="30">
-											<property name="com.jaspersoft.studio.unit.width" value="px"/>
-											<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-												<reportElement x="0" y="0" width="30" height="30" uuid="f421af27-7190-4dd7-8556-ce2c50d11ef3"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Arial" size="10"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$F{SEPT}]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="30" uuid="d8e611f9-bd69-4e33-a3fe-695624a534bd">
-										<jr:detailCell style="Table 3_TD" height="30">
-											<property name="com.jaspersoft.studio.unit.width" value="px"/>
-											<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-												<reportElement x="0" y="0" width="30" height="30" uuid="9eccbab4-7f4d-49d6-bc17-2b5a3481bc8c"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Arial" size="10"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$F{OKT}]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="30" uuid="48143f00-cbea-4cbf-8913-2963a1dd4864">
-										<jr:detailCell style="Table 3_TD" height="30">
-											<property name="com.jaspersoft.studio.unit.width" value="px"/>
-											<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-												<reportElement x="0" y="0" width="30" height="30" uuid="d9b26cad-d102-47cb-afc5-22ffee1733b6"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Arial" size="10"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$F{NOV}]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="30" uuid="4756d358-a231-49b6-9c84-3127c6297959">
-										<jr:detailCell style="Table 3_TD" height="30">
-											<property name="com.jaspersoft.studio.unit.width" value="px"/>
-											<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-												<reportElement x="0" y="0" width="30" height="30" uuid="d44b0beb-6262-45c8-b478-e24a70d1d0d1"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Arial" size="10"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$F{DIS}]]></textFieldExpression>
 											</textField>
 										</jr:detailCell>
 									</jr:column>

@@ -701,7 +701,7 @@ ORDER BY SM_DEPT_CODE]]>
 					<reportElement x="100" y="0" width="722" height="30" uuid="f3dea64a-8de8-4197-95f1-9dcd0d6f2489">
 						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 					</reportElement>
-					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 						<datasetRun subDataset="MAIN2" uuid="20256322-f02a-40ce-8da9-6e47215e841b">
 							<datasetParameter name="TRAINING_YEAR">
 								<datasetParameterExpression><![CDATA[$P{TRAINING_YEAR}]]></datasetParameterExpression>
@@ -719,6 +719,7 @@ ORDER BY SM_DEPT_CODE]]>
 										<property name="com.jaspersoft.studio.unit.width" value="px"/>
 										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 										<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+										<property name="com.jaspersoft.studio.unit.height" value="px"/>
 									</reportElement>
 									<box>
 										<pen lineWidth="0.5"/>
@@ -889,7 +890,7 @@ ORDER BY SM_DEPT_CODE]]>
 						<pen lineWidth="0.5"/>
 					</box>
 					<textField>
-						<reportElement x="0" y="0" width="70" height="30" uuid="8830d1ab-3947-4d79-b539-1532231e4cda"/>
+						<reportElement x="0" y="0" width="70" height="30" isPrintInFirstWholeBand="true" uuid="8830d1ab-3947-4d79-b539-1532231e4cda"/>
 						<box>
 							<pen lineWidth="0.5"/>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -920,7 +921,7 @@ ORDER BY SM_DEPT_CODE]]>
 						<textElement textAlignment="Center" verticalAlignment="Middle">
 							<font fontName="Arial"/>
 						</textElement>
-						<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+						<textFieldExpression><![CDATA[$F{BIL}]]></textFieldExpression>
 					</textField>
 				</frame>
 			</frame>
