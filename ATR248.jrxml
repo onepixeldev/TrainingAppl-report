@@ -73,7 +73,7 @@ FROM
     ) CF_ADMIN_POST,
     SM_DEPT_CODE,
     (
-        SELECT SOG_GROUP_DESC||CHR(10)||'('||NVL(SS_SERVICE_KUMPP,'Tiada Kumpulan Perkhidmatan')||')' KUMPULAN_PERKHIDMATAN
+        SELECT SOG_GROUP_DESC||CHR(10)||'('||COALESCE(SS_SERVICE_KUMPP,'Tiada Kumpulan Perkhidmatan')||')' KUMPULAN_PERKHIDMATAN
         FROM SERVICE_SCHEME,STAFF_MAIN,SERVICE_ORG_GROUP
         WHERE SM_JOB_CODE = SS_SERVICE_CODE
         AND SM_STAFF_ID = Q.STH_STAFF_ID
@@ -89,18 +89,28 @@ FROM
         WHERE TH_REF_ID = STH_TRAINING_REFID
         AND TH_STATUS = 'APPROVE'
         AND STH_STATUS = 'APPROVE'
-        AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
         AND 
         (
-            TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
+            (
+              TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
+              AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+              OR 
+              (
+                TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
+                AND EXISTS (
+                  SELECT (1) FROM STAFF_TRAINING_DETL
+                  WHERE STD_TRAINING_REFID = STH_TRAINING_REFID
+                  AND STD_STAFF_ID = STH_STAFF_ID
+                  AND COALESCE(STD_ATTEND,'N') IN ('Y','A')
+                )
+            )
+          )
           OR 
           (
-            TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
-            AND EXISTS (
-              SELECT (1) FROM STAFF_TRAINING_DETL
-              WHERE STD_TRAINING_REFID = STH_TRAINING_REFID
-              AND STD_STAFF_ID = STH_STAFF_ID
-              AND NVL(STD_ATTEND,'N') IN ('Y','A')
+            EXISTS (
+                SELECT STH_STAFF_ID
+                FROM STAFF_TRAINING_HEAD,TRAINING_HEAD 
+                WHERE TH_INTERNAL_EXTERNAL = 'EXTERNAL_AGENCY'
             )
           )
         )
@@ -112,29 +122,45 @@ FROM
         FROM TRAINING_HEAD, STAFF_TRAINING_HEAD
         WHERE TH_REF_ID = STH_TRAINING_REFID
         AND TH_STATUS = 'APPROVE'
-        AND STH_STATUS NOT IN ('APPROVE','CANCEL')
         AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
         AND 
         (
-            TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
-          OR 
           (
-            TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
-            AND EXISTS (
-              SELECT (1) FROM STAFF_TRAINING_DETL
-              WHERE STD_TRAINING_REFID = STH_TRAINING_REFID
-              AND STD_STAFF_ID = STH_STAFF_ID
-              AND STD_ATTEND = 'N'
-              AND STD_STAFF_ID IN
               (
-                    SELECT STH_STAFF_ID 
-                    FROM STAFF_TRAINING_HEAD,TRAINING_HEAD
-                    WHERE STH_STATUS = 'APPROVE' 
-                    AND STH_TRAINING_REFID = TH_REF_ID
-                    AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
-                    AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
+                TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
+                AND STH_STATUS NOT IN ('APPROVE','CANCEL')
               )
-            )
+              OR 
+              (
+                TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
+                AND EXISTS 
+                (
+                  SELECT (1) FROM STAFF_TRAINING_DETL
+                  WHERE STD_TRAINING_REFID = STH_TRAINING_REFID
+                  AND STD_STAFF_ID = STH_STAFF_ID
+                  AND STD_ATTEND = 'N'
+                  AND STD_STAFF_ID IN
+                  (
+                        SELECT STH_STAFF_ID 
+                        FROM STAFF_TRAINING_HEAD,TRAINING_HEAD
+                        WHERE STH_STATUS = 'APPROVE' 
+                        AND STH_TRAINING_REFID = TH_REF_ID
+                        AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+                        AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
+                  )
+                )
+              )
+          )
+          OR
+          (
+              EXISTS
+              (
+                    SELECT STH_STAFF_ID
+                    FROM STAFF_TRAINING_HEAD,TRAINING_HEAD 
+                    WHERE STH_STATUS NOT IN ('APPROVE','CANCEL') 
+                    AND TH_STATUS = 'APPROVE'
+                    AND TH_INTERNAL_EXTERNAL = 'EXTERNAL_AGENCY'
+               )
           )
         )
         AND STH_STAFF_ID = Q.STH_STAFF_ID
@@ -152,7 +178,7 @@ FROM
             AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
             AND SM_STAFF_ID = STH_STAFF_ID
             AND SM_JOB_CODE = SS_SERVICE_CODE
-            AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND NVL(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
+            AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND COALESCE(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
             AND SM_RACE = RM_RACE_CODE
             AND STH_STATUS <> 'CANCEL'
             UNION
@@ -164,7 +190,7 @@ FROM
             AND SM_STAFF_ID = STH_STAFF_ID
             AND SM_JOB_CODE = SS_SERVICE_CODE
             AND STH_STATUS = 'APPROVE'
-            AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND NVL(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
+            AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND COALESCE(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
             AND SM_RACE = RM_RACE_CODE
         )
     ) Q
@@ -209,89 +235,240 @@ FROM
 			<variableExpression><![CDATA[$F{STH_STAFF_ID}]]></variableExpression>
 		</variable>
 	</subDataset>
-	<subDataset name="SUM_HADIR" uuid="ca5a0e26-e78a-42b6-bf24-2dc7602219bd">
+	<subDataset name="PERATUS_HADIR" uuid="ca5a0e26-e78a-42b6-bf24-2dc7602219bd">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<parameter name="AKEPT_MONTH" class="java.lang.String"/>
 		<parameter name="AKEPT_ORGANIZER" class="java.lang.String"/>
 		<parameter name="AKEPT_YEAR" class="java.lang.String"/>
-		<parameter name="TOTAL_STAFF" class="java.lang.Integer"/>
+		<parameter name="AKA_NAKA" class="java.lang.String"/>
 		<queryString>
-			<![CDATA[SELECT COUNT(STH_STAFF_ID) TOT_STAFF_ATTEND
+			<![CDATA[SELECT COALESCE(ROUND((NULLIF(TOT_STAFF_ATTEND,0)/NULLIF(TOTAL_STAFF,0))*100,0),0) PERATUS_HADIR
 FROM
-( 
-    SELECT STH_STAFF_ID
-    FROM STAFF_TRAINING_HEAD,TRAINING_HEAD
-    WHERE TH_REF_ID = STH_TRAINING_REFID
-    AND TH_CATEGORY = 'AKEPT'
-    AND TH_STATUS = 'APPROVE'
-    AND STH_STATUS = 'APPROVE'
-    AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
-    AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
-    AND ($P{AKEPT_MONTH} IS NULL OR ($P{AKEPT_MONTH} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'mm') = $P{AKEPT_MONTH}))
-    AND ($P{AKEPT_YEAR} IS NULL OR ($P{AKEPT_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{AKEPT_YEAR}))
-    AND ($P{AKEPT_ORGANIZER} IS NULL OR ($P{AKEPT_ORGANIZER} IS NOT NULL AND TH_ORGANIZER_NAME = $P{AKEPT_ORGANIZER}))
-    UNION ALL
-    SELECT STH_STAFF_ID
-    FROM STAFF_TRAINING_HEAD,TRAINING_HEAD,STAFF_TRAINING_DETL
-    WHERE TH_REF_ID = STH_TRAINING_REFID
-    AND STH_TRAINING_REFID = STD_TRAINING_REFID
-    AND TH_CATEGORY = 'AKEPT'
-    AND STH_STAFF_ID = STD_STAFF_ID
-    AND TH_STATUS = 'APPROVE'
-    AND STH_STATUS = 'APPROVE'
-    AND COALESCE(STD_ATTEND,'N') IN ('Y','A')
-    AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
-    AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
-    AND ($P{AKEPT_MONTH} IS NULL OR ($P{AKEPT_MONTH} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'mm') = $P{AKEPT_MONTH}))
-    AND ($P{AKEPT_YEAR} IS NULL OR ($P{AKEPT_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{AKEPT_YEAR}))
-    AND ($P{AKEPT_ORGANIZER} IS NULL OR ($P{AKEPT_ORGANIZER} IS NOT NULL AND TH_ORGANIZER_NAME = $P{AKEPT_ORGANIZER}))
+(
+	SELECT SUM(TOTAL_STAFF) TOTAL_STAFF,
+    SUM(TOT_STAFF_ATTEND) TOT_STAFF_ATTEND
+    FROM
+    (
+	    SELECT TH_REF_ID,
+	    (
+	        SELECT COUNT(STH_STAFF_ID)
+	        FROM
+	        (
+	            SELECT STH_TRAINING_REFID, STH_STAFF_ID
+	            FROM STAFF_TRAINING_HEAD,STAFF_MAIN,SERVICE_SCHEME,RACE_MAIN,TRAINING_HEAD
+	            WHERE STH_TRAINING_REFID = TH_REF_ID
+	            AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
+	            AND SM_STAFF_ID = STH_STAFF_ID
+	            AND SM_JOB_CODE = SS_SERVICE_CODE
+	            AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND COALESCE(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
+	            AND SM_RACE = RM_RACE_CODE
+	            AND STH_STATUS <> 'CANCEL'
+	            UNION
+	            SELECT STH_TRAINING_REFID, STH_STAFF_ID
+	            FROM STAFF_TRAINING_HEAD,STAFF_MAIN,SERVICE_SCHEME,RACE_MAIN,TRAINING_HEAD
+	            WHERE STH_TRAINING_REFID = TH_REF_ID
+	            AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
+	            AND SM_STAFF_ID = STH_STAFF_ID
+	            AND SM_JOB_CODE = SS_SERVICE_CODE
+	            AND STH_STATUS = 'APPROVE'
+	            AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND COALESCE(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
+	            AND SM_RACE = RM_RACE_CODE
+	        )
+	        WHERE STH_TRAINING_REFID = TH_REF_ID
+	    ) TOTAL_STAFF,
+	    (
+	        SELECT COUNT(STH_STAFF_ID) TOT_STAFF_ATTEND
+	        FROM
+	        ( 
+	            SELECT STH_STAFF_ID
+	            FROM STAFF_TRAINING_HEAD,TRAINING_HEAD
+	            WHERE TH_REF_ID = STH_TRAINING_REFID
+	            AND TH_CATEGORY = 'AKEPT'
+	            AND TH_STATUS = 'APPROVE'
+	            AND STH_STATUS = 'APPROVE'
+	            AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+	            AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
+	            AND ($P{AKEPT_MONTH} IS NULL OR ($P{AKEPT_MONTH} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'mm') = $P{AKEPT_MONTH}))
+	            AND ($P{AKEPT_YEAR} IS NULL OR ($P{AKEPT_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{AKEPT_YEAR}))
+	            AND ($P{AKEPT_ORGANIZER} IS NULL OR ($P{AKEPT_ORGANIZER} IS NOT NULL AND TH_ORGANIZER_NAME = $P{AKEPT_ORGANIZER}))
+	            UNION ALL
+	            SELECT STH_STAFF_ID
+	            FROM STAFF_TRAINING_HEAD,TRAINING_HEAD,STAFF_TRAINING_DETL
+	            WHERE TH_REF_ID = STH_TRAINING_REFID
+	            AND STH_TRAINING_REFID = STD_TRAINING_REFID
+	            AND TH_CATEGORY = 'AKEPT'
+	            AND STH_STAFF_ID = STD_STAFF_ID
+	            AND TH_STATUS = 'APPROVE'
+	            AND STH_STATUS = 'APPROVE'
+	            AND COALESCE(STD_ATTEND,'N') IN ('Y','A')
+	            AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+	            AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
+	            AND ($P{AKEPT_MONTH} IS NULL OR ($P{AKEPT_MONTH} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'mm') = $P{AKEPT_MONTH}))
+	            AND ($P{AKEPT_YEAR} IS NULL OR ($P{AKEPT_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{AKEPT_YEAR}))
+	            AND ($P{AKEPT_ORGANIZER} IS NULL OR ($P{AKEPT_ORGANIZER} IS NOT NULL AND TH_ORGANIZER_NAME = $P{AKEPT_ORGANIZER}))
+	        )
+	    ) TOT_STAFF_ATTEND
+	    FROM TRAINING_HEAD,STATE_MAIN,COUNTRY_MAIN
+	    WHERE TH_CATEGORY = 'AKEPT'
+	    AND TH_STATUS = 'APPROVE'
+	    AND TRAINING_HEAD.TH_TRAINING_STATE = STATE_MAIN.SM_STATE_CODE
+	    AND TRAINING_HEAD.TH_TRAINING_COUNTRY = COUNTRY_MAIN.CM_COUNTRY_CODE
+	    AND ($P{AKEPT_MONTH} IS NULL OR ($P{AKEPT_MONTH} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'mm') = $P{AKEPT_MONTH}))
+	    AND ($P{AKEPT_YEAR} IS NULL OR ($P{AKEPT_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{AKEPT_YEAR}))
+	    AND ($P{AKEPT_ORGANIZER} IS NULL OR ($P{AKEPT_ORGANIZER} IS NOT NULL AND TH_ORGANIZER_NAME = $P{AKEPT_ORGANIZER}))
+	    ORDER BY TH_DATE_FROM DESC
+	)
 )]]>
 		</queryString>
-		<field name="TOT_STAFF_ATTEND" class="java.math.BigDecimal">
-			<property name="com.jaspersoft.studio.field.label" value="TOT_STAFF_ATTEND"/>
+		<field name="PERATUS_HADIR" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="PERATUS_HADIR"/>
 		</field>
 	</subDataset>
-	<subDataset name="SUM_XHADIR" uuid="05b5e77a-68d2-4ba7-93f6-667db83ca7f1">
+	<subDataset name="PERATUS_XHADIR" uuid="05b5e77a-68d2-4ba7-93f6-667db83ca7f1">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<parameter name="AKEPT_MONTH" class="java.lang.String"/>
+		<parameter name="AKA_NAKA" class="java.lang.String"/>
 		<parameter name="AKEPT_ORGANIZER" class="java.lang.String"/>
 		<parameter name="AKEPT_YEAR" class="java.lang.String"/>
 		<queryString>
-			<![CDATA[SELECT COUNT(STH_STAFF_ID) TOT_STAFF_ATTEND
+			<![CDATA[SELECT COALESCE(ROUND((NULLIF((TOTAL_STAFF-TOT_STAFF_ATTEND),0)/NULLIF(TOTAL_STAFF,0))*100,0),0) PERATUS_XHADIR
 FROM
-( 
-    SELECT STH_STAFF_ID
-    FROM STAFF_TRAINING_HEAD,TRAINING_HEAD
-    WHERE TH_REF_ID = STH_TRAINING_REFID
-    AND TH_CATEGORY = 'AKEPT'
-    AND TH_STATUS = 'APPROVE'
-    AND STH_STATUS = 'APPROVE'
-    AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
-    AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
-    AND ($P{AKEPT_MONTH} IS NULL OR ($P{AKEPT_MONTH} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'mm') = $P{AKEPT_MONTH}))
-    AND ($P{AKEPT_YEAR} IS NULL OR ($P{AKEPT_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{AKEPT_YEAR}))
-    AND ($P{AKEPT_ORGANIZER} IS NULL OR ($P{AKEPT_ORGANIZER} IS NOT NULL AND TH_ORGANIZER_NAME = $P{AKEPT_ORGANIZER}))
-    UNION ALL
-    SELECT STH_STAFF_ID
-    FROM STAFF_TRAINING_HEAD,TRAINING_HEAD,STAFF_TRAINING_DETL
-    WHERE TH_REF_ID = STH_TRAINING_REFID
-    AND STH_TRAINING_REFID = STD_TRAINING_REFID
-    AND TH_CATEGORY = 'AKEPT'
-    AND STH_STAFF_ID = STD_STAFF_ID
-    AND TH_STATUS = 'APPROVE'
-    AND STH_STATUS = 'APPROVE'
-    AND COALESCE(STD_ATTEND,'N') IN ('Y','A')
-    AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
-    AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
-    AND ($P{AKEPT_MONTH} IS NULL OR ($P{AKEPT_MONTH} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'mm') = $P{AKEPT_MONTH}))
-    AND ($P{AKEPT_YEAR} IS NULL OR ($P{AKEPT_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{AKEPT_YEAR}))
-    AND ($P{AKEPT_ORGANIZER} IS NULL OR ($P{AKEPT_ORGANIZER} IS NOT NULL AND TH_ORGANIZER_NAME = $P{AKEPT_ORGANIZER}))
+(
+	SELECT SUM(TOTAL_STAFF) TOTAL_STAFF,
+    SUM(TOT_STAFF_ATTEND) TOT_STAFF_ATTEND
+    FROM
+    (	  
+	    SELECT TH_REF_ID,
+	    (
+	        SELECT COUNT(STH_STAFF_ID)
+	        FROM
+	        (
+	            SELECT STH_TRAINING_REFID, STH_STAFF_ID
+	            FROM STAFF_TRAINING_HEAD,STAFF_MAIN,SERVICE_SCHEME,RACE_MAIN,TRAINING_HEAD
+	            WHERE STH_TRAINING_REFID = TH_REF_ID
+	            AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
+	            AND SM_STAFF_ID = STH_STAFF_ID
+	            AND SM_JOB_CODE = SS_SERVICE_CODE
+	            AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND COALESCE(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
+	            AND SM_RACE = RM_RACE_CODE
+	            AND STH_STATUS <> 'CANCEL'
+	            UNION
+	            SELECT STH_TRAINING_REFID, STH_STAFF_ID
+	            FROM STAFF_TRAINING_HEAD,STAFF_MAIN,SERVICE_SCHEME,RACE_MAIN,TRAINING_HEAD
+	            WHERE STH_TRAINING_REFID = TH_REF_ID
+	            AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
+	            AND SM_STAFF_ID = STH_STAFF_ID
+	            AND SM_JOB_CODE = SS_SERVICE_CODE
+	            AND STH_STATUS = 'APPROVE'
+	            AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND COALESCE(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
+	            AND SM_RACE = RM_RACE_CODE
+	        )
+	        WHERE STH_TRAINING_REFID = TH_REF_ID
+	    ) TOTAL_STAFF,
+	    (
+	        SELECT COUNT(STH_STAFF_ID) TOT_STAFF_ATTEND
+	        FROM
+	        ( 
+	            SELECT STH_STAFF_ID
+	            FROM STAFF_TRAINING_HEAD,TRAINING_HEAD
+	            WHERE TH_REF_ID = STH_TRAINING_REFID
+	            AND TH_CATEGORY = 'AKEPT'
+	            AND TH_STATUS = 'APPROVE'
+	            AND STH_STATUS = 'APPROVE'
+	            AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+	            AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
+	            AND ($P{AKEPT_MONTH} IS NULL OR ($P{AKEPT_MONTH} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'mm') = $P{AKEPT_MONTH}))
+	            AND ($P{AKEPT_YEAR} IS NULL OR ($P{AKEPT_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{AKEPT_YEAR}))
+	            AND ($P{AKEPT_ORGANIZER} IS NULL OR ($P{AKEPT_ORGANIZER} IS NOT NULL AND TH_ORGANIZER_NAME = $P{AKEPT_ORGANIZER}))
+	            UNION ALL
+	            SELECT STH_STAFF_ID
+	            FROM STAFF_TRAINING_HEAD,TRAINING_HEAD,STAFF_TRAINING_DETL
+	            WHERE TH_REF_ID = STH_TRAINING_REFID
+	            AND STH_TRAINING_REFID = STD_TRAINING_REFID
+	            AND TH_CATEGORY = 'AKEPT'
+	            AND STH_STAFF_ID = STD_STAFF_ID
+	            AND TH_STATUS = 'APPROVE'
+	            AND STH_STATUS = 'APPROVE'
+	            AND COALESCE(STD_ATTEND,'N') IN ('Y','A')
+	            AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+	            AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
+	            AND ($P{AKEPT_MONTH} IS NULL OR ($P{AKEPT_MONTH} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'mm') = $P{AKEPT_MONTH}))
+	            AND ($P{AKEPT_YEAR} IS NULL OR ($P{AKEPT_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{AKEPT_YEAR}))
+	            AND ($P{AKEPT_ORGANIZER} IS NULL OR ($P{AKEPT_ORGANIZER} IS NOT NULL AND TH_ORGANIZER_NAME = $P{AKEPT_ORGANIZER}))
+	        )
+	    ) TOT_STAFF_ATTEND
+	    FROM TRAINING_HEAD,STATE_MAIN,COUNTRY_MAIN
+	    WHERE TH_CATEGORY = 'AKEPT'
+	    AND TH_STATUS = 'APPROVE'
+	    AND TRAINING_HEAD.TH_TRAINING_STATE = STATE_MAIN.SM_STATE_CODE
+	    AND TRAINING_HEAD.TH_TRAINING_COUNTRY = COUNTRY_MAIN.CM_COUNTRY_CODE
+	    AND ($P{AKEPT_MONTH} IS NULL OR ($P{AKEPT_MONTH} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'mm') = $P{AKEPT_MONTH}))
+	    AND ($P{AKEPT_YEAR} IS NULL OR ($P{AKEPT_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{AKEPT_YEAR}))
+	    AND ($P{AKEPT_ORGANIZER} IS NULL OR ($P{AKEPT_ORGANIZER} IS NOT NULL AND TH_ORGANIZER_NAME = $P{AKEPT_ORGANIZER}))
+	    ORDER BY TH_DATE_FROM DESC
+	)	    
 )]]>
 		</queryString>
-		<field name="TOT_STAFF_ATTEND" class="java.math.BigDecimal">
-			<property name="com.jaspersoft.studio.field.label" value="TOT_STAFF_ATTEND"/>
+		<field name="PERATUS_XHADIR" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="PERATUS_XHADIR"/>
+		</field>
+	</subDataset>
+	<subDataset name="TOTAL_STAFF_ALL" uuid="8d37dd72-b282-4e8e-a04b-481aac156cf4">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="AKEPT_MONTH" class="java.lang.String"/>
+		<parameter name="AKA_NAKA" class="java.lang.String"/>
+		<parameter name="AKEPT_ORGANIZER" class="java.lang.String"/>
+		<parameter name="AKEPT_YEAR" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[SELECT COUNT(STH_STAFF_ID) TOTAL_STAFF_ALL
+FROM
+(
+    SELECT
+    TH_REF_ID
+    FROM TRAINING_HEAD TH,STATE_MAIN,COUNTRY_MAIN
+    WHERE TH_CATEGORY = 'AKEPT'
+    AND TH_STATUS = 'APPROVE'
+    AND TH.TH_TRAINING_STATE = STATE_MAIN.SM_STATE_CODE
+    AND TH.TH_TRAINING_COUNTRY = COUNTRY_MAIN.CM_COUNTRY_CODE
+    AND ($P{AKEPT_MONTH} IS NULL OR ($P{AKEPT_MONTH} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'mm') = $P{AKEPT_MONTH}))
+    AND ($P{AKEPT_YEAR} IS NULL OR ($P{AKEPT_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{AKEPT_YEAR}))
+    AND ($P{AKEPT_ORGANIZER} IS NULL OR ($P{AKEPT_ORGANIZER} IS NOT NULL AND TH_ORGANIZER_NAME = $P{AKEPT_ORGANIZER}))
+    ORDER BY TH_DATE_FROM DESC
+)
+LEFT JOIN
+(
+    SELECT STH_STAFF_ID, STH_TRAINING_REFID
+    FROM
+    (
+        SELECT STH_STAFF_ID, STH_TRAINING_REFID
+        FROM STAFF_TRAINING_HEAD,STAFF_MAIN,SERVICE_SCHEME,RACE_MAIN,TRAINING_HEAD
+        WHERE STH_TRAINING_REFID = TH_REF_ID
+        AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
+        AND SM_STAFF_ID = STH_STAFF_ID
+        AND SM_JOB_CODE = SS_SERVICE_CODE
+        AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND NVL(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
+        AND SM_RACE = RM_RACE_CODE
+        AND STH_STATUS <> 'CANCEL'
+        UNION
+        SELECT STH_STAFF_ID, STH_TRAINING_REFID
+        FROM STAFF_TRAINING_HEAD,STAFF_MAIN,SERVICE_SCHEME,RACE_MAIN,TRAINING_HEAD
+        WHERE STH_TRAINING_REFID = TH_REF_ID
+        AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
+        AND SM_STAFF_ID = STH_STAFF_ID
+        AND SM_JOB_CODE = SS_SERVICE_CODE
+        AND STH_STATUS = 'APPROVE'
+        AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND NVL(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
+        AND SM_RACE = RM_RACE_CODE
+    )
+) ON STH_TRAINING_REFID = TH_REF_ID
+WHERE STH_STAFF_ID IS NOT NULL
+]]>
+		</queryString>
+		<field name="TOTAL_STAFF_ALL" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="TOTAL_STAFF_ALL"/>
 		</field>
 	</subDataset>
 	<parameter name="AKA_NAKA" class="java.lang.String"/>
@@ -385,11 +562,11 @@ ORDER BY TH_DATE_FROM DESC]]>
 			<frame>
 				<reportElement positionType="Float" x="0" y="51" width="822" height="20" uuid="fe00bd01-8499-469c-abf4-2e9690b0e3c4"/>
 				<textField evaluationTime="Report">
-					<reportElement x="0" y="0" width="374" height="20" uuid="0b5724c8-7faa-4f4e-b48c-faaa56a01337"/>
+					<reportElement x="0" y="0" width="100" height="20" uuid="0b5724c8-7faa-4f4e-b48c-faaa56a01337"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="Arial"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Jumlah Semua Staf : "+($V{SUM_STAFF}==null?0:$V{SUM_STAFF})+" orang"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Jumlah Semua Staf : "]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="700" y="0" width="122" height="20" uuid="c327623e-1581-4da7-a08f-86740d3da424"/>
@@ -398,6 +575,35 @@ ORDER BY TH_DATE_FROM DESC]]>
 					</textElement>
 					<text><![CDATA[ReportID : ATR248]]></text>
 				</staticText>
+				<componentElement>
+					<reportElement x="100" y="0" width="134" height="20" uuid="6e9f7c2f-a6c3-4f32-9b96-7ef165404a01"/>
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+						<datasetRun subDataset="TOTAL_STAFF_ALL" uuid="f219ebaa-fb8c-4355-a157-490145ccd338">
+							<datasetParameter name="AKEPT_MONTH">
+								<datasetParameterExpression><![CDATA[$P{AKEPT_MONTH}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="AKEPT_ORGANIZER">
+								<datasetParameterExpression><![CDATA[$P{AKEPT_ORGANIZER}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="AKEPT_YEAR">
+								<datasetParameterExpression><![CDATA[$P{AKEPT_YEAR}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="AKA_NAKA">
+								<datasetParameterExpression><![CDATA[$P{AKA_NAKA}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:listContents height="20" width="134">
+							<textField evaluationTime="Report">
+								<reportElement x="0" y="0" width="134" height="20" uuid="ba32283a-f38c-4031-8c97-cdb2f4befe01"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Arial" size="10" isBold="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[($F{TOTAL_STAFF_ALL}==null?0:$F{TOTAL_STAFF_ALL})+" orang"]]></textFieldExpression>
+							</textField>
+						</jr:listContents>
+					</jr:list>
+				</componentElement>
 			</frame>
 		</band>
 	</title>
@@ -589,13 +795,14 @@ JAWATAN]]></text>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="6" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Kehadiran]]></text>
+					<text><![CDATA[Kehadiran
+]]></text>
 				</staticText>
 			</frame>
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="95" splitType="Prevent">
+		<band height="50" splitType="Prevent">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="30" height="50" uuid="3e5b8324-1e5d-4dea-8197-c10105e44bdd"/>
 				<box>
@@ -663,7 +870,7 @@ JAWATAN]]></text>
 				<textFieldExpression><![CDATA[$F{DATE2}]]></textFieldExpression>
 			</textField>
 			<frame borderSplitType="DrawBorders">
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="822" height="50" isPrintWhenDetailOverflows="true" uuid="941c287a-9844-4ab0-8469-441542dd8558"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="822" height="50" isPrintWhenDetailOverflows="true" uuid="941c287a-9844-4ab0-8469-441542dd8558"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
@@ -791,13 +998,13 @@ JAWATAN]]></text>
 								</box>
 								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 									<reportElement x="0" y="0" width="50" height="50" uuid="b9013783-5d4c-4e2e-bada-f5bd74ad68b2">
-										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 										<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 										<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
 									</reportElement>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
-										<font fontName="Arial" size="8"/>
-										<paragraph firstLineIndent="5" leftIndent="5" rightIndent="5"/>
+										<font fontName="Arial" size="7"/>
+										<paragraph firstLineIndent="4" leftIndent="2" rightIndent="2"/>
 									</textElement>
 									<textFieldExpression><![CDATA[$F{SM_DEPT_CODE}]]></textFieldExpression>
 								</textField>
@@ -817,11 +1024,10 @@ JAWATAN]]></text>
 									<reportElement x="0" y="0" width="80" height="50" uuid="04348298-e2a4-4dfb-96e9-ed3b984de4f2">
 										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 										<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-										<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
 									</reportElement>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial" size="8"/>
-										<paragraph firstLineIndent="5" leftIndent="5" rightIndent="5"/>
+										<paragraph firstLineIndent="4" leftIndent="5" rightIndent="5"/>
 									</textElement>
 									<textFieldExpression><![CDATA[$F{CF_SERVICE_KUMP}]]></textFieldExpression>
 								</textField>
@@ -841,11 +1047,10 @@ JAWATAN]]></text>
 									<reportElement x="0" y="0" width="50" height="50" uuid="1ab8af7f-7faf-40b4-817e-e233943b1f58">
 										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 										<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-										<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
 									</reportElement>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial" size="7"/>
-										<paragraph firstLineIndent="2" leftIndent="2" rightIndent="2"/>
+										<paragraph firstLineIndent="4" leftIndent="2" rightIndent="2"/>
 									</textElement>
 									<textFieldExpression><![CDATA[$F{SS_SERVICE_DESC}]]></textFieldExpression>
 								</textField>
@@ -1050,58 +1255,12 @@ JAWATAN]]></text>
 					</box>
 				</frame>
 			</frame>
-			<frame>
-				<reportElement positionType="Float" x="0" y="55" width="194" height="40" uuid="50918dc5-b0db-4445-a132-ab9b09ab4bcd"/>
-				<staticText>
-					<reportElement x="0" y="0" width="60" height="20" uuid="630fc38a-81f3-4fb7-b2c5-61eefcdf6e02"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Jumlah hadir : ]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="0" y="20" width="80" height="20" uuid="7aa52dbd-8b61-4959-b5d7-e3a5241f1319"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Jumlah tidak hadir :]]></text>
-				</staticText>
-				<componentElement>
-					<reportElement x="60" y="0" width="134" height="20" uuid="aee2f4ff-9c76-4fe2-9290-799291d6016e"/>
-					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-						<datasetRun subDataset="SUM_HADIR" uuid="93306c9f-0649-4fbc-8108-67afd6c5be37">
-							<datasetParameter name="AKEPT_MONTH">
-								<datasetParameterExpression><![CDATA[$P{AKEPT_MONTH}]]></datasetParameterExpression>
-							</datasetParameter>
-							<datasetParameter name="AKEPT_ORGANIZER">
-								<datasetParameterExpression><![CDATA[$P{AKEPT_ORGANIZER}]]></datasetParameterExpression>
-							</datasetParameter>
-							<datasetParameter name="AKEPT_YEAR">
-								<datasetParameterExpression><![CDATA[$P{AKEPT_YEAR}]]></datasetParameterExpression>
-							</datasetParameter>
-							<datasetParameter name="TOTAL_STAFF">
-								<datasetParameterExpression><![CDATA[$V{SUM_STAFF}]]></datasetParameterExpression>
-							</datasetParameter>
-							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-						</datasetRun>
-						<jr:listContents height="20" width="134">
-							<textField evaluationTime="Report">
-								<reportElement x="0" y="0" width="134" height="20" uuid="2c5e7e9d-1b87-409b-b54e-12bb41a40383"/>
-								<textElement textAlignment="Left" verticalAlignment="Middle">
-									<font fontName="Arial" size="8" isBold="true"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$P{TOTAL_STAFF}]]></textFieldExpression>
-							</textField>
-						</jr:listContents>
-					</jr:list>
-				</componentElement>
-			</frame>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="34">
+		<band height="30">
 			<frame>
-				<reportElement x="0" y="14" width="822" height="20" uuid="719fb7b8-d8c1-49c8-8149-7677b3c27ee9"/>
+				<reportElement x="0" y="10" width="822" height="20" uuid="719fb7b8-d8c1-49c8-8149-7677b3c27ee9"/>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 					<reportElement x="0" y="0" width="822" height="10" uuid="9daa4d94-f7f4-4e65-a33b-def840667cc5"/>
 					<textElement>
@@ -1119,4 +1278,83 @@ JAWATAN]]></text>
 			</frame>
 		</band>
 	</pageFooter>
+	<summary>
+		<band height="50">
+			<frame>
+				<reportElement positionType="Float" x="0" y="10" width="194" height="40" uuid="50918dc5-b0db-4445-a132-ab9b09ab4bcd"/>
+				<staticText>
+					<reportElement x="0" y="0" width="60" height="20" uuid="630fc38a-81f3-4fb7-b2c5-61eefcdf6e02"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Jumlah hadir : ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="20" width="80" height="20" uuid="7aa52dbd-8b61-4959-b5d7-e3a5241f1319"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Jumlah tidak hadir :]]></text>
+				</staticText>
+				<componentElement>
+					<reportElement x="60" y="0" width="134" height="20" uuid="aee2f4ff-9c76-4fe2-9290-799291d6016e"/>
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+						<datasetRun subDataset="PERATUS_HADIR" uuid="e24a38d3-2efc-483f-be90-9df713deb6c1">
+							<datasetParameter name="AKEPT_MONTH">
+								<datasetParameterExpression><![CDATA[$P{AKEPT_MONTH}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="AKEPT_ORGANIZER">
+								<datasetParameterExpression><![CDATA[$P{AKEPT_ORGANIZER}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="AKEPT_YEAR">
+								<datasetParameterExpression><![CDATA[$P{AKEPT_YEAR}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="AKA_NAKA">
+								<datasetParameterExpression><![CDATA[$P{AKA_NAKA}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:listContents height="20" width="134">
+							<textField evaluationTime="Report">
+								<reportElement x="0" y="0" width="134" height="20" uuid="2c5e7e9d-1b87-409b-b54e-12bb41a40383"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Arial" size="8" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[($F{PERATUS_HADIR}==0&&$F{PERATUS_HADIR}==null?0:$F{PERATUS_HADIR})+" %"]]></textFieldExpression>
+							</textField>
+						</jr:listContents>
+					</jr:list>
+				</componentElement>
+				<componentElement>
+					<reportElement x="80" y="20" width="114" height="20" uuid="4fd58054-909b-4933-8a7d-6c4dfe0953c0"/>
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+						<datasetRun subDataset="PERATUS_XHADIR" uuid="fd60d259-3289-4e9b-9c10-c3c9087b758f">
+							<datasetParameter name="AKEPT_MONTH">
+								<datasetParameterExpression><![CDATA[$P{AKEPT_MONTH}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="AKEPT_ORGANIZER">
+								<datasetParameterExpression><![CDATA[$P{AKEPT_ORGANIZER}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="AKEPT_YEAR">
+								<datasetParameterExpression><![CDATA[$P{AKEPT_YEAR}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="AKA_NAKA">
+								<datasetParameterExpression><![CDATA[$P{AKA_NAKA}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:listContents height="20" width="114">
+							<textField evaluationTime="Report">
+								<reportElement x="0" y="0" width="114" height="20" uuid="92aa4c89-66e6-4608-b9b5-3e8e1748670c"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Arial" size="8" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[($F{PERATUS_XHADIR}==0&&$F{PERATUS_XHADIR}==null?0:$F{PERATUS_XHADIR})+" %"]]></textFieldExpression>
+							</textField>
+						</jr:listContents>
+					</jr:list>
+				</componentElement>
+			</frame>
+		</band>
+	</summary>
 </jasperReport>
