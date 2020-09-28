@@ -455,7 +455,7 @@ PERKHIDMATAN]]></text>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Arial" size="10"/>
 									</textElement>
-									<textFieldExpression><![CDATA[$V{SUM_STAFF}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>
