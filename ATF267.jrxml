@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATF267" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="4734e031-8079-4fe8-92dc-d882e8f8039f">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR267" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="4734e031-8079-4fe8-92dc-d882e8f8039f">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -102,7 +102,7 @@ FROM
     AND SM_JOB_CODE = SS_SERVICE_CODE
     AND ($P{AKEPT_MONTH} IS NULL OR ($P{AKEPT_MONTH} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'mm') = $P{AKEPT_MONTH}))
     AND ($P{AKEPT_ORGANIZER} IS NULL OR ($P{AKEPT_ORGANIZER} IS NOT NULL AND TH_ORGANIZER_NAME = $P{AKEPT_ORGANIZER}))
-    AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND NVL(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
+    AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND COALESCE(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
     UNION
     SELECT TH_REF_ID,STH_STAFF_ID,SM_STAFF_NAME||CHR(10)||'('||STH_STAFF_ID||')' STAFF_NAME,SM_DEPT_CODE,TH_DATE_FROM,
     TH_TRAINING_TITLE,TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy')DATE2,
@@ -122,7 +122,7 @@ FROM
     AND SM_JOB_CODE = SS_SERVICE_CODE
     AND ($P{AKEPT_MONTH} IS NULL OR ($P{AKEPT_MONTH} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'mm') = $P{AKEPT_MONTH}))
     AND ($P{AKEPT_ORGANIZER} IS NULL OR ($P{AKEPT_ORGANIZER} IS NOT NULL AND TH_ORGANIZER_NAME = $P{AKEPT_ORGANIZER}))
-    AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND NVL(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
+    AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND COALESCE(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
     UNION
     SELECT TH_REF_ID,STH_STAFF_ID,SM_STAFF_NAME||CHR(10)||'('||STH_STAFF_ID||')' STAFF_NAME,SM_DEPT_CODE,TH_DATE_FROM,
     TH_TRAINING_TITLE,TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy')DATE2,
@@ -138,7 +138,7 @@ FROM
     AND SM_JOB_CODE = SS_SERVICE_CODE
     AND ($P{AKEPT_MONTH} IS NULL OR ($P{AKEPT_MONTH} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'mm') = $P{AKEPT_MONTH}))
     AND ($P{AKEPT_ORGANIZER} IS NULL OR ($P{AKEPT_ORGANIZER} IS NOT NULL AND TH_ORGANIZER_NAME = $P{AKEPT_ORGANIZER}))
-    AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND NVL(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
+    AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND COALESCE(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
 ) Q
 WHERE ($P{AKEPT_YEAR} IS NULL OR ($P{AKEPT_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{AKEPT_YEAR}))
 ORDER BY TH_DATE_FROM DESC,STH_STAFF_ID,SM_DEPT_CODE]]>
@@ -202,7 +202,7 @@ FROM
     AND SM_JOB_CODE = SS_SERVICE_CODE
     AND ($P{AKEPT_MONTH} IS NULL OR ($P{AKEPT_MONTH} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'mm') = $P{AKEPT_MONTH}))
     AND ($P{AKEPT_ORGANIZER} IS NULL OR ($P{AKEPT_ORGANIZER} IS NOT NULL AND TH_ORGANIZER_NAME = $P{AKEPT_ORGANIZER}))
-    AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND NVL(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
+    AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND COALESCE(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
     UNION
     SELECT TH_REF_ID,STH_STAFF_ID,SM_STAFF_NAME||CHR(10)||'('||STH_STAFF_ID||')' STAFF_NAME,SM_DEPT_CODE,TH_DATE_FROM,
     TH_TRAINING_TITLE,TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy')DATE2,
@@ -222,7 +222,7 @@ FROM
     AND SM_JOB_CODE = SS_SERVICE_CODE
     AND ($P{AKEPT_MONTH} IS NULL OR ($P{AKEPT_MONTH} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'mm') = $P{AKEPT_MONTH}))
     AND ($P{AKEPT_ORGANIZER} IS NULL OR ($P{AKEPT_ORGANIZER} IS NOT NULL AND TH_ORGANIZER_NAME = $P{AKEPT_ORGANIZER}))
-    AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND NVL(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
+    AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND COALESCE(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
     UNION
     SELECT TH_REF_ID,STH_STAFF_ID,SM_STAFF_NAME||CHR(10)||'('||STH_STAFF_ID||')' STAFF_NAME,SM_DEPT_CODE,TH_DATE_FROM,
     TH_TRAINING_TITLE,TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' - '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy')DATE2,
@@ -238,7 +238,7 @@ FROM
     AND SM_JOB_CODE = SS_SERVICE_CODE
     AND ($P{AKEPT_MONTH} IS NULL OR ($P{AKEPT_MONTH} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'mm') = $P{AKEPT_MONTH}))
     AND ($P{AKEPT_ORGANIZER} IS NULL OR ($P{AKEPT_ORGANIZER} IS NOT NULL AND TH_ORGANIZER_NAME = $P{AKEPT_ORGANIZER}))
-    AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND NVL(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
+    AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND COALESCE(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
 ) Q
 WHERE ($P{AKEPT_YEAR} IS NULL OR ($P{AKEPT_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{AKEPT_YEAR}))]]>
 		</queryString>

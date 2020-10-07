@@ -94,7 +94,11 @@ FROM
             (
               TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
               AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
-              OR 
+              OR
+              (
+              TH_INTERNAL_EXTERNAL = 'EXTERNAL_AGENCY'
+              )
+              OR
               (
                 TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
                 AND EXISTS (
@@ -103,14 +107,6 @@ FROM
                   AND STD_STAFF_ID = STH_STAFF_ID
                   AND COALESCE(STD_ATTEND,'N') IN ('Y','A')
                 )
-            )
-          )
-          OR 
-          (
-            EXISTS (
-                SELECT STH_STAFF_ID
-                FROM STAFF_TRAINING_HEAD,TRAINING_HEAD 
-                WHERE TH_INTERNAL_EXTERNAL = 'EXTERNAL_AGENCY'
             )
           )
         )
@@ -122,18 +118,24 @@ FROM
         FROM TRAINING_HEAD, STAFF_TRAINING_HEAD
         WHERE TH_REF_ID = STH_TRAINING_REFID
         AND TH_STATUS = 'APPROVE'
-        AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
         AND 
         (
           (
               (
                 TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
                 AND STH_STATUS NOT IN ('APPROVE','CANCEL')
+                AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+              )
+              OR
+              (
+                  
+                STH_STATUS NOT IN ('APPROVE','CANCEL') 
+                AND TH_INTERNAL_EXTERNAL = 'EXTERNAL_AGENCY'
               )
               OR 
               (
-                TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
-                AND EXISTS 
+                --TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
+                EXISTS 
                 (
                   SELECT (1) FROM STAFF_TRAINING_DETL
                   WHERE STD_TRAINING_REFID = STH_TRAINING_REFID
@@ -150,17 +152,6 @@ FROM
                   )
                 )
               )
-          )
-          OR
-          (
-              EXISTS
-              (
-                    SELECT STH_STAFF_ID
-                    FROM STAFF_TRAINING_HEAD,TRAINING_HEAD 
-                    WHERE STH_STATUS NOT IN ('APPROVE','CANCEL') 
-                    AND TH_STATUS = 'APPROVE'
-                    AND TH_INTERNAL_EXTERNAL = 'EXTERNAL_AGENCY'
-               )
           )
         )
         AND STH_STAFF_ID = Q.STH_STAFF_ID
@@ -449,7 +440,7 @@ LEFT JOIN
         AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
         AND SM_STAFF_ID = STH_STAFF_ID
         AND SM_JOB_CODE = SS_SERVICE_CODE
-        AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND NVL(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
+        AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND COALESCE(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
         AND SM_RACE = RM_RACE_CODE
         AND STH_STATUS <> 'CANCEL'
         UNION
@@ -460,12 +451,11 @@ LEFT JOIN
         AND SM_STAFF_ID = STH_STAFF_ID
         AND SM_JOB_CODE = SS_SERVICE_CODE
         AND STH_STATUS = 'APPROVE'
-        AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND NVL(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
+        AND ($P{AKA_NAKA} IS NULL OR ($P{AKA_NAKA} IS NOT NULL AND COALESCE(SS_ACADEMIC,'N') = $P{AKA_NAKA}))
         AND SM_RACE = RM_RACE_CODE
     )
 ) ON STH_TRAINING_REFID = TH_REF_ID
-WHERE STH_STAFF_ID IS NOT NULL
-]]>
+WHERE STH_STAFF_ID IS NOT NULL]]>
 		</queryString>
 		<field name="TOTAL_STAFF_ALL" class="java.math.BigDecimal">
 			<property name="com.jaspersoft.studio.field.label" value="TOTAL_STAFF_ALL"/>
