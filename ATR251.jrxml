@@ -1,0 +1,959 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR251" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="515" leftMargin="40" rightMargin="40" topMargin="40" bottomMargin="40" uuid="871c3bf7-cbb0-4f4f-b668-0b3fc2b64405">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="REFID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT Q.*,
+TSR_PARTICIPANT_DISCIPLINE, TSR_PARTICIPANT_TIME,TSR_PARTICIPANT_REMARK,
+TSR_CAFE_NAME, TSR_CAFE_TIME,TSR_CAFE_QUALITY,TSR_CAFE_REMARK,
+TSR_ROOM_CHAIR,TSR_ROOM_DESK,TSR_ROOM_AIRCOND,TSR_ROOM_LAMP,TSR_ROOM_REMARK,
+TSR_EQUIPMENT_COMPUTER,TSR_EQUIPMENT_LASERPOINTER,TSR_EQUIPMENT_LCD,TSR_EQUIPMENT_PASYSTEM,TSR_EQUIPMENT_REMARK,
+TSR_OVERALL_REPORT
+FROM
+(  
+    SELECT TH_TRAINING_TITLE,TH_TRAINING_VENUE,TO_CHAR(TH_DATE_FROM,'dd/mm/yyyy')||' hingga '||TO_CHAR(TH_DATE_TO,'dd/mm/yyyy') TARIKH,
+    TH_DATE_FROM,TH_REF_ID,
+    CASE WHEN (TO_CHAR(TH_DATE_FROM, 'YYYY') < 2016)
+    THEN ((
+            SELECT COUNT(STH_STAFF_ID) AS STAFF_ID
+            FROM TRAINING_HEAD, STAFF_TRAINING_HEAD
+            WHERE TH_REF_ID = STH_TRAINING_REFID
+            AND STH_PARTICIPANT_ROLE = 'D'
+            AND STH_STATUS = 'APPROVE'
+            AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+            AND (TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
+              OR (TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
+                AND EXISTS (
+                  SELECT (1) FROM STAFF_TRAINING_DETL
+                  WHERE STD_TRAINING_REFID = STH_TRAINING_REFID
+                  AND STD_STAFF_ID = STH_STAFF_ID
+                  AND STD_ATTEND IN ('Y','A')
+                )
+              )
+            )
+            AND STH_TRAINING_REFID = $P{REFID}
+         )||' / '||
+         (
+            SELECT TH_MAX_PARTICIPANT
+            FROM TRAINING_HEAD 
+            WHERE TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+            AND TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
+            AND TH_REF_ID = $P{REFID}
+         ))
+    ELSE ((
+            SELECT COUNT(STH_STAFF_ID) AS STAFF_ID
+            FROM TRAINING_HEAD, STAFF_TRAINING_HEAD
+            WHERE TH_REF_ID = STH_TRAINING_REFID
+            AND STH_PARTICIPANT_ROLE = 'D'
+            AND STH_STATUS = 'APPROVE'
+            AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+            AND (TO_CHAR(TH_DATE_FROM,'yyyy') < '2016'
+              OR (TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
+                AND EXISTS (
+                  SELECT (1) FROM STAFF_TRAINING_DETL
+                  WHERE STD_TRAINING_REFID = STH_TRAINING_REFID
+                  AND STD_STAFF_ID = STH_STAFF_ID
+                  AND STD_ATTEND IN ('Y','A')
+                )
+              )
+            )
+            AND STH_TRAINING_REFID = $P{REFID}
+         )||' / '||
+         (
+            SELECT COUNT(STH_STAFF_ID) TOTAL
+            FROM STAFF_TRAINING_HEAD,TRAINING_HEAD
+            WHERE STH_STATUS = 'APPROVE' 
+            AND STH_TRAINING_REFID = TH_REF_ID 
+            AND TH_INTERNAL_EXTERNAL <> 'EXTERNAL_AGENCY'
+            AND TO_CHAR(TH_DATE_FROM,'yyyy') >= '2016'
+            AND STH_TRAINING_REFID = $P{REFID}
+            AND STH_PARTICIPANT_ROLE = 'D'
+         ))
+    END AS KEHADIRAN,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_PARTICIPANT_DISCIPLINE,'N')TSR_PARTICIPANT_DISCIPLINE
+        FROM TRAINING_SECRETARIAT_REPORT
+        WHERE TSR_REFID = $P{REFID}
+    ) = 'Y')
+    THEN '/'
+    END AS CF_DISIPLIN_BAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_PARTICIPANT_DISCIPLINE,'N')TSR_PARTICIPANT_DISCIPLINE
+        FROM TRAINING_SECRETARIAT_REPORT
+        WHERE TSR_REFID = $P{REFID}
+    ) = 'N' OR 
+    (
+        SELECT COALESCE(TSR_PARTICIPANT_DISCIPLINE,'N')TSR_PARTICIPANT_DISCIPLINE
+        FROM TRAINING_SECRETARIAT_REPORT
+        WHERE TSR_REFID = $P{REFID}
+    ) IS NULL)
+    THEN '/'
+    END AS CF_DISIPLIN_TIDAKBAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_PARTICIPANT_TIME,'N')TSR_PARTICIPANT_TIME
+        FROM TRAINING_SECRETARIAT_REPORT
+        WHERE TSR_REFID = $P{REFID}
+    ) = 'Y')
+    THEN '/'
+    END AS CF_TIME_BAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_PARTICIPANT_TIME,'N')TSR_PARTICIPANT_TIME
+        FROM TRAINING_SECRETARIAT_REPORT
+        WHERE TSR_REFID = $P{REFID}
+    ) = 'N' OR 
+    (
+        SELECT COALESCE(TSR_PARTICIPANT_TIME,'N')TSR_PARTICIPANT_TIME
+        FROM TRAINING_SECRETARIAT_REPORT
+        WHERE TSR_REFID = $P{REFID}
+    ) IS NULL)
+    THEN '/'
+    END AS CF_TIME_TIDAKBAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_CAFE_TIME,'N')TSR_CAFE_TIME
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'Y')
+    THEN '/'
+    END AS CF_CAFETIME_BAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_CAFE_TIME,'N')TSR_CAFE_TIME
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'N' OR 
+    (
+        SELECT COALESCE(TSR_CAFE_TIME,'N')TSR_CAFE_TIME
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) IS NULL)
+    THEN '/'
+    END AS CF_CAFETIME_TIDAKBAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_CAFE_QUALITY,'N')TSR_CAFE_QUALITY
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'Y')
+    THEN '/'
+    END AS CF_CAFEQUALITY_BAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_CAFE_QUALITY,'N')TSR_CAFE_QUALITY
+        FROM TRAINING_SECRETARIAT_REPORT
+        WHERE TSR_REFID = $P{REFID}
+    ) = 'N' OR 
+    (
+        SELECT COALESCE(TSR_CAFE_QUALITY,'N')TSR_CAFE_QUALITY
+        FROM TRAINING_SECRETARIAT_REPORT
+        WHERE TSR_REFID = $P{REFID}
+    ) IS NULL)
+    THEN '/'
+    END AS CF_CAFEQUALITY_TIDAKBAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_ROOM_CHAIR,'N')TSR_ROOM_CHAIR
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'Y')
+    THEN '/'
+    END AS CF_ROOMCHAIR_BAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_ROOM_CHAIR,'N')TSR_ROOM_CHAIR
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'N' OR 
+    (
+        SELECT COALESCE(TSR_ROOM_CHAIR,'N')TSR_ROOM_CHAIR
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) IS NULL)
+    THEN '/'
+    END AS CF_ROOMCHAIR_TIDAKBAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_ROOM_DESK,'N')TSR_ROOM_DESK
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'Y')
+    THEN '/'
+    END AS CF_ROOMDESK_BAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_ROOM_DESK,'N')TSR_ROOM_DESK
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'N' OR 
+    (
+        SELECT COALESCE(TSR_ROOM_DESK,'N')TSR_ROOM_DESK
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) IS NULL)
+    THEN '/'
+    END AS CF_ROOMDESK_TIDAKBAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_ROOM_AIRCOND,'N')TSR_ROOM_AIRCOND
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'Y')
+    THEN '/'
+    END AS CF_ROOMAIRCOND_BAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_ROOM_AIRCOND,'N')TSR_ROOM_AIRCOND
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'N' OR 
+    (
+        SELECT COALESCE(TSR_ROOM_AIRCOND,'N')TSR_ROOM_AIRCOND
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) IS NULL)
+    THEN '/'
+    END AS CF_ROOMAIRCOND_TIDAKBAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_ROOM_LAMP,'N')TSR_ROOM_LAMP
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'Y')
+    THEN '/'
+    END AS CF_ROOMLAMP_BAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_ROOM_LAMP,'N')TSR_ROOM_LAMP
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'N' OR 
+    (
+        SELECT COALESCE(TSR_ROOM_LAMP,'N')TSR_ROOM_LAMP
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) IS NULL)
+    THEN '/'
+    END AS CF_ROOMLAMP_TIDAKBAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_EQUIPMENT_COMPUTER,'N')TSR_EQUIPMENT_COMPUTER
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'Y')
+    THEN '/'
+    END AS CF_COMPUTER_BAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_EQUIPMENT_COMPUTER,'N')TSR_EQUIPMENT_COMPUTER
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'N' OR 
+    (
+        SELECT COALESCE(TSR_EQUIPMENT_COMPUTER,'N')TSR_EQUIPMENT_COMPUTER
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) IS NULL)
+    THEN '/'
+    END AS CF_COMPUTER_TIDAKBAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_EQUIPMENT_LASERPOINTER,'N')TSR_EQUIPMENT_LASERPOINTER
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'Y')
+    THEN '/'
+    END AS CF_LASERPOINT_BAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_EQUIPMENT_LASERPOINTER,'N')TSR_EQUIPMENT_LASERPOINTER
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'N' OR 
+    (
+        SELECT COALESCE(TSR_EQUIPMENT_LASERPOINTER,'N')TSR_EQUIPMENT_LASERPOINTER
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) IS NULL)
+    THEN '/'
+    END AS CF_LASERPOINT_TIDAKBAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_EQUIPMENT_LCD,'N')TSR_EQUIPMENT_LCD
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'Y')
+    THEN '/'
+    END AS CF_LCD_BAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_EQUIPMENT_LCD,'N')TSR_EQUIPMENT_LCD
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'N' OR 
+    (
+        SELECT COALESCE(TSR_EQUIPMENT_LCD,'N')TSR_EQUIPMENT_LCD
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) IS NULL)
+    THEN '/'
+    END AS CF_LCD_TIDAKBAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_EQUIPMENT_PASYSTEM,'N')TSR_EQUIPMENT_PASYSTEM
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'Y')
+    THEN '/'
+    END AS CF_PASYSTEM_BAIK,
+    CASE WHEN 
+    ((
+        SELECT COALESCE(TSR_EQUIPMENT_PASYSTEM,'N')TSR_EQUIPMENT_PASYSTEM
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) = 'N' OR 
+    (
+        SELECT COALESCE(TSR_EQUIPMENT_PASYSTEM,'N')TSR_EQUIPMENT_PASYSTEM
+		FROM TRAINING_SECRETARIAT_REPORT
+		WHERE TSR_REFID = $P{REFID}
+    ) IS NULL)
+    THEN '/'
+    END AS CF_PASYSTEM_TIDAKBAIK,
+    (
+        SELECT SM_STAFF_NAME
+		FROM STAFF_MAIN,TRAINING_SECRET_INCHARGE
+		WHERE SM_STAFF_ID = TSI_INCHARGE
+		AND TSI_SEQ = '1'
+		AND TSI_REFID = $P{REFID}
+    ) URUSETIA1,
+    (
+        sELECT SM_STAFF_NAME
+		FROM STAFF_MAIN,TRAINING_SECRET_INCHARGE
+		WHERE SM_STAFF_ID = TSI_INCHARGE
+		AND TSI_SEQ = '2'
+		AND TSI_REFID = $P{REFID}
+    ) URUSETIA2
+    FROM TRAINING_HEAD
+    WHERE TH_REF_ID = $P{REFID}
+) Q
+LEFT JOIN
+(
+    SELECT TSR_REFID, TSR_PARTICIPANT_DISCIPLINE, TSR_PARTICIPANT_TIME,TSR_PARTICIPANT_REMARK,
+    TSR_CAFE_NAME, TSR_CAFE_TIME,TSR_CAFE_QUALITY,TSR_CAFE_REMARK,
+    TSR_ROOM_CHAIR,TSR_ROOM_DESK,TSR_ROOM_AIRCOND,TSR_ROOM_LAMP,TSR_ROOM_REMARK,
+    TSR_EQUIPMENT_COMPUTER,TSR_EQUIPMENT_LASERPOINTER,TSR_EQUIPMENT_LCD,TSR_EQUIPMENT_PASYSTEM,TSR_EQUIPMENT_REMARK,
+    TSR_OVERALL_REPORT
+    FROM TRAINING_SECRETARIAT_REPORT
+    WHERE TSR_REFID = $P{REFID}
+) ON TH_REF_ID = TSR_REFID]]>
+	</queryString>
+	<field name="TH_TRAINING_TITLE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TH_TRAINING_TITLE"/>
+	</field>
+	<field name="TH_TRAINING_VENUE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TH_TRAINING_VENUE"/>
+	</field>
+	<field name="TARIKH" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TARIKH"/>
+	</field>
+	<field name="TH_DATE_FROM" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="TH_DATE_FROM"/>
+	</field>
+	<field name="TH_REF_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TH_REF_ID"/>
+	</field>
+	<field name="KEHADIRAN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KEHADIRAN"/>
+	</field>
+	<field name="CF_DISIPLIN_BAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_DISIPLIN_BAIK"/>
+	</field>
+	<field name="CF_DISIPLIN_TIDAKBAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_DISIPLIN_TIDAKBAIK"/>
+	</field>
+	<field name="CF_TIME_BAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_TIME_BAIK"/>
+	</field>
+	<field name="CF_TIME_TIDAKBAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_TIME_TIDAKBAIK"/>
+	</field>
+	<field name="CF_CAFETIME_BAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_CAFETIME_BAIK"/>
+	</field>
+	<field name="CF_CAFETIME_TIDAKBAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_CAFETIME_TIDAKBAIK"/>
+	</field>
+	<field name="CF_CAFEQUALITY_BAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_CAFEQUALITY_BAIK"/>
+	</field>
+	<field name="CF_CAFEQUALITY_TIDAKBAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_CAFEQUALITY_TIDAKBAIK"/>
+	</field>
+	<field name="CF_ROOMCHAIR_BAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_ROOMCHAIR_BAIK"/>
+	</field>
+	<field name="CF_ROOMCHAIR_TIDAKBAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_ROOMCHAIR_TIDAKBAIK"/>
+	</field>
+	<field name="CF_ROOMDESK_BAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_ROOMDESK_BAIK"/>
+	</field>
+	<field name="CF_ROOMDESK_TIDAKBAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_ROOMDESK_TIDAKBAIK"/>
+	</field>
+	<field name="CF_ROOMAIRCOND_BAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_ROOMAIRCOND_BAIK"/>
+	</field>
+	<field name="CF_ROOMAIRCOND_TIDAKBAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_ROOMAIRCOND_TIDAKBAIK"/>
+	</field>
+	<field name="CF_ROOMLAMP_BAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_ROOMLAMP_BAIK"/>
+	</field>
+	<field name="CF_ROOMLAMP_TIDAKBAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_ROOMLAMP_TIDAKBAIK"/>
+	</field>
+	<field name="CF_COMPUTER_BAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_COMPUTER_BAIK"/>
+	</field>
+	<field name="CF_COMPUTER_TIDAKBAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_COMPUTER_TIDAKBAIK"/>
+	</field>
+	<field name="CF_LASERPOINT_BAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_LASERPOINT_BAIK"/>
+	</field>
+	<field name="CF_LASERPOINT_TIDAKBAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_LASERPOINT_TIDAKBAIK"/>
+	</field>
+	<field name="CF_LCD_BAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_LCD_BAIK"/>
+	</field>
+	<field name="CF_LCD_TIDAKBAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_LCD_TIDAKBAIK"/>
+	</field>
+	<field name="CF_PASYSTEM_BAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_PASYSTEM_BAIK"/>
+	</field>
+	<field name="CF_PASYSTEM_TIDAKBAIK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_PASYSTEM_TIDAKBAIK"/>
+	</field>
+	<field name="URUSETIA1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="URUSETIA1"/>
+	</field>
+	<field name="URUSETIA2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="URUSETIA2"/>
+	</field>
+	<field name="TSR_PARTICIPANT_DISCIPLINE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TSR_PARTICIPANT_DISCIPLINE"/>
+	</field>
+	<field name="TSR_PARTICIPANT_TIME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TSR_PARTICIPANT_TIME"/>
+	</field>
+	<field name="TSR_PARTICIPANT_REMARK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TSR_PARTICIPANT_REMARK"/>
+	</field>
+	<field name="TSR_CAFE_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TSR_CAFE_NAME"/>
+	</field>
+	<field name="TSR_CAFE_TIME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TSR_CAFE_TIME"/>
+	</field>
+	<field name="TSR_CAFE_QUALITY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TSR_CAFE_QUALITY"/>
+	</field>
+	<field name="TSR_CAFE_REMARK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TSR_CAFE_REMARK"/>
+	</field>
+	<field name="TSR_ROOM_CHAIR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TSR_ROOM_CHAIR"/>
+	</field>
+	<field name="TSR_ROOM_DESK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TSR_ROOM_DESK"/>
+	</field>
+	<field name="TSR_ROOM_AIRCOND" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TSR_ROOM_AIRCOND"/>
+	</field>
+	<field name="TSR_ROOM_LAMP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TSR_ROOM_LAMP"/>
+	</field>
+	<field name="TSR_ROOM_REMARK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TSR_ROOM_REMARK"/>
+	</field>
+	<field name="TSR_EQUIPMENT_COMPUTER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TSR_EQUIPMENT_COMPUTER"/>
+	</field>
+	<field name="TSR_EQUIPMENT_LASERPOINTER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TSR_EQUIPMENT_LASERPOINTER"/>
+	</field>
+	<field name="TSR_EQUIPMENT_LCD" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TSR_EQUIPMENT_LCD"/>
+	</field>
+	<field name="TSR_EQUIPMENT_PASYSTEM" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TSR_EQUIPMENT_PASYSTEM"/>
+	</field>
+	<field name="TSR_EQUIPMENT_REMARK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TSR_EQUIPMENT_REMARK"/>
+	</field>
+	<field name="TSR_OVERALL_REPORT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TSR_OVERALL_REPORT"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="68" splitType="Stretch">
+			<image>
+				<reportElement x="10" y="0" width="110" height="60" uuid="0bc1de83-c43f-4d16-8642-1afabec14639"/>
+				<imageExpression><![CDATA["/TrainingAppl/images/logo_upsi.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="180" y="13" width="278" height="22" uuid="37661574-103d-41b0-923b-afa230cebf09"/>
+				<textElement>
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BORANG LAPORAN URUSETIA KURSUS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="30" width="350" height="15" uuid="7d4bb299-7010-4533-9d0e-46f5e284c91a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BAHAGIAN PEMBANGUNAN SUMBER MANUSIA, JABATAN PENDAFTAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="41" width="350" height="15" uuid="8ef28445-993d-415a-b144-91813f93a6ef">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tel : 05 - 450 6494 / 6907 / 6353 / 6348 / 6363 / 6349 Faks : 05 - 459 5488]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="555" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="515" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="b19e5794-1005-4be9-9e29-e808ef849d8a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+					<paragraph leftIndent="6"/>
+				</textElement>
+				<text><![CDATA[1. MAKLUMAT KURSUS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" mode="Opaque" x="0" y="100" width="515" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="977e49fe-1164-437d-b5bc-61820c9c6eba">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+					<paragraph leftIndent="6"/>
+				</textElement>
+				<text><![CDATA[2. LAPORAN]]></text>
+			</staticText>
+			<frame>
+				<reportElement x="0" y="30" width="515" height="50" uuid="011f00d5-3a4b-4f85-9ff0-789d5493d8f3"/>
+				<frame>
+					<reportElement positionType="Float" x="0" y="40" width="515" height="10" uuid="32bc50a8-bc1c-4908-889f-c55c048f93fe"/>
+					<staticText>
+						<reportElement x="0" y="0" width="160" height="10" uuid="a034c04a-3394-4cbf-af26-ac8d78856132">
+							<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" size="8"/>
+							<paragraph leftIndent="4"/>
+						</textElement>
+						<text><![CDATA[1.3 Tarikh ]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="160" y="0" width="3" height="10" uuid="97b4b0e4-50f0-479c-abad-66597c43f925"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" size="8"/>
+						</textElement>
+						<text><![CDATA[:]]></text>
+					</staticText>
+					<textField>
+						<reportElement x="163" y="0" width="352" height="10" uuid="c607e003-233f-43f3-969a-3c342c508a74">
+							<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" size="8"/>
+							<paragraph leftIndent="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{TARIKH}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="20" width="515" height="10" uuid="847487dd-94fb-498f-bae0-98b72966b939"/>
+					<staticText>
+						<reportElement x="0" y="0" width="160" height="10" uuid="30fedc6f-306d-4c69-aaa0-9c3841a143cf">
+							<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" size="8"/>
+							<paragraph leftIndent="4"/>
+						</textElement>
+						<text><![CDATA[1.2 Tempat]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="160" y="0" width="3" height="10" uuid="321b3de2-53e2-4b80-8bb9-bf3319cd8cbb"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" size="8"/>
+						</textElement>
+						<text><![CDATA[:]]></text>
+					</staticText>
+					<textField>
+						<reportElement x="163" y="0" width="352" height="10" uuid="294a8fa5-4650-4941-a58b-569e72235437">
+							<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" size="8"/>
+							<paragraph leftIndent="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{TH_TRAINING_VENUE}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="0" width="515" height="10" uuid="42c11c11-e1ec-467b-b207-a87fa9fc59c5"/>
+					<staticText>
+						<reportElement x="0" y="0" width="160" height="10" uuid="9d132794-0202-449e-9f95-05726c0f42c0">
+							<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" size="8"/>
+							<paragraph leftIndent="4"/>
+						</textElement>
+						<text><![CDATA[1.1 Nama kursus / program]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="160" y="0" width="3" height="10" uuid="09aa8424-c336-4e03-9c29-33096ef9561b"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" size="8"/>
+						</textElement>
+						<text><![CDATA[:]]></text>
+					</staticText>
+					<textField>
+						<reportElement x="163" y="0" width="352" height="10" uuid="cf10a480-82dc-41a6-aeed-4c33a08b6ab9">
+							<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						</reportElement>
+						<textElement verticalAlignment="Middle">
+							<font fontName="Arial" size="8"/>
+							<paragraph leftIndent="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{TH_TRAINING_TITLE}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</frame>
+			<staticText>
+				<reportElement x="0" y="120" width="515" height="20" uuid="df34680f-d563-488c-bbf5-951edb33efd6">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isItalic="true"/>
+					<paragraph leftIndent="12"/>
+				</textElement>
+				<text><![CDATA[* Tindakan : Sila tandakan ( / ) pada ruangan yang berkenaan ]]></text>
+			</staticText>
+			<frame>
+				<reportElement x="0" y="150" width="160" height="16" uuid="9933e70c-6406-4654-832e-3c4669c157c0"/>
+				<staticText>
+					<reportElement x="0" y="0" width="40" height="16" uuid="c9ebbb44-78f3-4bb4-bef2-4a85e86f35dc">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+						<paragraph leftIndent="6"/>
+					</textElement>
+					<text><![CDATA[2.1]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="40" y="0" width="120" height="16" uuid="2dcf6c03-d79c-4c0c-9e49-43e630237f9e">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true" isUnderline="true"/>
+						<paragraph leftIndent="0"/>
+					</textElement>
+					<text><![CDATA[Peserta]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement x="40" y="166" width="220" height="16" uuid="49408aad-f47d-48b3-8b31-eaa79457dd4c"/>
+				<staticText>
+					<reportElement x="0" y="0" width="25" height="16" uuid="ee6027d2-6a44-4d47-bbe5-11e9d3558db9">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
+						<paragraph leftIndent="0"/>
+					</textElement>
+					<text><![CDATA[i)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="25" y="0" width="125" height="16" uuid="020616b7-d694-4329-8f74-72ae4bba8e81">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
+						<paragraph leftIndent="0"/>
+					</textElement>
+					<text><![CDATA[Kehadiran]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="150" y="0" width="3" height="16" uuid="0d532e0c-f7cf-4996-b6a5-b7afa431e00a">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
+						<paragraph leftIndent="0"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="163" y="0" width="57" height="16" uuid="96596b76-97d7-42d0-8b59-926a60900259">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
+						<paragraph leftIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{KEHADIRAN}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="40" y="187" width="310" height="31" uuid="2bc95ab3-d9f7-46fd-ba71-c23133de3ad9"/>
+				<staticText>
+					<reportElement x="0" y="15" width="25" height="16" uuid="583ae250-5156-495b-8cf3-661a959db4aa">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
+						<paragraph leftIndent="0"/>
+					</textElement>
+					<text><![CDATA[ii)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="25" y="15" width="125" height="16" uuid="0d8ea7b6-f9c1-47ba-bc4d-213c2084e3ae">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
+						<paragraph leftIndent="0"/>
+					</textElement>
+					<text><![CDATA[Disiplin]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="150" y="15" width="3" height="16" uuid="78317feb-536d-41a7-b901-1d07ebd8e15c">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
+						<paragraph leftIndent="0"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="163" y="18" width="57" height="10" uuid="d10702a6-5a67-4720-9d94-e9d2921e0fb8">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
+						<paragraph leftIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CF_DISIPLIN_BAIK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="251" y="18" width="57" height="10" uuid="4f5cfc73-cb4e-414b-bc28-22433f322e56">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
+						<paragraph leftIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CF_DISIPLIN_TIDAKBAIK}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="163" y="0" width="57" height="15" uuid="74e7d17f-b5e8-4dad-ae60-2dca99178e5a"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Baik]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="251" y="0" width="57" height="15" uuid="b028ebd8-5fbf-4742-9b0f-56123085e2d9"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Tidak Baik ]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement x="40" y="228" width="310" height="16" uuid="ab9ab7bc-06c2-410f-a5a3-0dc6039fe2a0"/>
+				<staticText>
+					<reportElement x="0" y="0" width="25" height="16" uuid="2e2e1018-281a-4743-9d87-50c1c6105fd0">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
+						<paragraph leftIndent="0"/>
+					</textElement>
+					<text><![CDATA[ii)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="25" y="0" width="125" height="16" uuid="b228360a-bfee-4091-958e-2c0402c8349f">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
+						<paragraph leftIndent="0"/>
+					</textElement>
+					<text><![CDATA[Masa]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="150" y="0" width="3" height="16" uuid="9881bb77-e2e0-47bb-894b-435553a22cbe">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
+						<paragraph leftIndent="0"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="163" y="3" width="57" height="10" uuid="49fb40f7-8397-4819-b188-22f5019c07ad">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
+						<paragraph leftIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CF_TIME_BAIK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="251" y="3" width="57" height="10" uuid="af877594-34c2-4118-b9f2-4e14038cbb61">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
+						<paragraph leftIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CF_TIME_TIDAKBAIK}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="40" y="254" width="475" height="36" uuid="44caf131-7194-49bc-99c4-1660981d2067"/>
+				<staticText>
+					<reportElement x="0" y="0" width="150" height="16" uuid="9f1ffd7f-88dc-4d7f-8ea0-d0793dcac2d9">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
+						<paragraph leftIndent="0"/>
+					</textElement>
+					<text><![CDATA[Catatan / Ulasan]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="150" y="0" width="3" height="16" uuid="60efeaac-a1c7-4e56-98dc-c81079e2d217">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
+						<paragraph leftIndent="0"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="0" y="16" width="474" height="20" uuid="39156e8e-e085-4005-9765-abbaa68b157e">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
+						<paragraph leftIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CF_TIME_BAIK}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>
