@@ -1,0 +1,878 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR075" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="495" leftMargin="50" rightMargin="50" topMargin="50" bottomMargin="50" uuid="b3ea7ea6-f5f9-4505-8539-28774a83d9e4">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
+	<property name="ireport.jasperserver.url" value="http://10.99.1.192:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="CONFERENCE_ID" class="java.lang.String"/>
+	<parameter name="STAFF_ID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+E.*,
+CASE
+WHEN LINE3 IS NOT NULL AND OUTPUT2 IS NOT NULL
+        THEN OUTPUT2 || CHR(10) || LINE3
+WHEN LINE3 IS NOT NULL AND OUTPUT2 IS NULL
+    THEN OUTPUT2 || LINE3
+END AS "OUTPUT3"
+FROM
+(
+    SELECT
+    W.*,
+    CASE 
+    WHEN SCA_DATE_FROM IS NOT NULL AND SCA_DATE_TO IS NOT NULL 
+        THEN (initcap(calendar.CONVERT_TO_MALAY_DATE(to_char(W.SCA_DATE_FROM,'dd-mm-yyyy'),'DD MONTH YYYY')
+            || ' - ' || calendar.CONVERT_TO_MALAY_DATE(to_char(W.SCA_DATE_TO,'dd-mm-yyyy'),'DD MONTH YYYY')) 
+            || ' ( ' || W.SCA_DURATION || ' hari ) ')
+        ELSE (initcap(calendar.CONVERT_TO_MALAY_DATE(to_char(W.CM_DATE_FROM,'dd-mm-yyyy'),'DD MONTH YYYY')
+            || ' - ' || calendar.CONVERT_TO_MALAY_DATE(to_char(W.CM_DATE_TO,'dd-mm-yyyy'),'DD MONTH YYYY')) 
+            || ' ( ' || cm_duration || ' hari ) ')     
+    END AS "CF_DATE", 
+    CASE 
+    WHEN LINE2 IS NOT NULL AND LINE1 IS NOT NULL
+        THEN LINE1 || CHR(10) || LINE2
+    WHEN LINE2 IS NOT NULL AND LINE1 IS NULL
+        THEN LINE1 || LINE2
+    END AS "OUTPUT2"
+    FROM
+    (
+        SELECT
+        Q.*,
+        CASE 
+        WHEN CM_ADDRESS IS NOT NULL
+            THEN CM_ADDRESS
+            ELSE ''
+        END AS "LINE1",    
+        CASE 
+        WHEN CM_POSTCODE IS NOT NULL AND CM_CITY IS NOT NULL
+           THEN CM_POSTCODE|| ', ' ||CM_CITY
+        WHEN CM_POSTCODE IS NOT NULL AND CM_CITY IS NULL
+            THEN CM_POSTCODE
+        WHEN CM_POSTCODE IS NULL AND CM_CITY IS NOT NULL   
+            THEN CM_CITY
+        WHEN CM_POSTCODE IS NULL AND CM_CITY IS NULL 
+            THEN ''
+        END AS "LINE2",
+        CASE 
+        WHEN SM_STATE_DESC IS NOT NULL AND CM_COUNTRY_DESC IS NOT NULL
+           THEN SM_STATE_DESC|| ', ' ||CM_COUNTRY_DESC
+        WHEN SM_STATE_DESC IS NOT NULL AND CM_COUNTRY_DESC IS NULL
+            THEN SM_STATE_DESC
+        WHEN SM_STATE_DESC IS NULL AND CM_COUNTRY_DESC IS NOT NULL
+            THEN CM_COUNTRY_DESC
+        WHEN SM_STATE_DESC IS NULL AND CM_COUNTRY_DESC IS NULL 
+            THEN ''
+        END AS "LINE3",
+        (SELECT Q.CM_DATE_TO-Q.CM_DATE_FROM+1 FROM DUAL) AS "CM_DURATION"
+        FROM
+        (  
+            SELECT 
+            SCA_REFID AS "SCA_REFID",
+            SCA_STAFF_ID AS "SCA_STAFF_ID",
+            CM_NAME AS "CM_NAME",
+            SCA_REASON AS "SCA_REASON",
+            CM_ADDRESS AS "CM_ADDRESS",
+            CM_CITY AS "CM_CITY",
+            CM_POSTCODE AS "CM_POSTCODE",
+            CM_STATE AS "CM_STATE",
+            CM.CM_COUNTRY_CODE AS "CM_COUNTRY_CODE2",
+            SM_STATE_DESC AS "SM_STATE_DESC",
+            CM_COUNTRY_DESC AS "CM_COUNTRY_DESC",
+            CM_DATE_FROM AS "CM_DATE_FROM",
+            CM_DATE_TO AS "CM_DATE_TO",
+            SCA_PARTICIPANT_INFO AS "SCA_PARTICIPANT_INFO",
+            (COALESCE(SCA_EMBASSY_INFO,'-')) AS "SCA_EMBASSY_INFO",
+            SCA_FREQUENCY AS "SCA_FREQUENCY",
+            SCA_SPONSOR_BY AS "SCA_SPONSOR_BY",
+            TO_CHAR(SCA_SPONSOR_RM, '999,999,999,999.99') AS "SCA_SPONSOR_RM",
+            SCA_BENEFIT_TO_COUNTRY AS "SCA_BENEFIT_TO_COUNTRY",
+            (COALESCE(SCA_MINISTRY_APPROVAL,'-')) AS "SCA_MINISTRY_APPROVAL",
+            SCAP_NAME AS "SCAP_NAME",
+            SCAP_POSITION AS "SCAP_POSITION",
+            SM_STAFF_NAME AS "SM_STAFF_NAME",
+            SS_DESC_SHORT AS "SS_DESC_SHORT",
+            SCA_DATE_FROM AS "SCA_DATE_FROM",
+            SCA_DATE_TO AS "SCA_DATE_TO",
+            (SCA_DATE_TO-SCA_DATE_FROM+1) AS "SCA_DURATION",
+            (
+                SELECT DM1.DM_DEPT_DESC||DECODE(DM2.DM_DEPT_DESC,NULL,'',' / '||DM2.DM_DEPT_DESC)
+                FROM STAFF_MAIN,DEPARTMENT_MAIN DM1,DEPARTMENT_MAIN DM2
+                WHERE SM_DEPT_CODE = DM1.DM_DEPT_CODE
+                AND SM_UNIT(+) = DM2.DM_DEPT_CODE
+                AND SM_STAFF_ID = SCA_STAFF_ID
+            ) AS "CF_SM_DEPT"
+            FROM STAFF_CONFERENCE_A,STAFF_CONFERENCE_A_PART,
+            CONFERENCE_MAIN CM,STATE_MAIN,COUNTRY_MAIN CM2,
+            STAFF_MAIN,SERVICE_SCHEME
+            WHERE CM_REFID = SCA_REFID
+            AND SM_STAFF_ID = SCA_STAFF_ID
+            AND SS_SERVICE_CODE(+) = SM_JOB_CODE
+            AND CM2.CM_COUNTRY_CODE = CM.CM_COUNTRY_CODE
+            AND SM_STATE_CODE = CM_STATE
+            AND SCAP_REFID(+) = SCA_REFID
+            AND SCAP_STAFF_ID(+) = SCA_STAFF_ID
+            AND SCA_REFID = $P{CONFERENCE_ID}
+            AND SCA_STAFF_ID = $P{STAFF_ID}
+        )Q
+    )W
+)E]]>
+	</queryString>
+	<field name="SCA_REFID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SCA_REFID"/>
+	</field>
+	<field name="SCA_STAFF_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SCA_STAFF_ID"/>
+	</field>
+	<field name="CM_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CM_NAME"/>
+	</field>
+	<field name="SCA_REASON" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SCA_REASON"/>
+	</field>
+	<field name="CM_ADDRESS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CM_ADDRESS"/>
+	</field>
+	<field name="CM_CITY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CM_CITY"/>
+	</field>
+	<field name="CM_POSTCODE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CM_POSTCODE"/>
+	</field>
+	<field name="CM_STATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CM_STATE"/>
+	</field>
+	<field name="CM_COUNTRY_CODE2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CM_COUNTRY_CODE2"/>
+	</field>
+	<field name="SM_STATE_DESC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SM_STATE_DESC"/>
+	</field>
+	<field name="CM_COUNTRY_DESC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CM_COUNTRY_DESC"/>
+	</field>
+	<field name="CM_DATE_FROM" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="CM_DATE_FROM"/>
+	</field>
+	<field name="CM_DATE_TO" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="CM_DATE_TO"/>
+	</field>
+	<field name="SCA_PARTICIPANT_INFO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SCA_PARTICIPANT_INFO"/>
+	</field>
+	<field name="SCA_EMBASSY_INFO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SCA_EMBASSY_INFO"/>
+	</field>
+	<field name="SCA_FREQUENCY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SCA_FREQUENCY"/>
+	</field>
+	<field name="SCA_SPONSOR_BY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SCA_SPONSOR_BY"/>
+	</field>
+	<field name="SCA_SPONSOR_RM" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SCA_SPONSOR_RM"/>
+	</field>
+	<field name="SCA_BENEFIT_TO_COUNTRY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SCA_BENEFIT_TO_COUNTRY"/>
+	</field>
+	<field name="SCA_MINISTRY_APPROVAL" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SCA_MINISTRY_APPROVAL"/>
+	</field>
+	<field name="SCAP_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SCAP_NAME"/>
+	</field>
+	<field name="SCAP_POSITION" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SCAP_POSITION"/>
+	</field>
+	<field name="SM_STAFF_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SM_STAFF_NAME"/>
+	</field>
+	<field name="SS_DESC_SHORT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SS_DESC_SHORT"/>
+	</field>
+	<field name="SCA_DATE_FROM" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="SCA_DATE_FROM"/>
+	</field>
+	<field name="SCA_DATE_TO" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="SCA_DATE_TO"/>
+	</field>
+	<field name="SCA_DURATION" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="SCA_DURATION"/>
+	</field>
+	<field name="CF_SM_DEPT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_SM_DEPT"/>
+	</field>
+	<field name="LINE1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="LINE1"/>
+	</field>
+	<field name="LINE2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="LINE2"/>
+	</field>
+	<field name="LINE3" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="LINE3"/>
+	</field>
+	<field name="CM_DURATION" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="CM_DURATION"/>
+	</field>
+	<field name="CF_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CF_DATE"/>
+	</field>
+	<field name="OUTPUT2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="OUTPUT2"/>
+	</field>
+	<field name="OUTPUT3" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="OUTPUT3"/>
+	</field>
+	<background>
+		<band height="722" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<frame>
+				<reportElement x="0" y="0" width="495" height="722" uuid="ce9a42de-9b52-4eab-8b61-46da915db3c4"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+		</band>
+	</background>
+	<detail>
+		<band height="556" splitType="Prevent">
+			<frame>
+				<reportElement x="122" y="46" width="250" height="101" uuid="32e47055-4ba9-408b-9953-08ab844c8a0a"/>
+				<image>
+					<reportElement x="95" y="0" width="60" height="60" uuid="9b4dc73d-3fc4-49a3-b223-3e479a1c55cc">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<imageExpression><![CDATA["/TrainingAppl/images/UPSI_LOGO_PNG_CIRCLE.png"]]></imageExpression>
+				</image>
+				<frame>
+					<reportElement x="0" y="63" width="250" height="38" uuid="c2c87242-293f-467a-a758-83968e14df7c"/>
+					<staticText>
+						<reportElement x="22" y="0" width="207" height="16" uuid="e0fc251a-275c-4f20-b93f-8ea0309f158c">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<textElement>
+							<font fontName="Arial" isBold="true"/>
+						</textElement>
+						<text><![CDATA[Menghadiri Persidangan, Seminar, Lawatan]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="0" y="11" width="250" height="16" uuid="474f1bcf-5ece-4b89-b6de-43109b8ddcf6">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<textElement>
+							<font fontName="Arial" isBold="true"/>
+						</textElement>
+						<text><![CDATA[Rasmi, Lawatan Peribadi dan Kursus Ke Luar Negeri]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="20" y="22" width="210" height="16" uuid="3b60bd84-64b9-4639-b5c3-8df8407cf07e"/>
+						<textElement>
+							<font fontName="Arial"/>
+						</textElement>
+						<text><![CDATA[(Pekeliling Perbendaharaan Bil. 3 Tahun 2002)]]></text>
+					</staticText>
+				</frame>
+			</frame>
+			<staticText>
+				<reportElement mode="Opaque" x="385" y="16" width="100" height="30" forecolor="#FFFFFF" backcolor="#000000" uuid="15a94684-621a-4f47-9efe-30cc8dc066c6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LAMPIRAN A]]></text>
+			</staticText>
+			<frame>
+				<reportElement x="0" y="157" width="495" height="386" uuid="b7d7ab55-88df-4106-a984-e6f350f0b2ff"/>
+				<frame>
+					<reportElement positionType="Float" x="0" y="0" width="495" height="12" uuid="f283cc10-94ba-4bd8-9f52-c9778e6eecfa">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<staticText>
+						<reportElement x="10" y="0" width="20" height="12" uuid="109f7966-4fdd-4e0a-b535-705c56fcbb37"/>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[(a)]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="30" y="0" width="87" height="12" uuid="5c8a5296-7114-4b72-ac81-a43f655a9eeb"/>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[Nama Pegawai :]]></text>
+					</staticText>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="117" y="0" width="378" height="12" uuid="d1c8ad4f-8635-4950-8193-59e530cbb0b8"/>
+						<textElement>
+							<font fontName="Arial" size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{SM_STAFF_NAME}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="18" width="495" height="12" uuid="52b17049-2b4e-47d0-8b7d-b97ab987ada5">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<staticText>
+						<reportElement x="10" y="0" width="20" height="12" uuid="85398699-3a86-499a-a382-510c99a15fb8"/>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[(b)]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="30" y="0" width="87" height="12" uuid="009c3752-3cf8-4d8d-94e5-60fa3ad7016d"/>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[Jawatan :]]></text>
+					</staticText>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="117" y="0" width="378" height="12" uuid="b11ae264-58a5-40e2-96de-b7c6873ae938"/>
+						<textElement>
+							<font fontName="Arial" size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{SS_DESC_SHORT}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="36" width="495" height="12" uuid="93d7a734-305b-4ecf-9113-b9e707a155b6">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<staticText>
+						<reportElement x="10" y="0" width="20" height="12" uuid="f026dc8d-4708-497c-b1cd-774985c0017c"/>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[(c)]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="30" y="0" width="87" height="12" uuid="c35f791d-87f5-4f60-8631-45d15f933ae0"/>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[Fakulti / Jabatan :]]></text>
+					</staticText>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="117" y="0" width="378" height="12" uuid="20333dc2-d481-4826-b2e2-e9230aef7797"/>
+						<textElement>
+							<font fontName="Arial" size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{CF_SM_DEPT}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="54" width="495" height="27" uuid="a745c32c-a556-4a0f-9657-9dd97733897d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<staticText>
+						<reportElement x="10" y="0" width="20" height="15" uuid="fc670e93-740d-40f7-9c8f-bf4b9cab91d9"/>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[(d)]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="30" y="0" width="465" height="15" uuid="bf8ee4bc-c04a-4584-8ef9-6d76f412db94"/>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[Nama Persidangan/Seminar/Lawatan Rasmi/Lawatan Peribadi dan Kursus :]]></text>
+					</staticText>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="30" y="15" width="465" height="12" uuid="0f2dca03-c795-4ca9-8326-41d0b8e5d937">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font fontName="Arial" size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{CM_NAME}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="87" width="495" height="12" uuid="d83853db-750f-4332-9a18-1723098ba288">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<staticText>
+						<reportElement x="10" y="0" width="20" height="12" uuid="3feec6ce-9fa7-46fa-b85f-8b3e0d20b467"/>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[(e)]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="30" y="0" width="40" height="12" uuid="ae532479-da69-40bb-a44f-414404050bc3"/>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[Tujuan :]]></text>
+					</staticText>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="70" y="0" width="425" height="12" uuid="11a38eec-464f-4109-99a2-8eb07a93968c"/>
+						<textElement>
+							<font fontName="Arial" size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{SCA_REASON}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="105" width="495" height="27" uuid="dfd91c18-ce70-4103-b977-e4329e96d6a3"/>
+					<staticText>
+						<reportElement x="10" y="0" width="20" height="15" uuid="43ac852d-5ab4-43f6-840b-fc4f6ef80a10"/>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[(f)]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="30" y="0" width="465" height="15" uuid="9323c7dc-3838-4dbd-a4db-c63a1f9d489c"/>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[Tempat hendak diadakan :]]></text>
+					</staticText>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="30" y="15" width="465" height="12" uuid="dabd8518-c45d-4b3c-a6f2-552b0430332d">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font fontName="Arial" size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{OUTPUT3}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="141" width="495" height="12" uuid="8a4e9961-f549-4240-9924-55d59791c628">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<staticText>
+						<reportElement x="10" y="0" width="20" height="12" uuid="d75809a2-f328-4392-9956-409d6533c3b6"/>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[(g)]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="30" y="0" width="80" height="12" uuid="e9d99dda-e274-49e6-a82d-098f0c4f96c4"/>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[Tempoh dan Tarikh :]]></text>
+					</staticText>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="110" y="0" width="385" height="12" uuid="0cc87b49-11e2-42c9-8bc7-8af57ef03735"/>
+						<textElement>
+							<font fontName="Arial" size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{CF_DATE}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="159" width="495" height="32" uuid="33043234-a383-484c-be2c-ecbba827014e"/>
+					<staticText>
+						<reportElement x="10" y="0" width="20" height="32" uuid="c0fb32c0-ce3e-4e08-9967-25631bfdfc3e"/>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[(h)]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="50" y="0" width="120" height="32" uuid="6a4a1d21-3ad2-4527-9c65-73b3907dd384">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[Bilangan Peserta dan Nama :
+Ketua, jika bilangannya
+lebih daripada seorang]]></text>
+					</staticText>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="170" y="0" width="325" height="32" uuid="facf7a2b-287d-4f7c-b77e-e03a83dd8e93"/>
+						<textElement>
+							<font fontName="Arial" size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{SCA_PARTICIPANT_INFO}]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement x="30" y="0" width="20" height="32" uuid="f722c35f-ff49-4d63-abd8-61975a49edc4"/>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[(i)]]></text>
+					</staticText>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="197" width="495" height="44" uuid="245f476a-ed1e-446a-9706-4a594676ab1e"/>
+					<staticText>
+						<reportElement x="50" y="0" width="130" height="12" uuid="946c4e5e-d92f-4702-9614-9a25dc70f57f">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[Keterangan-keterangan Peserta :]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="30" y="0" width="20" height="12" uuid="47344139-c753-4fd1-8977-45db40154e86">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[(ii)]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="50" y="16" width="190" height="12" uuid="cb2949ec-c57e-4960-859c-d4b2fd93a117">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Center">
+							<font fontName="Arial" size="9" isBold="true" isUnderline="true"/>
+						</textElement>
+						<text><![CDATA[Nama]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="285" y="16" width="190" height="12" uuid="e915539c-aac8-46c0-874b-b682bc716957">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Center">
+							<font fontName="Arial" size="9" isBold="true" isUnderline="true"/>
+						</textElement>
+						<text><![CDATA[Pangkat]]></text>
+					</staticText>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="50" y="32" width="190" height="12" uuid="12c364d7-7305-49d8-935d-2cc5bb17e8cf"/>
+						<textElement>
+							<font fontName="Arial" size="9" isBold="false" isUnderline="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{SCAP_NAME}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="285" y="32" width="190" height="12" uuid="1e02c066-2342-4fe3-8c52-0e10af308bdb"/>
+						<textElement>
+							<font fontName="Arial" size="9" isBold="false" isUnderline="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{SCAP_POSITION}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="247" width="495" height="85" uuid="4a70e364-ee80-4aba-ac0f-fb5ea86e96a7"/>
+					<staticText>
+						<reportElement x="50" y="0" width="162" height="85" uuid="2bf99d16-12ca-4a0b-bf31-74fc5f57012e">
+							<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[Sebutkan sama ada pegawai-pegawai
+Kedutaan Malaysia di negeri tempat
+Persidangan/seminar/lawatan rasmi
+/penyelidikan/kajian itu diadakan akan
+menyertai persidangan
+itu. Sekiranya menyertai, nyatakan
+mengapa kehadiran pegawai-pegawai
+daripada negeri itu diperlukan :]]></text>
+					</staticText>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="240" y="0" width="255" height="85" uuid="cca58417-2473-4b6e-9ca5-7764265d75b4"/>
+						<textElement>
+							<font fontName="Arial" size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{SCA_EMBASSY_INFO}]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement x="30" y="0" width="20" height="85" uuid="1be9517c-d05d-4c95-9802-1f19e370886f"/>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[(iii)]]></text>
+					</staticText>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="338" width="495" height="12" uuid="843c958d-ec4f-492d-9b8c-99b44671d62e">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<staticText>
+						<reportElement x="10" y="0" width="20" height="12" uuid="ef41cb49-b94c-4054-ba69-8e81e4a97100">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[(i)]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="30" y="0" width="120" height="12" uuid="6e682b14-eb3f-40c5-963c-fdfa12883c5e">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[Kekerapan ke luar negara]]></text>
+					</staticText>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="170" y="0" width="325" height="12" uuid="10cab298-eea6-4773-b9f7-32edd8812ee1">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font fontName="Arial" size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{SCA_FREQUENCY}]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement x="150" y="0" width="20" height="12" uuid="7af1578a-6aab-4b06-a3c8-691f075b0e52">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[:]]></text>
+					</staticText>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="356" width="495" height="12" uuid="cc3c6d58-4ba7-4f0b-9a3e-51b48a56c113">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<staticText>
+						<reportElement x="10" y="0" width="20" height="12" uuid="1faa5ac8-b675-4d06-be63-171a62f234af">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[(j)]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="30" y="0" width="120" height="12" uuid="bc24a079-bbbc-44aa-8ef1-01121bafc6ee">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[Perbelanjaan dan anggaran kos]]></text>
+					</staticText>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="170" y="0" width="325" height="12" uuid="8ffddd5f-8609-4a39-905b-e038a0369cd7">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font fontName="Arial" size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{SCA_SPONSOR_BY}]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement x="150" y="0" width="20" height="12" uuid="95921e8a-bdd0-44c5-b476-1d4dc6a78190">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[:]]></text>
+					</staticText>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="374" width="495" height="12" uuid="df640f81-0d06-4ef0-bd42-733ad304c406">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<staticText>
+						<reportElement x="30" y="0" width="140" height="12" uuid="0d562987-b0e9-420d-ab36-e0c4c7ce4cf6">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font fontName="Arial" size="9"/>
+						</textElement>
+						<text><![CDATA[Ditanggung oleh]]></text>
+					</staticText>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="170" y="0" width="325" height="12" uuid="2833794b-280f-4b17-9509-3cb1fee85960">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<textElement>
+							<font fontName="Arial" size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA["RM "+($F{SCA_SPONSOR_RM}==null?0:$F{SCA_SPONSOR_RM})]]></textFieldExpression>
+					</textField>
+				</frame>
+			</frame>
+		</band>
+		<band height="350" splitType="Prevent">
+			<frame>
+				<reportElement positionType="Float" x="0" y="0" width="495" height="45" uuid="53dd461b-d7f0-48d8-87f6-b699da51f0ce">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<staticText>
+					<reportElement x="10" y="10" width="20" height="15" uuid="22ff07a3-2080-4ace-bdec-8ad93dab0d36"/>
+					<textElement>
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<text><![CDATA[(k)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="30" y="10" width="465" height="15" uuid="a1fc223d-02bf-4ad8-924c-f55b3931bee4"/>
+					<textElement>
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<text><![CDATA[Faedahnya kepada negara :]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="30" y="25" width="465" height="12" uuid="e51bba75-6887-4e43-8383-cc6680e2c9bc">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Arial" size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SCA_BENEFIT_TO_COUNTRY}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="0" y="45" width="495" height="60" uuid="31a78750-3ed1-401a-992c-a4a87e34501f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<staticText>
+					<reportElement x="10" y="10" width="20" height="32" uuid="f9d0ccd9-59d3-4ff8-800f-7ecbc40533f8"/>
+					<textElement>
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<text><![CDATA[(l)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="30" y="10" width="150" height="32" uuid="ac02e60f-cbc9-4d17-8054-fdcd15accfcc">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<text><![CDATA[Kelulusan Kementerian Dalam
+Negeri dan Kementerian Luar]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="180" y="10" width="315" height="32" uuid="d7bdf0fd-ec51-406b-ac05-fbce3e39c91e"/>
+					<textElement>
+						<font fontName="Arial" size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SCA_MINISTRY_APPROVAL}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement positionType="Float" x="30" y="42" width="465" height="12" uuid="59d1d8ee-e70e-4606-bd33-5c0371adcdba">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Arial" size="9" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[(Jika Persidangan/Seminar/Lawatan Rasmi/Penyelidikan/Kajian itu diadakan di negara Israel)]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="0" y="105" width="495" height="110" uuid="4a5deadf-f033-46a9-acc7-f27cee376b94">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<staticText>
+					<reportElement x="10" y="10" width="20" height="12" uuid="bdc9b707-4a79-44e3-b7fc-67f365344eac">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<text><![CDATA[(m)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="30" y="10" width="465" height="12" uuid="d133a236-27ed-4171-b388-3647e13b8204">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<text><![CDATA[ Saya mengesahkan bahawa maklumat-maklumat di atas adalah benar]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="31" y="42" width="35" height="12" uuid="da25dcfb-64f0-4d2d-8f3a-79b0d2a087a8">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<text><![CDATA[Tarikh :]]></text>
+				</staticText>
+				<line>
+					<reportElement x="66" y="52" width="100" height="1" uuid="1c1959a6-3259-4487-bbe7-c279e9b64aac">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineStyle="Dotted"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="375" y="52" width="100" height="1" uuid="844b65df-df9d-4b77-b3c0-1208f5727026">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineStyle="Dotted"/>
+					</graphicElement>
+				</line>
+				<staticText>
+					<reportElement x="375" y="54" width="100" height="12" uuid="8c2d8468-65ca-4321-a270-31ef14bfdc1c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<text><![CDATA[Tandatangan]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="270" y="86" width="220" height="12" uuid="2e39b24b-f1ac-4c1b-a8df-aa53bd536f50">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font fontName="Arial" size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SM_STAFF_NAME}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="190" y="86" width="80" height="12" uuid="e294d71c-d35e-4086-8b7b-6152c90a4917">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<text><![CDATA[(Nama Pegawai :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="490" y="86" width="5" height="12" uuid="8613f2c1-5119-46d2-9078-e249020748c5">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font fontName="Arial" size="9"/>
+					</textElement>
+					<text><![CDATA[)]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</detail>
+</jasperReport>
