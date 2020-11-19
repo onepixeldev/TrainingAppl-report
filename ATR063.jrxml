@@ -56,7 +56,7 @@ AND TAS_ASSESSMENT_TYPE = 'SUBJECTIVE'
 AND (STA_SUBJECTIVE_ANSWER IS NOT NULL OR STA_SUBJECTIVE_ANSWER <> '')
 AND ($P{REFID} IS NULL OR ($P{REFID} IS NOT NULL AND TH_REF_ID = $P{REFID}))
 AND ($P{YEAR_YEAR} IS NULL OR ($P{YEAR_YEAR} IS NOT NULL AND TO_CHAR(TH_DATE_FROM,'yyyy') = $P{YEAR_YEAR})) 
-ORDER BY 1,7,10]]>
+ORDER BY 1,7,9,10]]>
 	</queryString>
 	<field name="TH_REF_ID" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="TH_REF_ID"/>
