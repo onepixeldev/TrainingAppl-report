@@ -12,6 +12,10 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR038_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR038"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -512,9 +516,7 @@ AND STH_STAFF_ID IN
     AND $P{P_STH_STATUS} = 'APPLY'
     AND STH_PARTICIPANT_ROLE = 'D'
     AND STH_TRAINING_REFID = $P{P_TH_REF_ID}
-)
-
-]]>
+)]]>
 	</queryString>
 	<field name="TH_TRAINING_TITLE" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="TH_TRAINING_TITLE"/>

@@ -17,6 +17,10 @@
 	<property name="net.sf.jasperreports.export.xls.one.page.per.sheet" value="false"/>
 	<property name="net.sf.jasperreports.export.xls.wrap.text" value="true"/>
 	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR267X_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR267X"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -323,7 +327,7 @@ FROM
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial"/>
 					</textElement>
-					<text><![CDATA[ReportID : ATR267]]></text>
+					<text><![CDATA[ReportID : ATR267X]]></text>
 				</staticText>
 				<componentElement>
 					<reportElement x="100" y="0" width="134" height="20" uuid="2ee132a0-6a5a-4602-92d0-b08eae7e0e79"/>

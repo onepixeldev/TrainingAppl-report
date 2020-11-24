@@ -2,7 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR075" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="495" leftMargin="50" rightMargin="50" topMargin="50" bottomMargin="50" uuid="b3ea7ea6-f5f9-4505-8539-28774a83d9e4">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
-	<property name="ireport.jasperserver.url" value="http://10.99.1.192:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
 	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -14,6 +14,8 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR075_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR075"/>
 	<subDataset name="INDEX_A1" uuid="857849ab-bf2c-4f13-8c0b-b73be260d80a">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -1195,7 +1197,8 @@ Negeri dan Kementerian Luar]]></text>
 							<textElement textAlignment="Center">
 								<font fontName="Arial" size="9"/>
 							</textElement>
-							<text><![CDATA[Tandatangan Dekan/Ketua PTj]]></text>
+							<text><![CDATA[Tandatangan Dekan/Ketua PTj
+]]></text>
 						</staticText>
 					</frame>
 					<frame>
@@ -1474,7 +1477,8 @@ Kementerian Pengajian Tinggi Malaysia]]></text>
 					<paragraph leftIndent="0"/>
 				</textElement>
 				<text><![CDATA[Beberapa kali pegawai tersebut di perenggan e (ii) telah menghadiri Persidangan/Seminar/Lawatan Rasmi/
-Penyelidikan/Kajian di Luar Negeri :]]></text>
+Penyelidikan/Kajian di Luar Negeri :
+]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="375" y="0" width="109" height="16" uuid="c7203a8b-e997-4525-9c74-95a8affba279"/>
@@ -1484,7 +1488,7 @@ Penyelidikan/Kajian di Luar Negeri :]]></text>
 				<reportElement positionType="Float" x="10" y="119" width="485" height="12" uuid="94ab65ef-2237-4b90-af1d-e8b795ff5bd5">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="INDEX_A1" uuid="c922b13f-451f-49e5-8a7b-4f51247ed107">
 						<datasetParameter name="STAFF_ID">
 							<datasetParameterExpression><![CDATA[$P{STAFF_ID}]]></datasetParameterExpression>
@@ -1516,7 +1520,7 @@ Penyelidikan/Kajian di Luar Negeri :]]></text>
 			</componentElement>
 			<componentElement>
 				<reportElement positionType="Float" x="28" y="151" width="467" height="79" uuid="c236e8c0-dcc9-4230-be42-038b062a40c6"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="INDEX_A1_MAIN" uuid="8786b54c-b350-4f2d-ae4f-37cbbed3fe63">
 						<datasetParameter name="STAFF_ID">
 							<datasetParameterExpression><![CDATA[$P{STAFF_ID}]]></datasetParameterExpression>

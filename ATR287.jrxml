@@ -12,6 +12,10 @@
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR287_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR287"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -244,7 +248,8 @@ WHERE DM_DEPT_CODE =  $P{DEPT}]]>
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[LAPORAN STAFF HADIR KURSUS TERAS
-( STAF P&P )]]></text>
+( STAF P&P )
+]]></text>
 			</staticText>
 			<frame>
 				<reportElement x="0" y="30" width="821" height="20" uuid="fdd18ab2-75bb-4d89-bf79-4d3a1cad0af3"/>
@@ -368,7 +373,8 @@ WHERE DM_DEPT_CODE =  $P{DEPT}]]>
 									<paragraph spacingBefore="6"/>
 								</textElement>
 								<text><![CDATA[KURSUS
-KENEGARAAN]]></text>
+KENEGARAAN
+]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
@@ -398,7 +404,8 @@ KENEGARAAN]]></text>
 								</textElement>
 								<text><![CDATA[KURSUS
 KENEGARAAN
-FASA 2]]></text>
+FASA 2
+]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
@@ -428,7 +435,8 @@ FASA 2]]></text>
 								</textElement>
 								<text><![CDATA[KURSUS
 KENEGARAAN
-FASA 3]]></text>
+FASA 3
+]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30"/>
@@ -481,7 +489,8 @@ PEMANTAPAN
 INTEGRITI,
 AKAUNTABILITI
 & ETIKA
-FASA 2]]></text>
+FASA 2
+]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
@@ -514,7 +523,8 @@ PEMANTAPAN
 INTEGRITI,
 AKAUNTABILITI
 & ETIKA
-FASA 3]]></text>
+FASA 3
+]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30"/>
@@ -533,7 +543,8 @@ FASA 3]]></text>
 								</textElement>
 								<text><![CDATA[KURSUS JATI
 DIRI & NILAI
-MURNI]]></text>
+MURNI
+]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
@@ -564,7 +575,8 @@ MURNI]]></text>
 								<text><![CDATA[KURSUS JATI
 DIRI & NILAI
 MURNI
-FASA 2]]></text>
+FASA 2
+]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
@@ -595,7 +607,8 @@ FASA 2]]></text>
 								<text><![CDATA[KURSUS JATI
 DIRI & NILAI
 MURNI
-FASA 3]]></text>
+FASA 3
+]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30"/>
@@ -617,7 +630,8 @@ WRITING
 SKILLS-WRITE
 BETTER EMAL,
 LETTER &
-REPORT]]></text>
+REPORT
+]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">

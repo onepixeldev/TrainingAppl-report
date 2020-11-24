@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR247" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="10" uuid="a1c5f66a-461a-4c0a-89ef-be6b05248706">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR247X" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="10" uuid="a1c5f66a-461a-4c0a-89ef-be6b05248706">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR247X_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR247X"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -257,7 +261,7 @@ ORDER BY TH_DATE_FROM DESC]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial"/>
 					</textElement>
-					<text><![CDATA[ReportID : ATR247]]></text>
+					<text><![CDATA[ReportID : ATR247X]]></text>
 				</staticText>
 				<frame>
 					<reportElement x="0" y="0" width="234" height="20" uuid="71c07270-0308-49ca-adb6-ce5ac3c1f467"/>
@@ -508,111 +512,6 @@ PENTADBIRAN
 						<pen lineWidth="0.5"/>
 					</box>
 				</frame>
-				<componentElement>
-					<reportElement x="410" y="0" width="412" height="50" uuid="37a9dec9-576c-434d-ad93-9e2cfdff91a5">
-						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-						<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
-						<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
-						<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
-					</reportElement>
-					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
-						<datasetRun subDataset="STAFF_LIST" uuid="36c7b3b7-9574-4fb2-8e01-c3cf633c75ca">
-							<datasetParameter name="AKA_NAKA">
-								<datasetParameterExpression><![CDATA[$P{AKA_NAKA}]]></datasetParameterExpression>
-							</datasetParameter>
-							<datasetParameter name="TH_REFID">
-								<datasetParameterExpression><![CDATA[$F{TH_REF_ID}]]></datasetParameterExpression>
-							</datasetParameter>
-							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-							<returnValue fromVariable="SUM_STAFF" toVariable="SUM_STAFF"/>
-						</datasetRun>
-						<jr:column width="30" uuid="2d05ef78-ff3b-4314-bddc-8773d6211711">
-							<jr:detailCell style="Table_TD" height="50">
-								<property name="com.jaspersoft.studio.unit.height" value="px"/>
-								<property name="com.jaspersoft.studio.unit.width" value="px"/>
-								<box>
-									<pen lineWidth="0.5"/>
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								</box>
-								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="30" height="50" uuid="0953509b-2b7d-43b7-888a-39bd788051cd"/>
-									<textElement textAlignment="Center" verticalAlignment="Middle">
-										<font fontName="Arial" size="10"/>
-									</textElement>
-									<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
-								</textField>
-							</jr:detailCell>
-						</jr:column>
-						<jr:column width="160" uuid="61aef14b-95e9-4d88-8843-24c0ad6f6732">
-							<jr:detailCell style="Table_TD" height="50">
-								<property name="com.jaspersoft.studio.unit.width" value="px"/>
-								<box>
-									<pen lineWidth="0.5"/>
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								</box>
-								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="160" height="50" uuid="5391438b-3611-415d-9ad3-ee10254ad480">
-										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-										<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-									</reportElement>
-									<textElement textAlignment="Left" verticalAlignment="Middle">
-										<font fontName="Arial" size="10"/>
-										<paragraph leftIndent="4" rightIndent="4"/>
-									</textElement>
-									<textFieldExpression><![CDATA[$F{CF_TITLE}]]></textFieldExpression>
-								</textField>
-							</jr:detailCell>
-						</jr:column>
-						<jr:column width="100" uuid="66979073-e5ef-41ef-89ce-49c6a0b440de">
-							<jr:detailCell style="Table_TD" height="50">
-								<property name="com.jaspersoft.studio.unit.width" value="px"/>
-								<box>
-									<pen lineWidth="0.5"/>
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								</box>
-								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="100" height="50" uuid="94836ce0-dddc-4fa7-8591-6a3faa65b14e"/>
-									<textElement textAlignment="Center" verticalAlignment="Middle">
-										<font fontName="Arial" size="10"/>
-									</textElement>
-									<textFieldExpression><![CDATA[$F{CF_ADMIN_POST}==null?"-":$F{CF_ADMIN_POST}]]></textFieldExpression>
-								</textField>
-							</jr:detailCell>
-						</jr:column>
-						<jr:column width="122" uuid="b3516ed9-ed91-4111-bd6e-11275689d599">
-							<jr:detailCell style="Table_TD" height="50">
-								<box>
-									<pen lineWidth="0.5"/>
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								</box>
-								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="122" height="50" uuid="b9013783-5d4c-4e2e-bada-f5bd74ad68b2">
-										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-										<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-										<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
-									</reportElement>
-									<textElement textAlignment="Center" verticalAlignment="Middle">
-										<font fontName="Arial" size="10"/>
-										<paragraph firstLineIndent="5" leftIndent="5" rightIndent="5"/>
-									</textElement>
-									<textFieldExpression><![CDATA[$F{RM_RACE_DESC}]]></textFieldExpression>
-								</textField>
-							</jr:detailCell>
-						</jr:column>
-					</jr:table>
-				</componentElement>
 				<frame>
 					<reportElement stretchType="RelativeToBandHeight" x="410" y="0" width="30" height="50" isPrintWhenDetailOverflows="true" uuid="46905616-75d8-448e-a09b-cd672abb89b0"/>
 					<box>
@@ -652,6 +551,237 @@ PENTADBIRAN
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					</box>
+				</frame>
+				<componentElement>
+					<reportElement x="410" y="0" width="412" height="50" uuid="37a9dec9-576c-434d-ad93-9e2cfdff91a5">
+						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+						<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+						<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+						<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+					</reportElement>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+						<datasetRun subDataset="STAFF_LIST" uuid="36c7b3b7-9574-4fb2-8e01-c3cf633c75ca">
+							<datasetParameter name="AKA_NAKA">
+								<datasetParameterExpression><![CDATA[$P{AKA_NAKA}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="TH_REFID">
+								<datasetParameterExpression><![CDATA[$F{TH_REF_ID}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+							<returnValue fromVariable="SUM_STAFF" toVariable="SUM_STAFF"/>
+						</datasetRun>
+						<jr:column width="30" uuid="2d05ef78-ff3b-4314-bddc-8773d6211711">
+							<jr:detailCell style="Table_TD" height="50">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+									<reportElement x="0" y="0" width="30" height="50" uuid="0953509b-2b7d-43b7-888a-39bd788051cd"/>
+									<box>
+										<pen lineWidth="0.5"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Arial" size="10"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="160" uuid="61aef14b-95e9-4d88-8843-24c0ad6f6732">
+							<jr:detailCell style="Table_TD" height="50">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+									<reportElement x="0" y="0" width="160" height="50" uuid="5391438b-3611-415d-9ad3-ee10254ad480">
+										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+										<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+									</reportElement>
+									<box>
+										<pen lineWidth="0.5"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textElement textAlignment="Left" verticalAlignment="Middle">
+										<font fontName="Arial" size="10"/>
+										<paragraph leftIndent="4" rightIndent="4"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$F{CF_TITLE}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="100" uuid="66979073-e5ef-41ef-89ce-49c6a0b440de">
+							<jr:detailCell style="Table_TD" height="50">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+									<reportElement x="0" y="0" width="100" height="50" uuid="94836ce0-dddc-4fa7-8591-6a3faa65b14e"/>
+									<box>
+										<pen lineWidth="0.5"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Arial" size="10"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$F{CF_ADMIN_POST}==null?"-":$F{CF_ADMIN_POST}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="122" uuid="b3516ed9-ed91-4111-bd6e-11275689d599">
+							<jr:detailCell style="Table_TD" height="50">
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+									<reportElement x="0" y="0" width="122" height="50" uuid="b9013783-5d4c-4e2e-bada-f5bd74ad68b2">
+										<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+										<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+										<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
+									</reportElement>
+									<box>
+										<pen lineWidth="0.5"/>
+										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+										<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font fontName="Arial" size="10"/>
+										<paragraph firstLineIndent="5" leftIndent="5" rightIndent="5"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$F{RM_RACE_DESC}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+				<frame>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="410" height="50" uuid="15f775ee-5c82-4910-bc76-a743ef5f84cc"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<frame>
+						<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="30" height="50" uuid="d8f7effa-bff0-419a-8f69-dbdb638b7c17"/>
+						<box>
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement x="0" y="0" width="30" height="50" uuid="cf8353ba-26f8-457c-a8d9-45da1baf29a9"/>
+							<box>
+								<pen lineWidth="0.0"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial" size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+						</textField>
+					</frame>
+					<frame>
+						<reportElement stretchType="RelativeToBandHeight" x="30" y="0" width="160" height="50" uuid="ca48588c-e794-4865-bf67-5b8e50763f1b"/>
+						<box>
+							<pen lineWidth="0.0"/>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement x="0" y="0" width="160" height="50" uuid="5e7d28e8-fea4-448d-8a48-026cd1157745">
+								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+							</reportElement>
+							<box>
+								<pen lineWidth="0.0"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Arial" size="10"/>
+								<paragraph leftIndent="4" rightIndent="4"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{TH_TRAINING_TITLE}]]></textFieldExpression>
+						</textField>
+					</frame>
+					<frame>
+						<reportElement stretchType="RelativeToBandHeight" x="260" y="0" width="150" height="50" uuid="a4237a4e-c5e9-4b74-9732-d95bfe2f7ecc"/>
+						<box>
+							<pen lineWidth="0.0"/>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement x="0" y="0" width="150" height="50" uuid="c6f72ea8-b184-4e6d-be71-6be8bc08aac0">
+								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+							</reportElement>
+							<box>
+								<pen lineWidth="0.0"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Arial" size="10"/>
+								<paragraph leftIndent="4" rightIndent="4"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ADDRESS}]]></textFieldExpression>
+						</textField>
+					</frame>
+					<frame>
+						<reportElement stretchType="RelativeToBandHeight" x="190" y="0" width="70" height="50" uuid="d83edd78-2738-4feb-b267-5948abaa27ad"/>
+						<box>
+							<pen lineWidth="0.0"/>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement x="0" y="0" width="70" height="50" uuid="00d88831-7a0c-440b-8f07-912e807ff606"/>
+							<box>
+								<pen lineWidth="0.0"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial" size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{DATE2}]]></textFieldExpression>
+						</textField>
+					</frame>
 				</frame>
 			</frame>
 		</band>

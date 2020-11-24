@@ -12,6 +12,10 @@
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR045_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR045"/>
 	<subDataset name="STAFF_LIST" uuid="6cc2d593-36e9-48fe-a346-e72231fcdd7f">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -291,7 +295,8 @@ ORDER BY DM_DEPT_DESC,TO_NUMBER(COALESCE(TRANSLATE(UPPER(SS_SALARY_GRADE),'01234
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="12" isBold="true" isUnderline="true"/>
 				</textElement>
-				<text><![CDATA[SENARAI LATIHAN (TRAINING) YANG DIHADIRI OLEH KAKITANGAN MENGIKUT PTj]]></text>
+				<text><![CDATA[SENARAI LATIHAN (TRAINING) YANG DIHADIRI OLEH KAKITANGAN MENGIKUT PTj
+]]></text>
 			</staticText>
 			<frame>
 				<reportElement x="0" y="76" width="575" height="14" uuid="adcba2f1-5db9-4d6a-b4bb-1f47cb122a22"/>
@@ -520,7 +525,7 @@ ORDER BY DM_DEPT_DESC,TO_NUMBER(COALESCE(TRANSLATE(UPPER(SS_SALARY_GRADE),'01234
 					<reportElement x="270" y="0" width="305" height="30" uuid="415ebc55-fb63-46fd-ab3a-cdbd6e4eb98c">
 						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 					</reportElement>
-					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 						<datasetRun subDataset="STAFF_LIST" uuid="0e79e440-a4c3-4eda-9dd7-33ff5b93bede">
 							<datasetParameter name="P_STH_STATUS">
 								<datasetParameterExpression><![CDATA[$P{P_STH_STATUS}]]></datasetParameterExpression>

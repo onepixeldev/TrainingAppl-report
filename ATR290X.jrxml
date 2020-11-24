@@ -17,6 +17,10 @@
 	<property name="net.sf.jasperreports.export.xls.one.page.per.sheet" value="false"/>
 	<property name="net.sf.jasperreports.export.xls.collapse.row.span" value="true"/>
 	<property name="net.sf.jasperreports.export.ignore.page.margins" value="true"/>
+	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR290X_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR290X"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -418,7 +422,7 @@ WHERE DM_DEPT_CODE =  $P{DEPT}]]>
 				<textElement verticalAlignment="Bottom">
 					<font fontName="Arial" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[Report ID : ATR290]]></text>
+				<text><![CDATA[Report ID : ATR290X]]></text>
 			</staticText>
 			<textField evaluationTime="Master">
 				<reportElement x="550" y="0" width="272" height="30" uuid="7372cf6e-3ba2-43c3-abf1-d2819a069cb3"/>

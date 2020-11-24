@@ -12,6 +12,10 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR001_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR001"/>
 	<parameter name="YEAR" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
@@ -833,8 +837,7 @@ FROM
 					<font fontName="Arial" size="8"/>
 					<paragraph leftIndent="0" spacingBefore="2" spacingAfter="0"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{CF_OFFER}==null?"":$F{CF_OFFER}+"\n"
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{CF_OFFER}==null?"":$F{CF_OFFER}+"\n"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="382" y="0" width="30" height="15" uuid="e2584580-6340-494e-9da8-819507f3f47b">
@@ -868,8 +871,7 @@ FROM
 					<font fontName="Arial" size="8"/>
 					<paragraph leftIndent="0" spacingBefore="2" spacingAfter="0"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{CF_FEB}==null?"":$F{CF_FEB}+"\n"
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{CF_FEB}==null?"":$F{CF_FEB}+"\n"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="442" y="0" width="30" height="15" uuid="ec1b9479-b8f9-4624-a0ab-e545d2cfdde5">
