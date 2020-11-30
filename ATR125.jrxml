@@ -5,8 +5,8 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
 	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
-	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR125_files/main_jrxml"/>
-	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR125"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR001_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR001"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -513,20 +513,20 @@ ORDER BY TH_DATE_FROM DESC]]>
 			<frame>
 				<reportElement x="222" y="0" width="359" height="64" uuid="abac053b-5bfc-4107-a94f-12350c3d7e21"/>
 				<staticText>
-					<reportElement x="39" y="0" width="280" height="30" uuid="4439d965-f02f-48ee-8568-0f85ecb518f1"/>
-					<textElement textAlignment="Center" verticalAlignment="Top">
-						<font fontName="Arial" size="10" isBold="true"/>
-					</textElement>
-					<text><![CDATA[BAHAGIAN PEMBANGUNAN SUMBER MANUSIA
-UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
-				</staticText>
-				<staticText>
 					<reportElement x="0" y="34" width="359" height="30" uuid="dcc57c39-99d9-4b63-94a4-c09af8171c24"/>
 					<textElement textAlignment="Center" verticalAlignment="Top">
 						<font fontName="Arial" size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[LAPORAN PENGESAHAN JAWATAN (AKADEMIK)
 ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="0" width="359" height="30" uuid="1e0921cb-7cd1-4ca0-b3d4-861151968a38"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[UNIT LATIHAN, BAHAGIAN PEMBANGUNAN SUMBER MANUSIA
+UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
 				</staticText>
 			</frame>
 			<frame>
@@ -537,13 +537,6 @@ UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
 						<font fontName="Arial" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Status Peperiksaan Induksi Umum : "+($P{STATUS}==null?"":$P{STATUS})]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="0" y="18" width="422" height="18" uuid="ca2032a4-55d1-41ea-8cad-61201b9c7961"/>
-					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Status Pensijilan & Pembelajaran Pensyarah Baru (P & P) : "+($P{STATUS2}==null?"":$P{STATUS2})]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>

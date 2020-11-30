@@ -428,7 +428,7 @@ Memohon]]></text>
 								</textElement>
 								<text><![CDATA[Bil.
 Kakitangan
-( Hadir >= 2 )]]></text>
+( Hadir < 2 )]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">

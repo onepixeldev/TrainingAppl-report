@@ -2118,7 +2118,7 @@ Latihan]]></text>
 							<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						</reportElement>
-						<textElement verticalAlignment="Middle">
+						<textElement verticalAlignment="Top">
 							<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
 							<paragraph leftIndent="0"/>
 						</textElement>
@@ -2155,7 +2155,7 @@ Nama / Cop]]></text>
 							<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						</reportElement>
-						<textElement verticalAlignment="Middle">
+						<textElement verticalAlignment="Top">
 							<font fontName="Arial" size="8" isBold="false" isUnderline="false"/>
 							<paragraph leftIndent="0"/>
 						</textElement>
@@ -2200,7 +2200,7 @@ Nama / Cop]]></text>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
 					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Borang ini hendaklah diserahkan ke Sektor Pentadbiran, Kewangan & Auditan, Unit Latihan, BSM <br>dalam tempoh <b>2 hari selepas tamat kursus / program</b> bagi tujuan penambahbaikan."]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Borang ini hendaklah diserahkan ke Sektor Pentadbiran, Kewangan & Auditan, Unit Latihan, BPSM <br>dalam tempoh <b>2 hari selepas tamat kursus / program</b> bagi tujuan penambahbaikan."]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -810,9 +810,12 @@ SENARAI PESERTA KURSUS]]></text>
 						<jr:detailCell style="Table_TD" height="20">
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="30" height="20" uuid="c08abc5d-843d-464d-86bf-816c3b2af7f5"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
+								<reportElement x="0" y="0" width="30" height="20" uuid="c08abc5d-843d-464d-86bf-816c3b2af7f5">
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Top">
 									<font fontName="Arial" size="10"/>
+									<paragraph spacingBefore="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 							</textField>
@@ -833,9 +836,12 @@ SENARAI PESERTA KURSUS]]></text>
 						<jr:detailCell style="Table_TD" height="20">
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="50" height="20" uuid="fb6d88e0-d30d-47a2-a77b-961deaab7094"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
+								<reportElement x="0" y="0" width="50" height="20" uuid="fb6d88e0-d30d-47a2-a77b-961deaab7094">
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Top">
 									<font fontName="Arial" size="10"/>
+									<paragraph spacingBefore="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{STH_STAFF_ID}]]></textFieldExpression>
 							</textField>
@@ -849,7 +855,7 @@ SENARAI PESERTA KURSUS]]></text>
 								<reportElement x="0" y="0" width="160" height="20" uuid="34ebf051-cac3-4a02-96e9-71fe448410d8">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement textAlignment="Left" verticalAlignment="Middle">
+								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Arial" isBold="true"/>
 									<paragraph leftIndent="4"/>
 								</textElement>
@@ -862,10 +868,11 @@ SENARAI PESERTA KURSUS]]></text>
 								<reportElement x="0" y="0" width="160" height="20" uuid="dda37694-bd76-49d3-9509-e01bdf64583a">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 								</reportElement>
-								<textElement verticalAlignment="Middle">
+								<textElement verticalAlignment="Top">
 									<font fontName="Arial" size="10"/>
-									<paragraph leftIndent="4" rightIndent="2"/>
+									<paragraph leftIndent="4" rightIndent="2" spacingBefore="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{SM_STAFF_NAME}]]></textFieldExpression>
 							</textField>
@@ -878,7 +885,7 @@ SENARAI PESERTA KURSUS]]></text>
 								<reportElement x="0" y="0" width="143" height="20" uuid="6c03f117-09dd-467c-8e60-779c4e74fc7e">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement textAlignment="Left" verticalAlignment="Middle">
+								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Arial" isBold="true"/>
 									<paragraph leftIndent="4"/>
 								</textElement>
@@ -891,10 +898,11 @@ SENARAI PESERTA KURSUS]]></text>
 								<reportElement x="0" y="0" width="143" height="20" uuid="b15ba41d-392e-4bc6-8553-86fd1dfe00c8">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 								</reportElement>
-								<textElement verticalAlignment="Middle">
+								<textElement verticalAlignment="Top">
 									<font fontName="Arial" size="10"/>
-									<paragraph leftIndent="4" rightIndent="2"/>
+									<paragraph leftIndent="4" rightIndent="2" spacingBefore="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{SS_SERVICE_DESC}]]></textFieldExpression>
 							</textField>
@@ -907,7 +915,7 @@ SENARAI PESERTA KURSUS]]></text>
 								<reportElement x="0" y="0" width="152" height="20" uuid="e475016c-300c-4fd2-8d85-5c82025962f3">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement textAlignment="Left" verticalAlignment="Middle">
+								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Arial" isBold="true"/>
 									<paragraph leftIndent="4"/>
 								</textElement>
@@ -920,10 +928,11 @@ SENARAI PESERTA KURSUS]]></text>
 								<reportElement x="0" y="0" width="152" height="20" uuid="12e1394f-70b8-45bb-91ca-9c5d81294f4f">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 								</reportElement>
-								<textElement verticalAlignment="Middle">
+								<textElement verticalAlignment="Top">
 									<font fontName="Arial" size="10"/>
-									<paragraph leftIndent="4" rightIndent="2"/>
+									<paragraph leftIndent="4" rightIndent="2" spacingBefore="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{DM_DEPT_DESC}]]></textFieldExpression>
 							</textField>

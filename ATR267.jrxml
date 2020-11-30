@@ -286,76 +286,79 @@ FROM
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<title>
-		<band height="71" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="0" width="822" height="20" uuid="d7f50952-37b1-43a5-9c6e-295011408855"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="14" isBold="true"/>
-				</textElement>
-				<text><![CDATA[UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="20" width="822" height="30" uuid="f3843e4a-6a80-4220-bfba-f72cbefdb3cf"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font fontName="Arial" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{V_TITLE}]]></textFieldExpression>
-			</textField>
+	<pageHeader>
+		<band height="71">
 			<frame>
-				<reportElement positionType="Float" x="0" y="51" width="822" height="20" uuid="30c12c1b-93d7-483b-ac65-d1f722d117ef"/>
-				<textField evaluationTime="Report">
-					<reportElement x="0" y="0" width="100" height="20" uuid="b147aec8-58ba-4d7e-99ae-0af24c92b7dc"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Arial"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Jumlah Semua Staf : "]]></textFieldExpression>
-				</textField>
+				<reportElement x="0" y="0" width="822" height="71" uuid="ef4c00eb-721a-41aa-a9ae-ab0d7c61501b"/>
 				<staticText>
-					<reportElement x="700" y="0" width="122" height="20" uuid="d33bca2e-d41b-4c07-afef-d5a44c8be66f"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Arial"/>
+					<reportElement x="0" y="0" width="822" height="20" uuid="028d60a9-96de-45c3-98b9-2f576d7de037"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="14" isBold="true"/>
 					</textElement>
-					<text><![CDATA[ReportID : ATR267]]></text>
+					<text><![CDATA[UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
 				</staticText>
-				<componentElement>
-					<reportElement x="100" y="0" width="134" height="20" uuid="2ee132a0-6a5a-4602-92d0-b08eae7e0e79"/>
-					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
-						<datasetRun subDataset="TOTAL_STAFF_ALL" uuid="8eff729e-307d-4ada-8d5b-f4a0c99b52da">
-							<datasetParameter name="AKEPT_MONTH">
-								<datasetParameterExpression><![CDATA[$P{AKEPT_MONTH}]]></datasetParameterExpression>
-							</datasetParameter>
-							<datasetParameter name="AKEPT_ORGANIZER">
-								<datasetParameterExpression><![CDATA[$P{AKEPT_ORGANIZER}]]></datasetParameterExpression>
-							</datasetParameter>
-							<datasetParameter name="AKEPT_YEAR">
-								<datasetParameterExpression><![CDATA[$P{AKEPT_YEAR}]]></datasetParameterExpression>
-							</datasetParameter>
-							<datasetParameter name="AKA_NAKA">
-								<datasetParameterExpression><![CDATA[$P{AKA_NAKA}]]></datasetParameterExpression>
-							</datasetParameter>
-							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-						</datasetRun>
-						<jr:listContents height="20" width="134">
-							<textField evaluationTime="Report">
-								<reportElement x="0" y="0" width="134" height="20" uuid="ee7fe2cd-ed0a-41d4-a547-252c9f244eca"/>
-								<textElement textAlignment="Left" verticalAlignment="Middle">
-									<font fontName="Arial" size="10" isBold="false"/>
-								</textElement>
-								<textFieldExpression><![CDATA[($F{TOTAL_STAFF_ALL}==null?0:$F{TOTAL_STAFF_ALL})+" orang"]]></textFieldExpression>
-							</textField>
-						</jr:listContents>
-					</jr:list>
-				</componentElement>
+				<textField isBlankWhenNull="true">
+					<reportElement x="0" y="20" width="822" height="30" uuid="8312ba75-ebaf-4b44-8e4b-8a218af4bd32"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{V_TITLE}]]></textFieldExpression>
+				</textField>
+				<frame>
+					<reportElement positionType="Float" x="0" y="51" width="822" height="20" uuid="e6b500a4-0af1-4fea-aa8e-991358ebf79e"/>
+					<textField evaluationTime="Report">
+						<reportElement x="0" y="0" width="100" height="20" uuid="d69a84c5-6389-4250-9361-6725e04e8ee3"/>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Arial"/>
+						</textElement>
+						<textFieldExpression><![CDATA["Jumlah Semua Staf : "]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement x="700" y="0" width="122" height="20" uuid="0e0d4768-b299-49fc-907a-6b8c3bfff7f9"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font fontName="Arial"/>
+						</textElement>
+						<text><![CDATA[ReportID : ATR267]]></text>
+					</staticText>
+					<componentElement>
+						<reportElement x="100" y="0" width="134" height="20" uuid="2857f50f-b4e3-4a06-9712-135dd1d82c07"/>
+						<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+							<datasetRun subDataset="TOTAL_STAFF_ALL" uuid="5396e24d-a197-4f83-b557-ec78115abf96">
+								<datasetParameter name="AKEPT_MONTH">
+									<datasetParameterExpression><![CDATA[$P{AKEPT_MONTH}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="AKEPT_ORGANIZER">
+									<datasetParameterExpression><![CDATA[$P{AKEPT_ORGANIZER}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="AKEPT_YEAR">
+									<datasetParameterExpression><![CDATA[$P{AKEPT_YEAR}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter name="AKA_NAKA">
+									<datasetParameterExpression><![CDATA[$P{AKA_NAKA}]]></datasetParameterExpression>
+								</datasetParameter>
+								<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+							</datasetRun>
+							<jr:listContents height="20" width="134">
+								<textField evaluationTime="Report">
+									<reportElement x="0" y="0" width="134" height="20" uuid="fd0829f5-1fef-4341-94b5-3a1222117242"/>
+									<textElement textAlignment="Left" verticalAlignment="Middle">
+										<font fontName="Arial" size="10" isBold="false"/>
+									</textElement>
+									<textFieldExpression><![CDATA[($F{TOTAL_STAFF_ALL}==null?0:$F{TOTAL_STAFF_ALL})+" orang"]]></textFieldExpression>
+								</textField>
+							</jr:listContents>
+						</jr:list>
+					</componentElement>
+				</frame>
 			</frame>
 		</band>
-	</title>
+	</pageHeader>
 	<detail>
 		<band height="80" splitType="Stretch">
 			<componentElement>
@@ -395,9 +398,12 @@ FROM
 						<jr:detailCell style="Table_TD" height="40">
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="30" height="40" uuid="9027a065-be9f-4d20-833a-252d025ff577"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
+								<reportElement x="0" y="0" width="30" height="40" uuid="9027a065-be9f-4d20-833a-252d025ff577">
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Top">
 									<font fontName="Arial" size="10"/>
+									<paragraph spacingBefore="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 							</textField>
@@ -418,10 +424,11 @@ FROM
 								<reportElement x="0" y="0" width="178" height="40" uuid="626a61ec-f846-4c21-93c4-fd250b4cb0bb">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 								</reportElement>
-								<textElement verticalAlignment="Middle">
+								<textElement verticalAlignment="Top">
 									<font fontName="Arial" size="10"/>
-									<paragraph leftIndent="4" rightIndent="4"/>
+									<paragraph leftIndent="4" rightIndent="4" spacingBefore="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{CF_TITLE}]]></textFieldExpression>
 							</textField>
@@ -439,9 +446,12 @@ FROM
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="40">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="132" height="40" uuid="43320b43-b315-4079-a981-8d534412ee46"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
+								<reportElement x="0" y="0" width="132" height="40" uuid="43320b43-b315-4079-a981-8d534412ee46">
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Top">
 									<font fontName="Arial" size="10"/>
+									<paragraph spacingBefore="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{ADMIN_DEPT}]]></textFieldExpression>
 							</textField>
@@ -463,10 +473,11 @@ FROM
 								<reportElement x="0" y="0" width="90" height="40" uuid="155cc499-be34-4094-b1ec-1d5e0e0da0e7">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 								</reportElement>
-								<textElement verticalAlignment="Middle">
+								<textElement verticalAlignment="Top">
 									<font fontName="Arial" size="10"/>
-									<paragraph leftIndent="4" rightIndent="4"/>
+									<paragraph leftIndent="4" rightIndent="4" spacingBefore="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{SM_DEPT_CODE}]]></textFieldExpression>
 							</textField>
@@ -489,12 +500,11 @@ FROM
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 									<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
-									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 								</reportElement>
-								<textElement verticalAlignment="Middle">
+								<textElement verticalAlignment="Top">
 									<font fontName="Arial" size="10"/>
-									<paragraph firstLineIndent="0" leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
+									<paragraph firstLineIndent="0" leftIndent="4" rightIndent="4" spacingBefore="6" spacingAfter="4"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{TH_TRAINING_TITLE}]]></textFieldExpression>
 							</textField>
@@ -516,10 +526,11 @@ FROM
 								<reportElement x="0" y="0" width="100" height="40" uuid="e1eb403f-7d20-431d-9f7f-ff54240d697d">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 								</reportElement>
-								<textElement verticalAlignment="Middle">
+								<textElement verticalAlignment="Top">
 									<font fontName="Arial" size="10"/>
-									<paragraph leftIndent="4" rightIndent="4"/>
+									<paragraph leftIndent="4" rightIndent="4" spacingBefore="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{DATE2}]]></textFieldExpression>
 							</textField>
@@ -540,12 +551,11 @@ FROM
 								<reportElement x="0" y="0" width="132" height="40" uuid="30a15648-7d7c-4681-83d6-80fda968f448">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 								</reportElement>
-								<textElement verticalAlignment="Middle">
+								<textElement verticalAlignment="Top">
 									<font fontName="Arial" size="10"/>
-									<paragraph firstLineIndent="0" leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
+									<paragraph firstLineIndent="0" leftIndent="4" rightIndent="4" spacingBefore="6" spacingAfter="4"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{ADDRESS}]]></textFieldExpression>
 							</textField>

@@ -3,6 +3,10 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR126" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b15dee52-2174-445c-930c-1b705eaed25c">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
+	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR126_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR126"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -410,20 +414,20 @@ FROM
 			<frame>
 				<reportElement x="222" y="0" width="359" height="64" uuid="abac053b-5bfc-4107-a94f-12350c3d7e21"/>
 				<staticText>
-					<reportElement x="39" y="0" width="280" height="30" uuid="4439d965-f02f-48ee-8568-0f85ecb518f1"/>
-					<textElement textAlignment="Center" verticalAlignment="Top">
-						<font fontName="Arial" size="10" isBold="true"/>
-					</textElement>
-					<text><![CDATA[BAHAGIAN PEMBANGUNAN SUMBER MANUSIA
-UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
-				</staticText>
-				<staticText>
 					<reportElement x="0" y="34" width="359" height="30" uuid="dcc57c39-99d9-4b63-94a4-c09af8171c24"/>
 					<textElement textAlignment="Center" verticalAlignment="Top">
 						<font fontName="Arial" size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[LAPORAN PENGESAHAN JAWATAN (BUKAN AKADEMIK)
 ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="0" width="359" height="30" uuid="71931ef7-3de0-4b49-b600-268eb1f986a9"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[UNIT LATIHAN, BAHAGIAN PEMBANGUNAN SUMBER MANUSIA
+UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
 				</staticText>
 			</frame>
 		</band>

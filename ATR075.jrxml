@@ -453,16 +453,16 @@ FROM
 	<detail>
 		<band height="590" splitType="Prevent">
 			<frame>
-				<reportElement x="122" y="46" width="250" height="114" uuid="32e47055-4ba9-408b-9953-08ab844c8a0a"/>
+				<reportElement x="122" y="30" width="250" height="130" uuid="32e47055-4ba9-408b-9953-08ab844c8a0a"/>
 				<image>
-					<reportElement x="95" y="0" width="70" height="70" uuid="9b4dc73d-3fc4-49a3-b223-3e479a1c55cc">
+					<reportElement x="49" y="10" width="152" height="71" uuid="9b4dc73d-3fc4-49a3-b223-3e479a1c55cc">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<imageExpression><![CDATA["/TrainingAppl/images/UPSI_LOGO_PNG_CIRCLE.png"]]></imageExpression>
+					<imageExpression><![CDATA["/TrainingAppl/images/Logo_UPSI_ORI.png"]]></imageExpression>
 				</image>
 				<frame>
-					<reportElement x="0" y="71" width="250" height="38" uuid="c2c87242-293f-467a-a758-83968e14df7c"/>
+					<reportElement x="0" y="92" width="250" height="38" uuid="c2c87242-293f-467a-a758-83968e14df7c"/>
 					<staticText>
 						<reportElement x="22" y="0" width="207" height="16" uuid="e0fc251a-275c-4f20-b93f-8ea0309f158c">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>

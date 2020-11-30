@@ -310,7 +310,7 @@ PESERTA]]></text>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["LAPORAN TAHUNAN AKTIVITI UNIT LATIHAN (BITARA) BAGI TAHUN "+($P{TRAINING_YEAR}==null?"":$P{TRAINING_YEAR})]]></textFieldExpression>
+					<textFieldExpression><![CDATA["LAPORAN TAHUNAN AKTIVITI UNIT LATIHAN BAGI TAHUN "+($P{TRAINING_YEAR}==null?"":$P{TRAINING_YEAR})]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
