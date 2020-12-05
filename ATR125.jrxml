@@ -3,10 +3,10 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR125" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b15dee52-2174-445c-930c-1b705eaed25c">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
-	<property name="ireport.jasperserver.url" value="http://10.99.1.192:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
 	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
-	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR001_files/main_jrxml"/>
-	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR001"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR125_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR125"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -491,7 +491,7 @@ ORDER BY TH_DATE_FROM DESC]]>
 		<band height="116" splitType="Stretch">
 			<image>
 				<reportElement x="10" y="0" width="160" height="70" uuid="bd7bec97-e5b8-436a-a622-b53bd4928a6c"/>
-				<imageExpression><![CDATA["/TrainingAppl/images/logo_upsi.png"]]></imageExpression>
+				<imageExpression><![CDATA["Logo_UPSI_ORI.png"]]></imageExpression>
 			</image>
 			<frame>
 				<reportElement x="660" y="17" width="142" height="32" uuid="2b2baf9f-e320-4dc4-af4f-ee4431b505ba"/>
@@ -537,6 +537,13 @@ UNIVERSITI PENDIDIKAN SULTAN IDRIS]]></text>
 						<font fontName="Arial" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Status Peperiksaan Induksi Umum : "+($P{STATUS}==null?"":$P{STATUS})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="18" width="422" height="18" uuid="6f2d90d3-2a25-40a9-b1b5-f332004c631f"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Status Pensijilan Pengajaran & Pembelajaran Pensyarah Baru (P & P) : "+($P{STATUS2}==null||$P{STATUS2}==""?"SEMUA":$P{STATUS2})]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>

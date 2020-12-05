@@ -142,8 +142,9 @@ ORDER BY SM_DEPT_CODE,SM_STAFF_NAME
 	<parameter name="TARIKH_SEND" class="java.lang.String"/>
 	<parameter name="TRAINING_REFID" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT CAL_CONVERT_TO_HIJRAH_DATE2($P{TARIKH_SEND})||'H' AS H_DATE
-FROM DUAL ]]>
+		<![CDATA[SELECT 
+CAL_CONVERT_TO_HIJRAH_DATE2(SYSDATE) AS H_DATE
+FROM TRAINING_HEAD]]>
 	</queryString>
 	<field name="H_DATE" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="H_DATE"/>
