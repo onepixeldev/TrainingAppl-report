@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR289" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="921e3cc6-117f-48eb-b578-393f871205e1">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="READ_ONLY_MYHRIS"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
@@ -13,9 +13,11 @@
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="ireport.jasperserver.url" value="http://10.99.1.192:8080/jasperserver/"/>
-	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
+	<property name="ireport.jasperserver.user" value="syazwan|ICT Center"/>
 	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR289_files/main_jrxml"/>
 	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR289"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="304"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="691"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -121,24 +123,28 @@ ORDER BY SM_DEPT_CODE,SM_STAFF_ID]]>
 	<parameter name="TRAINING_MONTH" class="java.lang.String"/>
 	<parameter name="TRAINING_YEAR" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT DM_DEPT_CODE||' - '||DM_DEPT_DESC DEPT_DESC,
+		<![CDATA[SELECT
 (
 	SELECT TH_REF_ID||' - '||TH_TRAINING_TITLE AS TITLE
 	FROM TRAINING_HEAD
 	WHERE TH_REF_ID = $P{TRAINING_ID} 
 ) TITLE,
-TRIM(TO_CHAR(TO_DATE($P{TRAINING_MONTH}, 'MM'),'MONTH', 'NLS_DATE_LANGUAGE = MALAY')) MONTH
-FROM DEPARTMENT_MAIN
-WHERE DM_DEPT_CODE =  $P{DEPT}]]>
+TRIM(TO_CHAR(TO_DATE($P{TRAINING_MONTH}, 'MM'),'MONTH', 'NLS_DATE_LANGUAGE = MALAY')) MONTH1,
+(
+	SELECT DM_DEPT_CODE||' - '||DM_DEPT_DESC DEPT_DESC
+	FROM DEPARTMENT_MAIN
+	WHERE DM_DEPT_CODE =  $P{DEPT}
+) DEPT_DESC
+FROM DUAL]]>
 	</queryString>
-	<field name="DEPT_DESC" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="DEPT_DESC"/>
-	</field>
 	<field name="TITLE" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="TITLE"/>
 	</field>
-	<field name="MONTH" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="MONTH"/>
+	<field name="MONTH1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MONTH1"/>
+	</field>
+	<field name="DEPT_DESC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DEPT_DESC"/>
 	</field>
 	<variable name="COOR_NAME" class="java.lang.String"/>
 	<background>
@@ -241,7 +247,7 @@ WHERE DM_DEPT_CODE =  $P{DEPT}]]>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{COOR_NAME}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" evaluationTime="Report" isBlankWhenNull="true">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 					<reportElement x="110" y="60" width="711" height="20" uuid="adbe5a8a-0e78-42df-857e-2ccce66f3253">
 						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					</reportElement>
@@ -249,7 +255,7 @@ WHERE DM_DEPT_CODE =  $P{DEPT}]]>
 						<font fontName="Arial" size="12"/>
 						<paragraph leftIndent="6"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($F{MONTH}==null?"-":$F{MONTH})+" / "+($P{TRAINING_YEAR}==null?"-":$P{TRAINING_YEAR})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{MONTH1}==null?"-":$F{MONTH1})+" / "+($P{TRAINING_YEAR}==null?"-":$P{TRAINING_YEAR})]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>

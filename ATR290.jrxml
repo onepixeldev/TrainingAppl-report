@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR290" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="921e3cc6-117f-48eb-b578-393f871205e1">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="READ_ONLY_MYHRIS"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
@@ -12,7 +12,7 @@
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="ireport.jasperserver.url" value="http://10.99.1.192:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
 	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
 	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR290_files/main_jrxml"/>
 	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR290"/>
@@ -107,14 +107,18 @@ ORDER BY SM_DEPT_CODE,SM_STAFF_ID]]>
 	<parameter name="DEPT" class="java.lang.String"/>
 	<parameter name="STRUCTUREDID" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT DM_DEPT_CODE||' - '||DM_DEPT_DESC DEPT_DESC,
+		<![CDATA[SELECT
+(
+	SELECT DM_DEPT_CODE||' - '||DM_DEPT_DESC DEPT_DESC
+	FROM DEPARTMENT_MAIN
+	WHERE DM_DEPT_CODE =  $P{DEPT}
+) "DEPT_DESC",
 (
 	SELECT TTH_REF_ID||' - '||TTH_TRAINING_TITLE AS TITLE
 	FROM TNA_TRAINING_HEAD
 	WHERE TTH_REF_ID = $P{STRUCTUREDID}
-) TITLE
-FROM DEPARTMENT_MAIN
-WHERE DM_DEPT_CODE =  $P{DEPT}]]>
+) "TITLE"
+FROM DUAL]]>
 	</queryString>
 	<field name="DEPT_DESC" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="DEPT_DESC"/>
