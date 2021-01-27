@@ -12,7 +12,7 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
-	<property name="ireport.jasperserver.url" value="http://10.99.1.192:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
 	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
 	<property name="ireport.jasperserver.report.resource" value="/Reports/MyHRIS/HRA_AT/ATR001_files/main_jrxml"/>
 	<property name="ireport.jasperserver.reportUnit" value="/Reports/MyHRIS/HRA_AT/ATR001"/>
@@ -86,7 +86,18 @@ CASE WHEN
     AND TH_STATUS='APPROVE'
     AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
     AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'01'
-) = '-' THEN ''
+) = '-' OR 
+(
+    SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
+    FROM TRAINING_HEAD
+    WHERE TH_TRAINING_TITLE = Q.TH_TRAINING_TITLE
+    AND DECODE(TH_SERVICE_GROUP,NULL,'Terbuka','PP','Profesional','S','Sokongan') = Q.TH_SERVICE_GROUP
+    AND DECODE(TH_INTERNAL_EXTERNAL,'INTERNAL','UPSI','EXTERNAL','Luar') = Q.TH_INTERNAL_EXTERNAL
+    AND TH_STATUS='APPROVE'
+    AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
+    AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'01'
+) IS NULL
+THEN ''
 ELSE
 (
     SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
@@ -108,7 +119,18 @@ CASE WHEN
     AND TH_STATUS='APPROVE'
     AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
     AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'02'
-) = '-' THEN ''
+) = '-' OR 
+(
+    SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
+    FROM TRAINING_HEAD
+    WHERE TH_TRAINING_TITLE = Q.TH_TRAINING_TITLE
+    AND DECODE(TH_SERVICE_GROUP,NULL,'Terbuka','PP','Profesional','S','Sokongan') = Q.TH_SERVICE_GROUP
+    AND DECODE(TH_INTERNAL_EXTERNAL,'INTERNAL','UPSI','EXTERNAL','Luar') = Q.TH_INTERNAL_EXTERNAL
+    AND TH_STATUS='APPROVE'
+    AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
+    AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'02'
+) IS NULL
+THEN ''
 ELSE
 (
     SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
@@ -130,7 +152,18 @@ CASE WHEN
     AND TH_STATUS='APPROVE'
     AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
     AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'03'
-) = '-' THEN ''
+) = '-' OR 
+(
+    SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
+    FROM TRAINING_HEAD
+    WHERE TH_TRAINING_TITLE = Q.TH_TRAINING_TITLE
+    AND DECODE(TH_SERVICE_GROUP,NULL,'Terbuka','PP','Profesional','S','Sokongan') = Q.TH_SERVICE_GROUP
+    AND DECODE(TH_INTERNAL_EXTERNAL,'INTERNAL','UPSI','EXTERNAL','Luar') = Q.TH_INTERNAL_EXTERNAL
+    AND TH_STATUS='APPROVE'
+    AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
+    AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'03'
+) IS NULL
+THEN ''
 ELSE
 (
     SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
@@ -152,7 +185,18 @@ CASE WHEN
     AND TH_STATUS='APPROVE'
     AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
     AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'04'
-) = '-' THEN ''
+) = '-' OR 
+(
+    SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
+    FROM TRAINING_HEAD
+    WHERE TH_TRAINING_TITLE = Q.TH_TRAINING_TITLE
+    AND DECODE(TH_SERVICE_GROUP,NULL,'Terbuka','PP','Profesional','S','Sokongan') = Q.TH_SERVICE_GROUP
+    AND DECODE(TH_INTERNAL_EXTERNAL,'INTERNAL','UPSI','EXTERNAL','Luar') = Q.TH_INTERNAL_EXTERNAL
+    AND TH_STATUS='APPROVE'
+    AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
+    AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'04'
+) IS NULL
+THEN ''
 ELSE
 (
     SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
@@ -174,7 +218,18 @@ CASE WHEN
     AND TH_STATUS='APPROVE'
     AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
     AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'05'
-) = '-' THEN ''
+) = '-' OR 
+(
+    SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
+    FROM TRAINING_HEAD
+    WHERE TH_TRAINING_TITLE = Q.TH_TRAINING_TITLE
+    AND DECODE(TH_SERVICE_GROUP,NULL,'Terbuka','PP','Profesional','S','Sokongan') = Q.TH_SERVICE_GROUP
+    AND DECODE(TH_INTERNAL_EXTERNAL,'INTERNAL','UPSI','EXTERNAL','Luar') = Q.TH_INTERNAL_EXTERNAL
+    AND TH_STATUS='APPROVE'
+    AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
+    AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'05'
+) IS NULL
+THEN ''
 ELSE
 (
     SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
@@ -196,7 +251,18 @@ CASE WHEN
     AND TH_STATUS='APPROVE'
     AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
     AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'06'
-) = '-' THEN ''
+) = '-' OR 
+(
+    SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
+    FROM TRAINING_HEAD
+    WHERE TH_TRAINING_TITLE = Q.TH_TRAINING_TITLE
+    AND DECODE(TH_SERVICE_GROUP,NULL,'Terbuka','PP','Profesional','S','Sokongan') = Q.TH_SERVICE_GROUP
+    AND DECODE(TH_INTERNAL_EXTERNAL,'INTERNAL','UPSI','EXTERNAL','Luar') = Q.TH_INTERNAL_EXTERNAL
+    AND TH_STATUS='APPROVE'
+    AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
+    AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'06'
+) IS NULL
+THEN ''
 ELSE
 (
     SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
@@ -218,7 +284,18 @@ CASE WHEN
     AND TH_STATUS='APPROVE'
     AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
     AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'07'
-) = '-' THEN ''
+) = '-' OR 
+(
+    SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
+    FROM TRAINING_HEAD
+    WHERE TH_TRAINING_TITLE = Q.TH_TRAINING_TITLE
+    AND DECODE(TH_SERVICE_GROUP,NULL,'Terbuka','PP','Profesional','S','Sokongan') = Q.TH_SERVICE_GROUP
+    AND DECODE(TH_INTERNAL_EXTERNAL,'INTERNAL','UPSI','EXTERNAL','Luar') = Q.TH_INTERNAL_EXTERNAL
+    AND TH_STATUS='APPROVE'
+    AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
+    AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'07'
+) IS NULL
+THEN ''
 ELSE
 (
     SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
@@ -240,7 +317,18 @@ CASE WHEN
     AND TH_STATUS='APPROVE'
     AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
     AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'08'
-) = '-' THEN ''
+) = '-' OR 
+(
+    SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
+    FROM TRAINING_HEAD
+    WHERE TH_TRAINING_TITLE = Q.TH_TRAINING_TITLE
+    AND DECODE(TH_SERVICE_GROUP,NULL,'Terbuka','PP','Profesional','S','Sokongan') = Q.TH_SERVICE_GROUP
+    AND DECODE(TH_INTERNAL_EXTERNAL,'INTERNAL','UPSI','EXTERNAL','Luar') = Q.TH_INTERNAL_EXTERNAL
+    AND TH_STATUS='APPROVE'
+    AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
+    AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'08'
+) IS NULL
+THEN ''
 ELSE
 (
     SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
@@ -262,7 +350,18 @@ CASE WHEN
     AND TH_STATUS='APPROVE'
     AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
     AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'09'
-) = '-' THEN ''
+) = '-' OR 
+(
+    SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
+    FROM TRAINING_HEAD
+    WHERE TH_TRAINING_TITLE = Q.TH_TRAINING_TITLE
+    AND DECODE(TH_SERVICE_GROUP,NULL,'Terbuka','PP','Profesional','S','Sokongan') = Q.TH_SERVICE_GROUP
+    AND DECODE(TH_INTERNAL_EXTERNAL,'INTERNAL','UPSI','EXTERNAL','Luar') = Q.TH_INTERNAL_EXTERNAL
+    AND TH_STATUS='APPROVE'
+    AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
+    AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'09'
+) IS NULL
+THEN ''
 ELSE
 (
     SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
@@ -284,7 +383,18 @@ CASE WHEN
     AND TH_STATUS='APPROVE'
     AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
     AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'10'
-) = '-' THEN ''
+) = '-' OR 
+(
+    SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
+    FROM TRAINING_HEAD
+    WHERE TH_TRAINING_TITLE = Q.TH_TRAINING_TITLE
+    AND DECODE(TH_SERVICE_GROUP,NULL,'Terbuka','PP','Profesional','S','Sokongan') = Q.TH_SERVICE_GROUP
+    AND DECODE(TH_INTERNAL_EXTERNAL,'INTERNAL','UPSI','EXTERNAL','Luar') = Q.TH_INTERNAL_EXTERNAL
+    AND TH_STATUS='APPROVE'
+    AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
+    AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'10'
+) IS NULL
+THEN ''
 ELSE
 (
     SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
@@ -306,7 +416,18 @@ CASE WHEN
     AND TH_STATUS='APPROVE'
     AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
     AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'11'
-) = '-' THEN ''
+) = '-' OR 
+(
+    SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
+    FROM TRAINING_HEAD
+    WHERE TH_TRAINING_TITLE = Q.TH_TRAINING_TITLE
+    AND DECODE(TH_SERVICE_GROUP,NULL,'Terbuka','PP','Profesional','S','Sokongan') = Q.TH_SERVICE_GROUP
+    AND DECODE(TH_INTERNAL_EXTERNAL,'INTERNAL','UPSI','EXTERNAL','Luar') = Q.TH_INTERNAL_EXTERNAL
+    AND TH_STATUS='APPROVE'
+    AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
+    AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'11'
+) IS NULL
+THEN ''
 ELSE
 (
     SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
@@ -328,7 +449,18 @@ CASE WHEN
     AND TH_STATUS='APPROVE'
     AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
     AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'12'
-) = '-' THEN ''
+) = '-' OR 
+(
+    SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')
+    FROM TRAINING_HEAD
+    WHERE TH_TRAINING_TITLE = Q.TH_TRAINING_TITLE
+    AND DECODE(TH_SERVICE_GROUP,NULL,'Terbuka','PP','Profesional','S','Sokongan') = Q.TH_SERVICE_GROUP
+    AND DECODE(TH_INTERNAL_EXTERNAL,'INTERNAL','UPSI','EXTERNAL','Luar') = Q.TH_INTERNAL_EXTERNAL
+    AND TH_STATUS='APPROVE'
+    AND TO_CHAR(TH_DATE_FROM,'yyyy')=$P{YEAR}
+    AND TO_CHAR(TH_DATE_FROM,'yyyymm')=$P{YEAR}||'12'
+) IS NULL
+THEN ''
 ELSE
 (
     SELECT TO_CHAR(TH_DATE_FROM,'dd/mm')||'-'||TO_CHAR(TH_DATE_TO,'dd/mm')

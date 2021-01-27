@@ -2,7 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ATR075" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="495" leftMargin="50" rightMargin="50" topMargin="50" bottomMargin="50" uuid="b3ea7ea6-f5f9-4505-8539-28774a83d9e4">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MyHRIS"/>
-	<property name="ireport.jasperserver.url" value="http://10.99.1.192:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.url" value="http://10.99.4.7:8080/jasperserver/"/>
 	<property name="ireport.jasperserver.user" value="syazwan|upsidev"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -459,7 +459,7 @@ FROM
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<imageExpression><![CDATA["/TrainingAppl/images/Logo_UPSI_ORI.png"]]></imageExpression>
+					<imageExpression><![CDATA["repo:/Reports/Images/Logo_UPSI_2018_Confirm_With_Stroke.png"]]></imageExpression>
 				</image>
 				<frame>
 					<reportElement x="0" y="92" width="250" height="38" uuid="c2c87242-293f-467a-a758-83968e14df7c"/>
@@ -1014,7 +1014,7 @@ Negeri dan Kementerian Luar]]></text>
 					</line>
 				</frame>
 				<frame>
-					<reportElement positionType="Float" x="0" y="105" width="495" height="110" uuid="4a5deadf-f033-46a9-acc7-f27cee376b94">
+					<reportElement x="0" y="105" width="495" height="110" uuid="4a5deadf-f033-46a9-acc7-f27cee376b94">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -1127,7 +1127,7 @@ Negeri dan Kementerian Luar]]></text>
 					</line>
 				</frame>
 				<frame>
-					<reportElement positionType="Float" x="0" y="215" width="495" height="164" uuid="636532ef-9fca-4616-a103-2c62751def2f">
+					<reportElement x="0" y="215" width="495" height="164" uuid="636532ef-9fca-4616-a103-2c62751def2f">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -1238,7 +1238,7 @@ Negeri dan Kementerian Luar]]></text>
 					</line>
 				</frame>
 				<frame>
-					<reportElement positionType="Float" x="0" y="379" width="495" height="164" uuid="d79a269f-b4d0-434c-8fa4-637cc2ee31ea">
+					<reportElement x="0" y="379" width="495" height="164" uuid="d79a269f-b4d0-434c-8fa4-637cc2ee31ea">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -1348,7 +1348,7 @@ Negeri dan Kementerian Luar]]></text>
 					</line>
 				</frame>
 				<frame>
-					<reportElement positionType="Float" x="0" y="543" width="495" height="179" uuid="2824fe31-58b0-4b41-bf5f-9afa0076757c">
+					<reportElement x="0" y="543" width="495" height="179" uuid="2824fe31-58b0-4b41-bf5f-9afa0076757c">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
